@@ -1,0 +1,46 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.bell.neil.connectfour</groupId>
+	<artifactId>gamegui</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>gamegui</name>
+	<description>gamegui</description>
+
+	<properties>
+		<slf4j.version>1.7.30</slf4j.version>
+		<maven.compiler.source>13</maven.compiler.source>
+		<maven.compiler.target>13</maven.compiler.target>
+		<maven.test.skip>true</maven.test.skip>
+	</properties>
+
+
+	<dependencies>
+		<dependency>
+			<groupId>com.home.neil.connectfour</groupId>
+			<artifactId>applicationmanager</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.home.neil.connectfour</groupId>
+			<artifactId>knowledgebase</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.13.1</version>
+		</dependency>
+	</dependencies>
+
+	<distributionManagement>
+		<repository>
+			<id>github-personal-connectfour-gamegui</id>
+			<name>GitHub NEILREIMANN Connect4 Apache Maven Packages</name>
+			<url>https://maven.pkg.github.com/neilreimann/ConnectFour-GameGUI</url>
+		</repository>
+	</distributionManagement>
+
+</project>
