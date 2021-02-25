@@ -2024,7 +2024,7 @@ public class BoardState {
 	private EvaluationThreadInfo mEvaluationThreadInfo = null;
 	
 	public void setEvaluationThreadInfoBit (byte pPos, boolean pValue, String pLogContext) throws ConfigurationException, KnowledgeBaseException, InvalidMoveException {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 		
@@ -2047,7 +2047,7 @@ public class BoardState {
 		lKnowledgeBaseFileAccessWriteEvaluatedTask.executeTask();
 		if (!lKnowledgeBaseFileAccessWriteEvaluatedTask.isTransactionSuccessful() || !lKnowledgeBaseFileAccessWriteEvaluatedTask.isTransactionFinished()) {
 			sLogger.error("Knowledge Base Error occurred!");
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			throw new KnowledgeBaseException();
@@ -2058,7 +2058,7 @@ public class BoardState {
 			lKnowledgeBaseFileAccessWriteEvaluatedTask.executeTask();
 			if (!lKnowledgeBaseFileAccessWriteEvaluatedTask.isTransactionSuccessful() || !lKnowledgeBaseFileAccessWriteEvaluatedTask.isTransactionFinished()) {
 				sLogger.error("Knowledge Base Error occurred!");
-				if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
 				throw new KnowledgeBaseException();
@@ -2073,14 +2073,14 @@ public class BoardState {
 		
 		
 		
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 	}
 	
 
 	public boolean getEvaluationThreadInfoBit (byte pPos, String pLogContext) throws ConfigurationException, KnowledgeBaseException, InvalidMoveException {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 		
@@ -2090,7 +2090,7 @@ public class BoardState {
 		lKnowledgeBaseFileAccessReadEvaluatedTask.executeTask();
 		if (!lKnowledgeBaseFileAccessReadEvaluatedTask.isTransactionSuccessful() || !lKnowledgeBaseFileAccessReadEvaluatedTask.isTransactionFinished()) {
 			sLogger.error("Knowledge Base Error occurred!");
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			throw new KnowledgeBaseException();
@@ -2101,7 +2101,7 @@ public class BoardState {
 
 		byte lEvaluationThreadInfo = mEvaluationThreadInfo.getEvaluationThreadInfo();
 					
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 
@@ -2112,7 +2112,7 @@ public class BoardState {
 		}
 		
 
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 		
@@ -2130,10 +2130,10 @@ public class BoardState {
 	private BoardState mPreviousMoveNode = null;
 
 	public String toString() {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 		return "BoardState: " + mFileIndexString + " (" + mMoveScore.getMoveScore() + ")";
@@ -2213,7 +2213,7 @@ public class BoardState {
 				if (sLogger.isDebugEnabled()) {
 					sLogger.debug("Returning move: " + BoardState.Move.OPPONENT_SLOT0.toString());
 				}
-				if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
 				return BoardState.Move.OPPONENT_SLOT0;
@@ -2221,7 +2221,7 @@ public class BoardState {
 				if (sLogger.isDebugEnabled()) {
 					sLogger.debug("Returning move: " + BoardState.Move.OPPONENT_SLOT1.toString());
 				}
-				if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
 				return BoardState.Move.OPPONENT_SLOT1;
@@ -2229,7 +2229,7 @@ public class BoardState {
 				if (sLogger.isDebugEnabled()) {
 					sLogger.debug("Returning move: " + BoardState.Move.OPPONENT_SLOT2.toString());
 				}
-				if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
 				return BoardState.Move.OPPONENT_SLOT2;
@@ -2237,7 +2237,7 @@ public class BoardState {
 				if (sLogger.isDebugEnabled()) {
 					sLogger.debug("Returning move: " + BoardState.Move.OPPONENT_SLOT3.toString());
 				}
-				if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
 				return BoardState.Move.OPPONENT_SLOT3;
@@ -2245,7 +2245,7 @@ public class BoardState {
 				if (sLogger.isDebugEnabled()) {
 					sLogger.debug("Returning move: " + BoardState.Move.OPPONENT_SLOT4.toString());
 				}
-				if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
 				return BoardState.Move.OPPONENT_SLOT4;
@@ -2253,7 +2253,7 @@ public class BoardState {
 				if (sLogger.isDebugEnabled()) {
 					sLogger.debug("Returning move: " + BoardState.Move.OPPONENT_SLOT5.toString());
 				}
-				if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
 				return BoardState.Move.OPPONENT_SLOT5;
@@ -2261,7 +2261,7 @@ public class BoardState {
 				if (sLogger.isDebugEnabled()) {
 					sLogger.debug("Returning move: " + BoardState.Move.OPPONENT_SLOT6.toString());
 				}
-				if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
 				return BoardState.Move.OPPONENT_SLOT6;
@@ -2269,12 +2269,12 @@ public class BoardState {
 				if (sLogger.isDebugEnabled()) {
 					sLogger.debug("Returning move: " + BoardState.Move.OPPONENT_NOMOVE.toString());
 				}
-				if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
 				return BoardState.Move.OPPONENT_NOMOVE;
 			} else {
-				if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
 				return null;
@@ -2287,7 +2287,7 @@ public class BoardState {
 				if (sLogger.isDebugEnabled()) {
 					sLogger.debug("Returning move: " + BoardState.Move.SELF_SLOT0.toString());
 				}
-				if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
 				return BoardState.Move.SELF_SLOT0;
@@ -2295,7 +2295,7 @@ public class BoardState {
 				if (sLogger.isDebugEnabled()) {
 					sLogger.debug("Returning move: " + BoardState.Move.SELF_SLOT1.toString());
 				}
-				if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
 				return BoardState.Move.SELF_SLOT1;
@@ -2303,7 +2303,7 @@ public class BoardState {
 				if (sLogger.isDebugEnabled()) {
 					sLogger.debug("Returning move: " + BoardState.Move.SELF_SLOT2.toString());
 				}
-				if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
 				return BoardState.Move.SELF_SLOT2;
@@ -2311,7 +2311,7 @@ public class BoardState {
 				if (sLogger.isDebugEnabled()) {
 					sLogger.debug("Returning move: " + BoardState.Move.SELF_SLOT3.toString());
 				}
-				if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
 				return BoardState.Move.SELF_SLOT3;
@@ -2319,7 +2319,7 @@ public class BoardState {
 				if (sLogger.isDebugEnabled()) {
 					sLogger.debug("Returning move: " + BoardState.Move.SELF_SLOT4.toString());
 				}
-				if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
 				return BoardState.Move.SELF_SLOT4;
@@ -2327,7 +2327,7 @@ public class BoardState {
 				if (sLogger.isDebugEnabled()) {
 					sLogger.debug("Returning move: " + BoardState.Move.SELF_SLOT5.toString());
 				}
-				if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
 				return BoardState.Move.SELF_SLOT5;
@@ -2335,7 +2335,7 @@ public class BoardState {
 				if (sLogger.isDebugEnabled()) {
 					sLogger.debug("Returning move: " + BoardState.Move.SELF_SLOT6.toString());
 				}
-				if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
 				return BoardState.Move.SELF_SLOT6;
@@ -2343,12 +2343,12 @@ public class BoardState {
 				if (sLogger.isDebugEnabled()) {
 					sLogger.debug("Returning move: " + BoardState.Move.SELF_NOMOVE.toString());
 				}
-				if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
 				return BoardState.Move.SELF_NOMOVE;
 			} else {
-				if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
 				return null;
@@ -2362,10 +2362,10 @@ public class BoardState {
 	}
 
 	public BoardState getParentBoardState() {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 		return this.mPreviousMoveNode;
@@ -3290,7 +3290,7 @@ public class BoardState {
 	
 	public BoardState(KnowledgeBaseFilePool pKnowledgeBaseFilePool, BoardState.Move pFirstMove, boolean pEvaluation, String pLogContext) throws InvalidMoveException, KnowledgeBaseException,
 			ConfigurationException {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 
@@ -3422,7 +3422,7 @@ public class BoardState {
 			}
 		} else if (!pFirstMove.equals(BoardState.Move.OPPONENT_NOMOVE)) {
 			sLogger.error("Invalid First move");
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			throw new InvalidMoveException();
@@ -3519,7 +3519,7 @@ public class BoardState {
 	
 	
 	private void setBoardStateString () {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 
@@ -3543,7 +3543,7 @@ public class BoardState {
 			}
 		}
 		mBoardStateString = lLine;
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 		return;
@@ -3555,7 +3555,7 @@ public class BoardState {
 			KnowledgeBaseException, ConfigurationException {
 		
 		
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 		
@@ -3569,7 +3569,7 @@ public class BoardState {
 		BoardState.GameState lGameState = getGameState();
 		if (lGameState != BoardState.GameState.CONTINUE) {
 			sLogger.info("Game is Over. Move is invalid.");
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			throw new InvalidMoveException();
@@ -3622,7 +3622,7 @@ public class BoardState {
 						|| lMove.equals(BoardState.Move.OPPONENT_SLOT3) || lMove.equals(BoardState.Move.OPPONENT_SLOT4)
 						|| lMove.equals(BoardState.Move.OPPONENT_SLOT5) || lMove.equals(BoardState.Move.OPPONENT_SLOT6))) {
 			sLogger.info("Opponent is attempting to move twice");
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			throw new InvalidMoveException();
@@ -3635,7 +3635,7 @@ public class BoardState {
 						|| lMove.equals(BoardState.Move.SELF_SLOT2) || lMove.equals(BoardState.Move.SELF_SLOT3) || lMove.equals(BoardState.Move.SELF_SLOT4)
 						|| lMove.equals(BoardState.Move.SELF_SLOT5) || lMove.equals(BoardState.Move.SELF_SLOT6))) {
 			sLogger.info("Self is attempting to move twice");
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			throw new InvalidMoveException();
@@ -3813,14 +3813,14 @@ public class BoardState {
 		
 
 
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 	}
 
 	public void readMoveScoreFromKnowledgeBase(String pLogContext) throws KnowledgeBaseException, ConfigurationException, KnowledgeBaseException,
 			InvalidMoveException {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 
@@ -3829,7 +3829,7 @@ public class BoardState {
 		lKnowledgeBaseFileAccessReadTask.executeTask();
 		if (!lKnowledgeBaseFileAccessReadTask.isTransactionSuccessful() || !lKnowledgeBaseFileAccessReadTask.isTransactionFinished()) {
 			sLogger.error("Knowledge Base Error occurred!");
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			throw new KnowledgeBaseException();
@@ -3845,7 +3845,7 @@ public class BoardState {
 			lKnowledgeBaseFileAccessWriteTask.executeTask();
 			if (!lKnowledgeBaseFileAccessWriteTask.isTransactionSuccessful() || !lKnowledgeBaseFileAccessWriteTask.isTransactionFinished()) {
 				sLogger.error("Knowledge Base Error occurred!");
-				if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
 				throw new KnowledgeBaseException();
@@ -3857,7 +3857,7 @@ public class BoardState {
 				lKnowledgeBaseFileAccessWriteTask.executeTask();
 				if (!lKnowledgeBaseFileAccessWriteTask.isTransactionSuccessful() || !lKnowledgeBaseFileAccessWriteTask.isTransactionFinished()) {
 					sLogger.error("Knowledge Base Error occurred!");
-					if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+					if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 						sLogger.trace("Exiting");
 					}
 					throw new KnowledgeBaseException();
@@ -3869,16 +3869,16 @@ public class BoardState {
 		if (sLogger.isDebugEnabled()) {
 			sLogger.debug("Move: " + mFileIndexString + " Knowledge Base Move Score: " + mMoveScore.getMoveScore());
 		}
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 	}
 
 	public MoveScore getMoveScore() {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 		return mMoveScore;
@@ -3889,7 +3889,7 @@ public class BoardState {
 
 	public void writeMoveScoreToKnowledge(String pLogContext) throws KnowledgeBaseException, ConfigurationException, KnowledgeBaseException,
 			InvalidMoveException {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 
@@ -3899,7 +3899,7 @@ public class BoardState {
 		lKnowledgeBaseFileAccessWriteTask.executeTask();
 		if (!lKnowledgeBaseFileAccessWriteTask.isTransactionSuccessful() || !lKnowledgeBaseFileAccessWriteTask.isTransactionFinished()) {
 			sLogger.error("Knowledge Base Error occurred!");
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			throw new KnowledgeBaseException();
@@ -3911,7 +3911,7 @@ public class BoardState {
 			lKnowledgeBaseFileAccessWriteTask.executeTask();
 			if (!lKnowledgeBaseFileAccessWriteTask.isTransactionSuccessful() || !lKnowledgeBaseFileAccessWriteTask.isTransactionFinished()) {
 				sLogger.error("Knowledge Base Error occurred!");
-				if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
 				throw new KnowledgeBaseException();
@@ -3923,13 +3923,13 @@ public class BoardState {
 			sLogger.debug("Move: " + mFileIndexString + " Knowledge Base Move Score: " + mMoveScore.getMoveScore());
 			sLogger.debug("Move: " + mReciprocalFileIndexString + " Knowledge Base Move Score: " + mMoveScore.getMoveScore());
 		}
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 	}
 
 	public void logBoardState(Level pLevel) {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 		if (slogBoardStateActive) {
@@ -3960,7 +3960,7 @@ public class BoardState {
 
 			sLogger.log(pLevel, lBoardStateLog);
 		}
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 		return;
@@ -3968,7 +3968,7 @@ public class BoardState {
 
 
 	public BoardState.GameState getGameState() {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 		BitSet lGameStateBitSet = new BitSet(GAME_STATE_SIZE_IN_BITS);
@@ -3978,22 +3978,22 @@ public class BoardState {
 		}
 
 		if (lGameStateBitSet.equals(BoardState.GameState.CONTINUE.getGameStateBitSet())) {
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			return BoardState.GameState.CONTINUE;
 		} else if (lGameStateBitSet.equals(BoardState.GameState.WIN.getGameStateBitSet())) {
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			return BoardState.GameState.WIN;
 		} else if (lGameStateBitSet.equals(BoardState.GameState.LOSS.getGameStateBitSet())) {
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			return BoardState.GameState.LOSS;
 		} else {
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			return BoardState.GameState.DRAW;
@@ -4002,7 +4002,7 @@ public class BoardState {
 	}
 
 	public BoardState.Move getMove() {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 		BitSet lMoveBitSet = new BitSet(MOVE_STATE_SIZE_IN_BITS);
@@ -4012,82 +4012,82 @@ public class BoardState {
 		}
 
 		if (lMoveBitSet.equals(BoardState.Move.OPPONENT_SLOT0.getMoveBitSet())) {
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			return BoardState.Move.OPPONENT_SLOT0;
 		} else if (lMoveBitSet.equals(BoardState.Move.OPPONENT_SLOT1.getMoveBitSet())) {
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			return BoardState.Move.OPPONENT_SLOT1;
 		} else if (lMoveBitSet.equals(BoardState.Move.OPPONENT_SLOT2.getMoveBitSet())) {
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			return BoardState.Move.OPPONENT_SLOT2;
 		} else if (lMoveBitSet.equals(BoardState.Move.OPPONENT_SLOT3.getMoveBitSet())) {
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			return BoardState.Move.OPPONENT_SLOT3;
 		} else if (lMoveBitSet.equals(BoardState.Move.OPPONENT_SLOT4.getMoveBitSet())) {
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			return BoardState.Move.OPPONENT_SLOT4;
 		} else if (lMoveBitSet.equals(BoardState.Move.OPPONENT_SLOT5.getMoveBitSet())) {
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			return BoardState.Move.OPPONENT_SLOT5;
 		} else if (lMoveBitSet.equals(BoardState.Move.OPPONENT_SLOT6.getMoveBitSet())) {
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			return BoardState.Move.OPPONENT_SLOT6;
 		} else if (lMoveBitSet.equals(BoardState.Move.SELF_SLOT0.getMoveBitSet())) {
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			return BoardState.Move.SELF_SLOT0;
 		} else if (lMoveBitSet.equals(BoardState.Move.SELF_SLOT1.getMoveBitSet())) {
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			return BoardState.Move.SELF_SLOT1;
 		} else if (lMoveBitSet.equals(BoardState.Move.SELF_SLOT2.getMoveBitSet())) {
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			return BoardState.Move.SELF_SLOT2;
 		} else if (lMoveBitSet.equals(BoardState.Move.SELF_SLOT3.getMoveBitSet())) {
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			return BoardState.Move.SELF_SLOT3;
 		} else if (lMoveBitSet.equals(BoardState.Move.SELF_SLOT4.getMoveBitSet())) {
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			return BoardState.Move.SELF_SLOT4;
 		} else if (lMoveBitSet.equals(BoardState.Move.SELF_SLOT5.getMoveBitSet())) {
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			return BoardState.Move.SELF_SLOT5;
 		} else if (lMoveBitSet.equals(BoardState.Move.SELF_SLOT6.getMoveBitSet())) {
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			return BoardState.Move.SELF_SLOT6;
 		} else if (lMoveBitSet.equals(BoardState.Move.SELF_NOMOVE.getMoveBitSet())) {
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			return BoardState.Move.SELF_NOMOVE;
 		} else {
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			return BoardState.Move.OPPONENT_NOMOVE;
@@ -4095,22 +4095,22 @@ public class BoardState {
 	}
 
 	public BoardState.CellState getCellState(BitSet pBitSet) {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 
 		if (pBitSet.equals(CellState.OPPONENT_OCCUPIED.getCellStateBitSet())) {
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			return CellState.OPPONENT_OCCUPIED;
 		} else if (pBitSet.equals(CellState.SELF_OCCUPIED.getCellStateBitSet())) {
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			return CellState.SELF_OCCUPIED;
 		} else {
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			return CellState.UNOCCUPIED;
@@ -4118,7 +4118,7 @@ public class BoardState {
 	}
 
 	public BoardState.CellState getCellState(int lColumn, int lRow) {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 
@@ -4129,17 +4129,17 @@ public class BoardState {
 		}
 
 		if (lBitSet.equals(CellState.OPPONENT_OCCUPIED.getCellStateBitSet())) {
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			return CellState.OPPONENT_OCCUPIED;
 		} else if (lBitSet.equals(CellState.SELF_OCCUPIED.getCellStateBitSet())) {
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			return CellState.SELF_OCCUPIED;
 		} else {
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			return CellState.UNOCCUPIED;
@@ -4150,7 +4150,7 @@ public class BoardState {
 	
 	
 	public void setCellState(int lColumn, int lRow, BoardState.CellState pNewCellState) {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 
@@ -4158,7 +4158,7 @@ public class BoardState {
 			mBoardStateInBits.set((lRow * MAX_COLUMNS + lColumn) * CELL_STATE_SIZE_IN_BITS + i, pNewCellState.getCellStateBitSet().get(i));
 		}
 
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 	}
@@ -4169,7 +4169,7 @@ public class BoardState {
 	
 
 	private BoardState.GameState evaluateGameState(boolean lWriteGameStateToKnowledgeBase) throws InvalidMoveException, KnowledgeBaseException {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 
@@ -4253,7 +4253,7 @@ public class BoardState {
 				sLogger.error("Moves:" + mFileIndexString + " MoveScore:" + mMoveScore.getMoveScore());
 				sLogger.error("X wins, O loses! Game Over");
 			}
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			return BoardState.GameState.WIN;
@@ -4263,7 +4263,7 @@ public class BoardState {
 				sLogger.error("Moves:" + mFileIndexString + " MoveScore:" + mMoveScore.getMoveScore());
 				sLogger.error("O wins, X loses! Game Over");
 			}
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			return BoardState.GameState.LOSS;
@@ -4275,7 +4275,7 @@ public class BoardState {
 					sLogger.debug("Moves:" + mFileIndexString + " MoveScore:" + mMoveScore.getMoveScore());
 					sLogger.debug("Game Is a Draw! Game Over");
 				}
-				if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
 				return BoardState.GameState.DRAW;
@@ -4287,7 +4287,7 @@ public class BoardState {
 				sLogger.debug("Moves:" + mFileIndexString + " MoveScore:" + mMoveScore.getMoveScore());
 				sLogger.debug("Game Continues!");
 			}
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			return BoardState.GameState.CONTINUE;
@@ -4297,7 +4297,7 @@ public class BoardState {
 				sLogger.debug("Moves:" + mFileIndexString + " MoveScore:" + mMoveScore.getMoveScore());
 				sLogger.debug("Game Is a Draw! Game Over");
 			}
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			return BoardState.GameState.DRAW;

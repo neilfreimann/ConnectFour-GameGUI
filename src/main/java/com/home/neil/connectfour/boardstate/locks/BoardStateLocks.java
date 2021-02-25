@@ -33,18 +33,18 @@ public class BoardStateLocks implements BoardStateLocksMBean {
 
 	
 	private BoardStateLocks () {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 		mCurrentBoardStateLocks = new HashMap<String, BoardState> ();
 		mCurrentBoardStateLockReservations = new HashMap<String, LinkedList<ExpansionTask>> ();
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 	}
 	
 	public static synchronized BoardStateLocks getInstance () {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 		if (sInstance == null) {
@@ -70,7 +70,7 @@ public class BoardStateLocks implements BoardStateLocksMBean {
 
 			} 
 		}
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 		return sInstance;
@@ -78,7 +78,7 @@ public class BoardStateLocks implements BoardStateLocksMBean {
 	
 	
 	public synchronized boolean reserveBoardState (BoardState pBoardStateToReserve, ExpansionTask lTask) {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 
@@ -97,7 +97,7 @@ public class BoardStateLocks implements BoardStateLocksMBean {
 			if (sLogger.isDebugEnabled()) {
 				sLogger.debug("State1: Lock Obtained: " + lParentMove + " for Thread: " + Thread.currentThread().getName());
 			}
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			return true;
@@ -110,7 +110,7 @@ public class BoardStateLocks implements BoardStateLocksMBean {
 				if (sLogger.isDebugEnabled()) {
 					sLogger.debug("State2: Lock Reserved: " + lParentMove + " for Thread: " + Thread.currentThread().getName());
 				}
-				if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
 				return false;
@@ -119,7 +119,7 @@ public class BoardStateLocks implements BoardStateLocksMBean {
 				if (sLogger.isDebugEnabled()) {
 					sLogger.debug("State3: Lock Reserved: " + lParentMove + " for Thread: " + Thread.currentThread().getName());
 				}
-				if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
 				return false;
@@ -128,7 +128,7 @@ public class BoardStateLocks implements BoardStateLocksMBean {
 	}
 	
 	public synchronized void releaseBoardState (BoardState pBoardStateToRelease) {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 
@@ -147,7 +147,7 @@ public class BoardStateLocks implements BoardStateLocksMBean {
 			if (sLogger.isDebugEnabled()) {
 				sLogger.debug("State4: Lock Released: " + lParentMove);
 			}
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			return;
@@ -165,27 +165,27 @@ public class BoardStateLocks implements BoardStateLocksMBean {
 				sLogger.debug("State6: Lock Released: " + lParentMove + " and Obtained to Thread: " + lWaitingTask.getName());
 			}
 		}		
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 	}
 
 
 	public String getCurrentBoardStateLocksSize() {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 		return String.valueOf(mCurrentBoardStateLocks.size());
 	}
 
 	public String getCurrentBoardStateLockReservationsSize() {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 		return String.valueOf(mCurrentBoardStateLockReservations.size());

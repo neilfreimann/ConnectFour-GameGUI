@@ -18,10 +18,10 @@ public class InvalidMoveException extends Exception {
 	public static Logger sLogger = LogManager.getLogger(PACKAGE_NAME);
 	public InvalidMoveException () {
 		super ();
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 	}

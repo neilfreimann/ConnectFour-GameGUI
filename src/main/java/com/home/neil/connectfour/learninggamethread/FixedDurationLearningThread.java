@@ -53,7 +53,7 @@ public abstract class FixedDurationLearningThread extends Thread implements Fixe
 
 	public FixedDurationLearningThread(KnowledgeBaseFilePool pKnowledgeBaseFilePool, long pDurationToRunInMs, String pLogContext) throws ConfigurationException {
 		super();
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 		
@@ -65,17 +65,17 @@ public abstract class FixedDurationLearningThread extends Thread implements Fixe
 
 		mDurationToRunInMs = pDurationToRunInMs;
 
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 	}
 
 	public String getBeanName() {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 		return mBeanName;
@@ -84,7 +84,7 @@ public abstract class FixedDurationLearningThread extends Thread implements Fixe
 	public abstract void renameThread(String pLogContext);
 
 	public void run() {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 
@@ -136,34 +136,34 @@ public abstract class FixedDurationLearningThread extends Thread implements Fixe
 			sLogger.error("StackTrace: " + lSW);
 		}
 
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 	}
 
 
 	public void setThrottle(long pThrottleValue) {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 		mThrottleTime = pThrottleValue;
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 	}
 
 	public long getThrottle() {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 		return mThrottleTime;
 	}
 
 	public void togglePause() {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 		if (mPauseActive) {
@@ -171,54 +171,54 @@ public abstract class FixedDurationLearningThread extends Thread implements Fixe
 		} else {
 			mPauseActive = true;
 		}
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 
 	}
 
 	public boolean getPause() {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 		return mPauseActive;
 	}
 
 	public boolean isTransactionSuccessful() {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 		return mTransactionSuccessful;
 	}
 
 	public void setTerminate() {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 		mTerminate = true;
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 	}
 
 	public boolean getTerminate() {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 		return mTerminate;
 	}
 
 	public boolean isTimeToTerminate() {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 		long lCurrentTime = new GregorianCalendar().getTimeInMillis();
@@ -253,12 +253,12 @@ public abstract class FixedDurationLearningThread extends Thread implements Fixe
 
 		lCurrentTime = new GregorianCalendar().getTimeInMillis();
 		if ((mDurationToRunInMs != 0 && lCurrentTime > mEndTime) || mTerminate) {
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			return true;
 		} else {
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			return false;
@@ -266,7 +266,7 @@ public abstract class FixedDurationLearningThread extends Thread implements Fixe
 	}
 
 	public String getThreadTimeStatistics() {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 
@@ -293,7 +293,7 @@ public abstract class FixedDurationLearningThread extends Thread implements Fixe
 					+ lRemainingTimeFormatted;
 		}
 
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 

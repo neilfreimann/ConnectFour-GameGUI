@@ -48,20 +48,20 @@ public abstract class StatefulFixedDurationLearningThread extends FixedDurationL
 
 	public StatefulFixedDurationLearningThread(KnowledgeBaseFilePool pKnowledgeBaseFilePool, long pDurationToRunInMs, String pFileName, String pLogContext) throws ConfigurationException, FileNotFoundException, IOException {
 		super(pKnowledgeBaseFilePool, pDurationToRunInMs, pLogContext);
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 		Connect4PropertiesConfiguration lConfig = Connect4PropertiesConfiguration.getInstance();
 
 		mFileLocation = lConfig.getString(FILE_LOCATION_CONFIG_KEY) + pFileName;
 
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 	}
 
 	public String getCurrentMoveEvaluated() {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}		
 		String lCurrentMoveEvaluated = mCurrentMoveEvaluated.split("\\|",2)[0];
@@ -90,14 +90,14 @@ public abstract class StatefulFixedDurationLearningThread extends FixedDurationL
 					lReconstructedString += "-";
 				}
 			}
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			return lReconstructedString;
 		} catch (IOException | ConfigurationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			return null;
@@ -106,7 +106,7 @@ public abstract class StatefulFixedDurationLearningThread extends FixedDurationL
 	}
 
 	public void readLastMoveEvaluated() throws IOException, InvalidMoveException, KnowledgeBaseException, NumberFormatException, ConfigurationException {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 		File lFile = new File(mFileLocation);
@@ -116,7 +116,7 @@ public abstract class StatefulFixedDurationLearningThread extends FixedDurationL
 		if (!lFile.exists()) {
 			mBreadCrumbs = "0";
 			mCurrentBoardState = new BoardState(mKnowledgeBaseFilePool, BoardState.Move.OPPONENT_NOMOVE, true, mLogContext);
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			return;
@@ -133,7 +133,7 @@ public abstract class StatefulFixedDurationLearningThread extends FixedDurationL
 		if (lLine == null || lLine.trim().length() == 0) {
 			mBreadCrumbs = "0";
 			mCurrentBoardState = new BoardState(mKnowledgeBaseFilePool, BoardState.Move.OPPONENT_NOMOVE, true, mLogContext);
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			return;
@@ -146,13 +146,13 @@ public abstract class StatefulFixedDurationLearningThread extends FixedDurationL
 		mBreadCrumbs = lLine;
 		mCurrentBoardState = new BoardState(mKnowledgeBaseFilePool, BoardState.Move.OPPONENT_NOMOVE, true, mLogContext);
 
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 	}
 
 	public void writeLastMoveEvaluated(String pLastMoveEvaluated) {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 		
@@ -160,13 +160,13 @@ public abstract class StatefulFixedDurationLearningThread extends FixedDurationL
 
 		sLogger.debug("Line Cached, Last File Index: " + pLastMoveEvaluated);
 
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 	}
 
 	public void writeToDiskLastMoveEvaluated() throws IOException {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 		
@@ -181,13 +181,13 @@ public abstract class StatefulFixedDurationLearningThread extends FixedDurationL
 		lBW.close();
 		sLogger.debug("Line Written, Last File Index: " + mCurrentMoveEvaluated);
 
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 	}
 
 	public void run() {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 		
@@ -210,7 +210,7 @@ public abstract class StatefulFixedDurationLearningThread extends FixedDurationL
 				sLogger.error("Number format exception on reading input file: " + mFileLocation);
 				writeToDiskLastMoveEvaluated();
 				mTransactionSuccessful = false;
-				if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
 				return;
@@ -218,7 +218,7 @@ public abstract class StatefulFixedDurationLearningThread extends FixedDurationL
 				sLogger.error("IO exception on reading input file: " + mFileLocation);
 				writeToDiskLastMoveEvaluated();
 				mTransactionSuccessful = false;
-				if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
 				return;
@@ -226,7 +226,7 @@ public abstract class StatefulFixedDurationLearningThread extends FixedDurationL
 				sLogger.error("Invalid Move Exception on reading input file: " + mFileLocation);
 				writeToDiskLastMoveEvaluated();
 				mTransactionSuccessful = false;
-				if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
 				return;
@@ -234,7 +234,7 @@ public abstract class StatefulFixedDurationLearningThread extends FixedDurationL
 				sLogger.error("Knowledge Base Exception on reading input file: " + mFileLocation);
 				writeToDiskLastMoveEvaluated();
 				mTransactionSuccessful = false;
-				if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
 				return;
@@ -242,7 +242,7 @@ public abstract class StatefulFixedDurationLearningThread extends FixedDurationL
 				sLogger.error("Knowledge Base Exception on reading input file: " + mFileLocation);
 				writeToDiskLastMoveEvaluated();
 				mTransactionSuccessful = false;
-				if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
 				return;
@@ -289,7 +289,7 @@ public abstract class StatefulFixedDurationLearningThread extends FixedDurationL
 			sLogger.error("StackTrace: " + lSW);
 		}
 
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 	}

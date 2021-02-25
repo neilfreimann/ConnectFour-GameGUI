@@ -42,7 +42,7 @@ public class FixedDurationBestMoveLinearDepthLearningThread extends StatefulFixe
 	private static FixedDurationBestMoveLinearDepthLearningThread sInstance = null;
 	
 	public synchronized void renameThread(String pLogContext) {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 		sThreadNumber++;
@@ -57,7 +57,7 @@ public class FixedDurationBestMoveLinearDepthLearningThread extends StatefulFixe
 			ThreadContext.put("LogContext", mLogContext);
 		}
 
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 	}
@@ -65,7 +65,7 @@ public class FixedDurationBestMoveLinearDepthLearningThread extends StatefulFixe
 
 
 	public static synchronized FixedDurationBestMoveLinearDepthLearningThread getInstance(KnowledgeBaseFilePool pKnowledgeBaseFilePool, long pDurationToRunInMs, String pLogContext) throws ConfigurationException, IOException {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 
@@ -76,7 +76,7 @@ public class FixedDurationBestMoveLinearDepthLearningThread extends StatefulFixe
 			lStatefulFixedDurationLearningThreadManager.registerFixedDurationLearningThread (sInstance,sInstance.getBeanName());
 		}
 		
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 		return sInstance;
@@ -86,17 +86,17 @@ public class FixedDurationBestMoveLinearDepthLearningThread extends StatefulFixe
 	private FixedDurationBestMoveLinearDepthLearningThread(KnowledgeBaseFilePool pKnowledgeBaseFilePool, long pDurationToRunInMs, String pLogContext) throws ConfigurationException, FileNotFoundException, IOException {
 		super(pKnowledgeBaseFilePool, pDurationToRunInMs, FILENAME_FIXED_DURATION_LINEAR_WIDTH, pLogContext);
 		mBeanName = MBEAN_NAME;
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 	}
 
 	
 	public void runLearningThread() {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 
@@ -135,7 +135,7 @@ public class FixedDurationBestMoveLinearDepthLearningThread extends StatefulFixe
 				lSW.toString(); // stack trace as a string
 				sLogger.debug("StackTrace: " + lSW);
 				
-				if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
 				mTransactionSuccessful = false;
@@ -156,13 +156,13 @@ public class FixedDurationBestMoveLinearDepthLearningThread extends StatefulFixe
 		sLogger.debug("Timer Exhausted");
 		mTransactionSuccessful = true;
 
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 	}
 
 	private void performExhaustiveSearch(BoardState pBoardStateToExpand, String pStack, String pBreadCrumbs) throws KnowledgeBaseException {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 
@@ -181,7 +181,7 @@ public class FixedDurationBestMoveLinearDepthLearningThread extends StatefulFixe
 			sLogger.debug("StackTrace: " + lSW);
 			mTransactionSuccessful = false;
 			sLogger.debug("Exhaustive Search was not successful");
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			throw new KnowledgeBaseException();
@@ -228,7 +228,7 @@ public class FixedDurationBestMoveLinearDepthLearningThread extends StatefulFixe
 			if (!mStartingIndex.startsWith(lBoardStateToExpandFileIndex)) {
 				mTransactionSuccessful = false;
 				sLogger.error("Exhaustive Search was not successful");
-				if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
 				throw new KnowledgeBaseException();
@@ -244,7 +244,7 @@ public class FixedDurationBestMoveLinearDepthLearningThread extends StatefulFixe
 			if (!lSuccess) {
 				mTransactionSuccessful = false;
 				sLogger.debug("Exhaustive Search was not successful");
-				if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
 				throw new KnowledgeBaseException();
@@ -254,7 +254,7 @@ public class FixedDurationBestMoveLinearDepthLearningThread extends StatefulFixe
 			
 			if (lEvaluatedAlready) {
 				sLogger.error("The index is evaluated already: " + pBoardStateToExpand.getFileIndexString());
-				if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
 				return;
@@ -268,7 +268,7 @@ public class FixedDurationBestMoveLinearDepthLearningThread extends StatefulFixe
 			if (lSubBoardStates == null || lSubBoardStates.isEmpty()) {
 				mTransactionSuccessful = false;
 				sLogger.debug("Exhaustive Search was not successful");
-				if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
 				throw new KnowledgeBaseException();
@@ -287,7 +287,7 @@ public class FixedDurationBestMoveLinearDepthLearningThread extends StatefulFixe
 				if (!lSuccess) {
 					mTransactionSuccessful = false;
 					sLogger.error("Exhaustive Search was not successful");
-					if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+					if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 						sLogger.trace("Exiting");
 					}
 					throw new KnowledgeBaseException();
@@ -359,7 +359,7 @@ public class FixedDurationBestMoveLinearDepthLearningThread extends StatefulFixe
 
 					} else {
 						sLogger.debug("Timer has expired!");
-						if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+						if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 							sLogger.trace("Exiting");
 						}
 						return;
@@ -382,7 +382,7 @@ public class FixedDurationBestMoveLinearDepthLearningThread extends StatefulFixe
 					sLogger.debug("StackTrace: " + lSW);
 					mTransactionSuccessful = false;
 					sLogger.debug("Exhaustive Search was not successful");
-					if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+					if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 						sLogger.trace("Exiting");
 					}
 					throw new KnowledgeBaseException();
@@ -403,7 +403,7 @@ public class FixedDurationBestMoveLinearDepthLearningThread extends StatefulFixe
 					sLogger.debug("StackTrace: " + lSW);
 					mTransactionSuccessful = false;
 					sLogger.debug("Exhaustive Search was not successful");
-					if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+					if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 						sLogger.trace("Exiting");
 					}
 					throw new KnowledgeBaseException();
@@ -412,7 +412,7 @@ public class FixedDurationBestMoveLinearDepthLearningThread extends StatefulFixe
 
 			
 			
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			return;
@@ -432,7 +432,7 @@ public class FixedDurationBestMoveLinearDepthLearningThread extends StatefulFixe
 		if (!lSuccess) {
 			mTransactionSuccessful = false;
 			sLogger.error("Exhaustive Search was not successful");
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			throw new KnowledgeBaseException();
@@ -442,7 +442,7 @@ public class FixedDurationBestMoveLinearDepthLearningThread extends StatefulFixe
 
 		if (lEvaluatedAlready) {
 			sLogger.debug("The index is evaluated already: " + pBoardStateToExpand.getFileIndexString());
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			return;
@@ -471,7 +471,7 @@ public class FixedDurationBestMoveLinearDepthLearningThread extends StatefulFixe
 				if (!lSuccess) {
 					mTransactionSuccessful = false;
 					sLogger.error("Exhaustive Search was not successful");
-					if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+					if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 						sLogger.trace("Exiting");
 					}
 					throw new KnowledgeBaseException();
@@ -535,7 +535,7 @@ public class FixedDurationBestMoveLinearDepthLearningThread extends StatefulFixe
 						
 					} else {
 						sLogger.debug("Timer has expired!");
-						if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+						if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 							sLogger.trace("Exiting");
 						}
 						return;
@@ -559,7 +559,7 @@ public class FixedDurationBestMoveLinearDepthLearningThread extends StatefulFixe
 						sLogger.debug("StackTrace: " + lSW);
 						mTransactionSuccessful = false;
 						sLogger.debug("Exhaustive Search was not successful");
-						if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+						if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 							sLogger.trace("Exiting");
 						}
 						throw new KnowledgeBaseException();
@@ -580,7 +580,7 @@ public class FixedDurationBestMoveLinearDepthLearningThread extends StatefulFixe
 						sLogger.debug("StackTrace: " + lSW);
 						mTransactionSuccessful = false;
 						sLogger.debug("Exhaustive Search was not successful");
-						if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+						if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 							sLogger.trace("Exiting");
 						}
 						throw new KnowledgeBaseException();
@@ -596,7 +596,7 @@ public class FixedDurationBestMoveLinearDepthLearningThread extends StatefulFixe
 			sLogger.debug("Sorting SubBoard States is empty!:" + pBoardStateToExpand.getFileIndexString());
 		}
 
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 	}

@@ -44,7 +44,7 @@ public class FixedDurationBestMoveBlockLearningThread extends StatefulFixedDurat
 	private static FixedDurationBestMoveBlockLearningThread sInstance = null;
 	
 	public synchronized void renameThread(String pLogContext) {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 		sThreadNumber++;
@@ -59,7 +59,7 @@ public class FixedDurationBestMoveBlockLearningThread extends StatefulFixedDurat
 			ThreadContext.put("LogContext", mLogContext);
 		}
 
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 	}
@@ -67,7 +67,7 @@ public class FixedDurationBestMoveBlockLearningThread extends StatefulFixedDurat
 
 
 	public static synchronized FixedDurationBestMoveBlockLearningThread getInstance(KnowledgeBaseFilePool pKnowledgeBaseFilePool, long pDurationToRunInMs, String pLogContext) throws ConfigurationException, IOException {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 
@@ -78,7 +78,7 @@ public class FixedDurationBestMoveBlockLearningThread extends StatefulFixedDurat
 			lStatefulFixedDurationLearningThreadManager.registerFixedDurationLearningThread (sInstance,sInstance.getBeanName());
 		}
 		
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 		return sInstance;
@@ -88,17 +88,17 @@ public class FixedDurationBestMoveBlockLearningThread extends StatefulFixedDurat
 	private FixedDurationBestMoveBlockLearningThread(KnowledgeBaseFilePool pKnowledgeBaseFilePool, long pDurationToRunInMs, String pLogContext) throws ConfigurationException, FileNotFoundException, IOException {
 		super(pKnowledgeBaseFilePool, pDurationToRunInMs, FILENAME_FIXED_DURATION_LINEAR_WIDTH, pLogContext);
 		mBeanName = MBEAN_NAME;
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 	}
 
 	
 	public void runLearningThread() throws ConfigurationException, IOException {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 
@@ -169,13 +169,13 @@ public class FixedDurationBestMoveBlockLearningThread extends StatefulFixedDurat
 		sLogger.debug("Timer Exhausted");
 		mTransactionSuccessful = true;
 
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 	}
 
 	private void performExhaustiveSearch(BoardState pBoardStateToExpand, String pStack, String pBreadCrumbs, int pIncrementer) throws KnowledgeBaseException, IOException, ConfigurationException {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 		
@@ -199,7 +199,7 @@ public class FixedDurationBestMoveBlockLearningThread extends StatefulFixedDurat
 			sLogger.debug("StackTrace: " + lSW);
 			mTransactionSuccessful = false;
 			sLogger.debug("Exhaustive Search was not successful");
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			throw new KnowledgeBaseException();
@@ -248,7 +248,7 @@ public class FixedDurationBestMoveBlockLearningThread extends StatefulFixedDurat
 			if (!mStartingIndex.startsWith(lBoardStateToExpandFileIndex)) {
 				mTransactionSuccessful = false;
 				sLogger.error("Exhaustive Search was not successful");
-				if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
 				throw new KnowledgeBaseException();
@@ -264,7 +264,7 @@ public class FixedDurationBestMoveBlockLearningThread extends StatefulFixedDurat
 			if (!lSuccess) {
 				mTransactionSuccessful = false;
 				sLogger.debug("Exhaustive Search was not successful");
-				if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
 				throw new KnowledgeBaseException();
@@ -274,7 +274,7 @@ public class FixedDurationBestMoveBlockLearningThread extends StatefulFixedDurat
 			
 			if (lEvaluatedAlready && pBoardStateToExpand.getFileIndexString().length() >= (mEndingDepth - KnowledgeBaseFilePool.getMasterInstance().getActionsPerFile() - 1)) {
 				sLogger.debug("The index is evaluated already: " + pBoardStateToExpand.getFileIndexString());
-				if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
 				return;
@@ -288,7 +288,7 @@ public class FixedDurationBestMoveBlockLearningThread extends StatefulFixedDurat
 			if (lSubBoardStates == null || lSubBoardStates.isEmpty()) {
 				mTransactionSuccessful = false;
 				sLogger.debug("Exhaustive Search was not successful");
-				if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
 				throw new KnowledgeBaseException();
@@ -307,7 +307,7 @@ public class FixedDurationBestMoveBlockLearningThread extends StatefulFixedDurat
 				if (!lSuccess) {
 					mTransactionSuccessful = false;
 					sLogger.error("Exhaustive Search was not successful");
-					if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+					if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 						sLogger.trace("Exiting");
 					}
 					throw new KnowledgeBaseException();
@@ -406,7 +406,7 @@ public class FixedDurationBestMoveBlockLearningThread extends StatefulFixedDurat
 					sLogger.debug("StackTrace: " + lSW);
 					mTransactionSuccessful = false;
 					sLogger.debug("Exhaustive Search was not successful");
-					if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+					if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 						sLogger.trace("Exiting");
 					}
 					throw new KnowledgeBaseException();
@@ -431,7 +431,7 @@ public class FixedDurationBestMoveBlockLearningThread extends StatefulFixedDurat
 					sLogger.debug("StackTrace: " + lSW);
 					mTransactionSuccessful = false;
 					sLogger.debug("Exhaustive Search was not successful");
-					if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+					if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 						sLogger.trace("Exiting");
 					}
 					throw new KnowledgeBaseException();
@@ -443,7 +443,7 @@ public class FixedDurationBestMoveBlockLearningThread extends StatefulFixedDurat
 			
 			
 
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			return;
@@ -482,7 +482,7 @@ public class FixedDurationBestMoveBlockLearningThread extends StatefulFixedDurat
 		
 		if (lEvaluatedAlready && pBoardStateToExpand.getFileIndexString().length() >= (mEndingDepth - KnowledgeBaseFilePool.getMasterInstance().getActionsPerFile() - 1)) {
 			sLogger.error("The index is evaluated already: " + pBoardStateToExpand.getFileIndexString());
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			return;
@@ -506,7 +506,7 @@ public class FixedDurationBestMoveBlockLearningThread extends StatefulFixedDurat
 				/*
 				if(lSubBoardState.getMoveScore().getMoveScore() == 100) {
 					sLogger.debug("A winning move detected in odd : " + pBoardStateToExpand.getFileIndexString());
-					if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+					if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 						sLogger.trace("Exiting");
 					}
 					return;
@@ -535,7 +535,7 @@ public class FixedDurationBestMoveBlockLearningThread extends StatefulFixedDurat
 					/*
 					if(lSubBoardState.getMoveScore().getMoveScore() == -100) {
 						sLogger.debug("A winning move detected in even : " + pBoardStateToExpand.getFileIndexString());
-						if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+						if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 							sLogger.trace("Exiting");
 						}
 						return;
@@ -619,7 +619,7 @@ public class FixedDurationBestMoveBlockLearningThread extends StatefulFixedDurat
 						sLogger.debug("StackTrace: " + lSW);
 						mTransactionSuccessful = false;
 						sLogger.debug("Exhaustive Search was not successful");
-						if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+						if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 							sLogger.trace("Exiting");
 						}
 						throw new KnowledgeBaseException();
@@ -644,7 +644,7 @@ public class FixedDurationBestMoveBlockLearningThread extends StatefulFixedDurat
 						sLogger.debug("StackTrace: " + lSW);
 						mTransactionSuccessful = false;
 						sLogger.debug("Exhaustive Search was not successful");
-						if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+						if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 							sLogger.trace("Exiting");
 						}
 						throw new KnowledgeBaseException();

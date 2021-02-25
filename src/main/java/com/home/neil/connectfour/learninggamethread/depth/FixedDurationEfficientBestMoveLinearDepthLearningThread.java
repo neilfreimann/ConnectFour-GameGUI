@@ -50,7 +50,7 @@ public class FixedDurationEfficientBestMoveLinearDepthLearningThread extends Sta
 	private static FixedDurationEfficientBestMoveLinearDepthLearningThread sInstance = null;
 
 	public synchronized void renameThread(String pLogContext) {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 		sThreadNumber++;
@@ -66,7 +66,7 @@ public class FixedDurationEfficientBestMoveLinearDepthLearningThread extends Sta
 			ThreadContext.put("LogContext", mLogContext);
 		}
 
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 	}
@@ -74,7 +74,7 @@ public class FixedDurationEfficientBestMoveLinearDepthLearningThread extends Sta
 	public static synchronized FixedDurationEfficientBestMoveLinearDepthLearningThread getInstance(
 			KnowledgeBaseFilePool pKnowledgeBaseFilePool, long pDurationToRunInMs, String pLogContext)
 			throws ConfigurationException, IOException {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 
@@ -88,7 +88,7 @@ public class FixedDurationEfficientBestMoveLinearDepthLearningThread extends Sta
 					sInstance.getBeanName());
 		}
 
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 		return sInstance;
@@ -99,16 +99,16 @@ public class FixedDurationEfficientBestMoveLinearDepthLearningThread extends Sta
 			throws ConfigurationException, FileNotFoundException, IOException {
 		super(pKnowledgeBaseFilePool, pDurationToRunInMs, FILENAME_FIXED_DURATION_LINEAR_WIDTH, pLogContext);
 		mBeanName = MBEAN_NAME;
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 	}
 
 	public void runLearningThread() {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 
@@ -146,7 +146,7 @@ public class FixedDurationEfficientBestMoveLinearDepthLearningThread extends Sta
 				lSW.toString(); // stack trace as a string
 				sLogger.debug("StackTrace: " + lSW);
 
-				if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
 				mTransactionSuccessful = false;
@@ -166,14 +166,14 @@ public class FixedDurationEfficientBestMoveLinearDepthLearningThread extends Sta
 		sLogger.debug("Timer Exhausted");
 		mTransactionSuccessful = true;
 
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 	}
 
 	private void performExhaustiveSearch(BoardState pBoardStateToExpand, String pStack, String pBreadCrumbs, int pLayersToRead)
 			throws KnowledgeBaseException {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 
@@ -192,7 +192,7 @@ public class FixedDurationEfficientBestMoveLinearDepthLearningThread extends Sta
 			sLogger.debug("StackTrace: " + lSW);
 			mTransactionSuccessful = false;
 			sLogger.debug("Exhaustive Search was not successful");
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			throw new KnowledgeBaseException();
@@ -241,7 +241,7 @@ public class FixedDurationEfficientBestMoveLinearDepthLearningThread extends Sta
 			if (!mStartingIndex.startsWith(lBoardStateToExpandFileIndex)) {
 				mTransactionSuccessful = false;
 				sLogger.error("Exhaustive Search was not successful");
-				if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
 				throw new KnowledgeBaseException();
@@ -320,7 +320,7 @@ public class FixedDurationEfficientBestMoveLinearDepthLearningThread extends Sta
 							String lLastMoveEvaluated = pBoardStateToExpand.getFileIndexString() + "|" + pStack;
 							writeLastMoveEvaluated(lLastMoveEvaluated);
 							
-							if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+							if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 								sLogger.trace("Exiting");
 							}
 							
@@ -367,7 +367,7 @@ public class FixedDurationEfficientBestMoveLinearDepthLearningThread extends Sta
 						} else {
 							sLogger.debug("Timer has expired!");
 
-							if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+							if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 								sLogger.trace("Exiting");
 							}
 							return;
@@ -383,7 +383,7 @@ public class FixedDurationEfficientBestMoveLinearDepthLearningThread extends Sta
 			}
 
 			
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			return;
@@ -453,7 +453,7 @@ public class FixedDurationEfficientBestMoveLinearDepthLearningThread extends Sta
 					writeLastMoveEvaluated(lLastMoveEvaluated);
 					
 					sLogger.debug("Recursive Call End: " + lSubBoardState.getFileIndexString());
-					if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+					if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 						sLogger.trace("Exiting");
 					}
 					return;
@@ -496,7 +496,7 @@ public class FixedDurationEfficientBestMoveLinearDepthLearningThread extends Sta
 				} else {
 					sLogger.debug("Timer has expired!");
 					
-					if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+					if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 						sLogger.trace("Exiting");
 					}
 					return;
@@ -515,14 +515,14 @@ public class FixedDurationEfficientBestMoveLinearDepthLearningThread extends Sta
 		}
 
 
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 	}
 
 	public ArrayList<BoardState> expandBoardStates(BoardState pBoardStateToExpand, int pLayers, boolean pCheckBreadCrumbs) throws KnowledgeBaseException {
 
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 		
@@ -548,7 +548,7 @@ public class FixedDurationEfficientBestMoveLinearDepthLearningThread extends Sta
 			sLogger.debug("StackTrace: " + lSW);
 			mTransactionSuccessful = false;
 			sLogger.debug("Exhaustive Search was not successful");
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			throw new KnowledgeBaseException();
@@ -562,7 +562,7 @@ public class FixedDurationEfficientBestMoveLinearDepthLearningThread extends Sta
 		if (!lSuccess) {
 			mTransactionSuccessful = false;
 			sLogger.debug("Exhaustive Search was not successful");
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			throw new KnowledgeBaseException();
@@ -573,7 +573,7 @@ public class FixedDurationEfficientBestMoveLinearDepthLearningThread extends Sta
 
 		if (lEvaluatedAlready) {
 			sLogger.error("The index is evaluated already: " + pBoardStateToExpand.getFileIndexString());
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			return null;
@@ -584,7 +584,7 @@ public class FixedDurationEfficientBestMoveLinearDepthLearningThread extends Sta
 		if (pCheckBreadCrumbs && (lSubBoardStates == null || lSubBoardStates.isEmpty())) {
 			mTransactionSuccessful = false;
 			sLogger.debug("Exhaustive Search was not successful");
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			throw new KnowledgeBaseException();
@@ -681,7 +681,7 @@ public class FixedDurationEfficientBestMoveLinearDepthLearningThread extends Sta
 	
 	public void markSubBoardsComplete(BoardState pBoardStateToMark, int pLayers) throws KnowledgeBaseException {
 
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 		
@@ -701,7 +701,7 @@ public class FixedDurationEfficientBestMoveLinearDepthLearningThread extends Sta
 		if (!lSuccess) {
 			mTransactionSuccessful = false;
 			sLogger.debug("Exhaustive Search was not successful");
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			throw new KnowledgeBaseException();
@@ -733,7 +733,7 @@ public class FixedDurationEfficientBestMoveLinearDepthLearningThread extends Sta
 					sLogger.debug("StackTrace: " + lSW);
 					mTransactionSuccessful = false;
 					sLogger.debug("Exhaustive Search was not successful");
-					if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+					if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 						sLogger.trace("Exiting");
 					}
 					throw new KnowledgeBaseException();

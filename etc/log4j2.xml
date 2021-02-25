@@ -3,7 +3,7 @@
 	<Appenders>
 
 		<RollingFile name="KBRollingLogFile" 
-				fileName="C:/Users/Neil and Mia/workspace/ConnectFour/logs/KBPackage.log"
+				fileName="C:/Personal/Dev/Connect4/KnowledgeBase/logs/KBPackage.log"
 				filePattern="logs/$${date:yyyy-MM}/KBPackage-%d{yyyy-MM-dd-HH}-%i.log">
     		<PatternLayout>
         		<Pattern>[%d{ISO8601}] %p [%t] (%F:%L) %m%n</Pattern>
@@ -15,7 +15,7 @@
    		</RollingFile>
 
 		<RollingFile name="ManagersRollingLogFile" 
-				fileName="C:/Users/Neil and Mia/workspace/ConnectFour/logs/ManagersPackage.log"
+				fileName="C:/Personal/Dev/Connect4/KnowledgeBase/logs/ManagersPackage.log"
 				filePattern="logs/$${date:yyyy-MM}/ManagersPackage-%d{yyyy-MM-dd-HH}-%i.log">
     		<PatternLayout>
         		<Pattern>[%d{ISO8601}] %p [%t] (%F:%L) %m%n</Pattern>
@@ -27,7 +27,7 @@
    		</RollingFile>
 
 		<RollingFile name="BoardStateThreadsRollingLogFile" 
-				fileName="C:/Users/Neil and Mia/workspace/ConnectFour/logs/BoardStateThreadsPackage.log"
+				fileName="C:/Personal/Dev/Connect4/KnowledgeBase/logs/BoardStateThreadsPackage.log"
 				filePattern="logs/$${date:yyyy-MM}/BoardStateThreadsPackage-%d{yyyy-MM-dd-HH}-%i.log">
     		<PatternLayout>
         		<Pattern>[%d{ISO8601}] %p [%t] (%F:%L) %m%n</Pattern>
@@ -39,7 +39,7 @@
    		</RollingFile>
 
 		<RollingFile name="BoardStateLocksRollingLogFile" 
-				fileName="C:/Users/Neil and Mia/workspace/ConnectFour/logs/BoardStateLocksPackage.log"
+				fileName="C:/Personal/Dev/Connect4/KnowledgeBase/logs/BoardStateLocksPackage.log"
 				filePattern="logs/$${date:yyyy-MM}/BoardStateLocksPackage-%d{yyyy-MM-dd-HH}-%i.log">
     		<PatternLayout>
         		<Pattern>[%d{ISO8601}] %p [%t] (%F:%L) %m%n</Pattern>
@@ -51,7 +51,7 @@
    		</RollingFile>
 
 		<RollingFile name="BoardStateRollingLogFile" 
-				fileName="C:/Users/Neil and Mia/workspace/ConnectFour/logs/BoardStatePackage.log"
+				fileName="C:/Personal/Dev/Connect4/KnowledgeBase/logs/BoardStatePackage.log"
 				filePattern="logs/$${date:yyyy-MM}/BoardStatePackage-%d{yyyy-MM-dd-HH}-%i.log">
     		<PatternLayout>
         		<Pattern>[%d{ISO8601}] %p [%t] (%F:%L) %m%n</Pattern>
@@ -63,7 +63,7 @@
    		</RollingFile>
 
 		<RollingFile name="LearningGameThreadsRollingLogFile" 
-				fileName="C:/Users/Neil and Mia/workspace/ConnectFour/logs/LearningGameThreadsPackage.log"
+				fileName="C:/Personal/Dev/Connect4/KnowledgeBase/logs/LearningGameThreadsPackage.log"
 				filePattern="logs/$${date:yyyy-MM}/LearningGameThreadsPackage-%d{yyyy-MM-dd-HH}-%i.log">
     		<PatternLayout>
         		<Pattern>[%d{ISO8601}] %p [%t] (%F:%L) %m%n</Pattern>
@@ -79,7 +79,7 @@
 			<Routes pattern="$${ctx:LogContext}">             
  				<Route key="$${ctx:LogContext}">
 					<RollingFile name="Connect4RollingLogFile-Unknown" 
-							fileName="C:/Users/Neil and Mia/workspace/ConnectFour/logs/Connect4-Unknown.log" 
+							fileName="C:/Personal/Dev/Connect4/KnowledgeBase/logs/Connect4-Unknown.log" 
 							filePattern="logs/$${date:yyyy-MM}/Connect4-Unknown-%d{yyyy-MM-dd-HH}-%i.log">
 			    		<PatternLayout>
 			        		<Pattern>[%d{ISO8601}] %p [%t] (%F:%L) %m%n</Pattern>
@@ -92,7 +92,7 @@
 				</Route>
  				<Route>
 					<RollingFile name="Connect4RollingLogFile-${ctx:LogContext}" 
-							fileName="C:/Users/Neil and Mia/workspace/ConnectFour/logs/Connect4-${ctx:LogContext}.log" 
+							fileName="C:/Personal/Dev/Connect4/KnowledgeBase/logs/Connect4-${ctx:LogContext}.log" 
 							filePattern="logs/$${date:yyyy-MM}/Connect4-${ctx:LogContext}-%d{yyyy-MM-dd-HH}-%i.log">
 			    		<PatternLayout>
 							<!-- <Pattern>[%d{ISO8601}] %p [%t]:[CONNECT4] at %C.%M(%F:%L):[%X{ClientSessionID}] %m%n</Pattern> -->
@@ -149,7 +149,7 @@
     	</logger>
 
     	
-    	<logger name="com.home.neil.ConnectFour" level="info">
+    	<logger name="com.home.neil" level="info">
         	<AppenderRef ref="Console"/> 
         	<AppenderRef ref="Connect4Routing"/>
     	</logger>

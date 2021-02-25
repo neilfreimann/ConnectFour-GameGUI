@@ -47,10 +47,10 @@ public class ExpansionTask {
 	private long mThreadEndTime = 0;
 
 	public String getName() {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 		return mLogContext;
@@ -61,7 +61,7 @@ public class ExpansionTask {
 	}
 
 	public void renameTask(String pLogContext) {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 		incTaskNumber();
@@ -74,14 +74,14 @@ public class ExpansionTask {
 			ThreadContext.put("LogContext", mLogContext);
 		}
 
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 	}
 
 	public ExpansionTask(BoardState pInitialBoardStateToExpand, String pLogContext) {
 		super();
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 
@@ -89,34 +89,34 @@ public class ExpansionTask {
 
 		mInitialBoardStateToExpand = pInitialBoardStateToExpand;
 
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 	}
 
 
 	public ArrayList<BoardState> getSubBoardStates() {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 		return mSubBoardStates;
 	}
 
 	public void setBoardStateLock(BoardState pBoardState) {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 		mBoardStateLock = pBoardState;
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 	}
 
 	public boolean executeTask() {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 
@@ -175,7 +175,7 @@ public class ExpansionTask {
 		}
 	
 			
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 		
@@ -183,7 +183,7 @@ public class ExpansionTask {
 	}
 
 	private void expandAndRescoreNode() {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 
@@ -207,7 +207,7 @@ public class ExpansionTask {
 			if (!lStateReserved) {
 				sLogger.error("COULD NOT GET THE BOARDSTATE RESERVED!");
 				mTransactionSuccessful = false;
-				if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
 				return;
@@ -230,7 +230,7 @@ public class ExpansionTask {
 				sLogger.error("StackTrace: " + lSW);
 	
 				mTransactionSuccessful = false;
-				if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
 				return;
@@ -244,7 +244,7 @@ public class ExpansionTask {
 				sLogger.error("StackTrace: " + lSW);
 	
 				mTransactionSuccessful = false;
-				if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
 				return;
@@ -276,7 +276,7 @@ public class ExpansionTask {
 					sLogger.error("StackTrace: " + lSW);
 	
 					mTransactionSuccessful = false;
-					if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+					if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 						sLogger.trace("Exiting");
 					}
 					return;
@@ -290,7 +290,7 @@ public class ExpansionTask {
 					sLogger.error("StackTrace: " + lSW);
 	
 					mTransactionSuccessful = false;
-					if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+					if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 						sLogger.trace("Exiting");
 					}
 					return;
@@ -304,7 +304,7 @@ public class ExpansionTask {
 					sLogger.error("StackTrace: " + lSW);
 	
 					mTransactionSuccessful = false;
-					if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+					if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 						sLogger.trace("Exiting");
 					}
 					return;
@@ -338,7 +338,7 @@ public class ExpansionTask {
 						sLogger.error("StackTrace: " + lSW);
 	
 						mTransactionSuccessful = false;
-						if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+						if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 							sLogger.trace("Exiting");
 						}
 						return;
@@ -352,7 +352,7 @@ public class ExpansionTask {
 						sLogger.error("StackTrace: " + lSW);
 	
 						mTransactionSuccessful = false;
-						if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+						if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 							sLogger.trace("Exiting");
 						}
 						return;
@@ -366,7 +366,7 @@ public class ExpansionTask {
 						sLogger.error("StackTrace: " + lSW);
 	
 						mTransactionSuccessful = false;
-						if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+						if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 							sLogger.trace("Exiting");
 						}
 						return;
@@ -424,13 +424,13 @@ public class ExpansionTask {
 		
 		mTransactionSuccessful = true;
 
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 	}
 
 	protected boolean reserveBoardState(BoardState pBoardStateToLock) {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 
@@ -459,7 +459,7 @@ public class ExpansionTask {
 
 		if (mBoardStateLock == null) {
 			sLogger.error("COULD NOT GET THE BOARDSTATE RESERVED!");
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			mBoardStateLock = null;
@@ -468,14 +468,14 @@ public class ExpansionTask {
 
 		mBoardStateLock = null;
 
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 		return true;
 	}
 
 	protected void releaseBoardState(BoardState pBoardStateToUnlock) {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 
@@ -483,13 +483,13 @@ public class ExpansionTask {
 
 		lBoardStateLocks.releaseBoardState(pBoardStateToUnlock);
 
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 	}
 
 	public byte rescoreNode(BoardState pBoardState, ArrayList<BoardState> pSubBoardStates) {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 
@@ -527,7 +527,7 @@ public class ExpansionTask {
 		if (sLogger.isDebugEnabled()) {
 			sLogger.debug("CurrentNode: Move: " + pBoardState.getFileIndexString() + " Score: " + pSubBoardStates.get(0).getMoveScore().getMoveScore());
 		}
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
 
@@ -535,7 +535,7 @@ public class ExpansionTask {
 	}
 
 	public ArrayList<BoardState> expandSubBoardStates(BoardState pNodeToExpand) throws KnowledgeBaseException, ConfigurationException {
-		if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 
@@ -616,7 +616,7 @@ public class ExpansionTask {
 				}
 			}
 
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			return lSubBoardState;
@@ -681,7 +681,7 @@ public class ExpansionTask {
 				}
 			}
 
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			return lSubBoardState;
@@ -689,7 +689,7 @@ public class ExpansionTask {
 		} else {
 			sLogger.error("Could not get an optimized move!");
 
-			if (ApplicationPrecompilerSettings.TRACELOGACTIVE) {
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
 			return null;
