@@ -1,4 +1,4 @@
-package com.home.neil.connectfour.boardstate;
+package com.home.neil.connectfour.boardstate.old;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -7,21 +7,24 @@ import java.util.HashMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class WinningCombination extends BoardAttribute {
-	public static final String CLASS_NAME = WinningCombination.class.getName();
+import com.home.neil.connectfour.boardstate.ConnectFourBoardAttribute;
+import com.home.neil.connectfour.boardstate.Position;
+
+public class OldWinningCombination extends ConnectFourBoardAttribute {
+	public static final String CLASS_NAME = OldWinningCombination.class.getName();
 	public static final String PACKAGE_NAME = CLASS_NAME.substring(0, CLASS_NAME.lastIndexOf("."));
 	public static final Logger sLogger = LogManager.getLogger(PACKAGE_NAME);
 
-	private Player mPlayer = Player.SELF;
-	private Direction mDirection = Direction.DIAGONAL;
+	private OldPlayer mPlayer = OldPlayer.SELF;
+	private OldDirection mDirection = OldDirection.DIAGONAL;
 	private Position mStartingPosition = null;
 	private ArrayList<MovePosition> mMovePositions = new ArrayList<>();
 
 	private String mWinningCombinationString;
 
-	private static HashMap<String, WinningCombination> sAllWinningCombinations = new HashMap<>();
-	private static HashMap<String, WinningCombination> sSelfWinningCombinations = new HashMap<>();
-	private static HashMap<String, WinningCombination> sOpponentWinningCombinations = new HashMap<>();
+	private static HashMap<String, OldWinningCombination> sAllWinningCombinations = new HashMap<>();
+	private static HashMap<String, OldWinningCombination> sSelfWinningCombinations = new HashMap<>();
+	private static HashMap<String, OldWinningCombination> sOpponentWinningCombinations = new HashMap<>();
 	
 	public static void init () {
 		
@@ -31,12 +34,12 @@ public class WinningCombination extends BoardAttribute {
 
 		for (int i = 0; i < sConnectFourBoardConfig.getNumberOfColumns(); i++) {
 			for (int j = 0; j <= (sConnectFourBoardConfig.getNumberOfRows() - sConnectFourBoardConfig.getWinningCombinationLength()); j++) {
-				WinningCombination lSelfWinningCombination = new WinningCombination(Player.SELF, Direction.VERTICAL, Position.getPosition(i, j));
+				OldWinningCombination lSelfWinningCombination = new OldWinningCombination(OldPlayer.SELF, OldDirection.VERTICAL, Position.getPosition(i, j));
 				sAllWinningCombinations.put(lSelfWinningCombination.mWinningCombinationString, lSelfWinningCombination);
 				sSelfWinningCombinations.put(lSelfWinningCombination.mWinningCombinationString, lSelfWinningCombination);
 				sLogger.info("Winning Combination Loaded: {}", lSelfWinningCombination.mWinningCombinationString);
 
-				WinningCombination lOpponentWinningCombination = new WinningCombination(Player.OPPONENT, Direction.VERTICAL, Position.getPosition(i, j));
+				OldWinningCombination lOpponentWinningCombination = new OldWinningCombination(OldPlayer.OPPONENT, OldDirection.VERTICAL, Position.getPosition(i, j));
 				sAllWinningCombinations.put(lOpponentWinningCombination.mWinningCombinationString, lOpponentWinningCombination);
 				sOpponentWinningCombinations.put(lOpponentWinningCombination.mWinningCombinationString, lOpponentWinningCombination);
 				sLogger.info("Winning Combination Loaded: {}", lOpponentWinningCombination.mWinningCombinationString);
@@ -45,12 +48,12 @@ public class WinningCombination extends BoardAttribute {
 
 		for (int i = 0; i <= (sConnectFourBoardConfig.getNumberOfColumns() - sConnectFourBoardConfig.getWinningCombinationLength()); i++) {
 			for (int j = 0; j < sConnectFourBoardConfig.getNumberOfRows(); j++) {
-				WinningCombination lSelfWinningCombination = new WinningCombination(Player.SELF, Direction.HORIZONTAL, Position.getPosition(i, j));
+				OldWinningCombination lSelfWinningCombination = new OldWinningCombination(OldPlayer.SELF, OldDirection.HORIZONTAL, Position.getPosition(i, j));
 				sAllWinningCombinations.put(lSelfWinningCombination.mWinningCombinationString, lSelfWinningCombination);
 				sSelfWinningCombinations.put(lSelfWinningCombination.mWinningCombinationString, lSelfWinningCombination);
 				sLogger.info("Winning Combination Loaded: {}", lSelfWinningCombination.mWinningCombinationString);
 
-				WinningCombination lOpponentWinningCombination = new WinningCombination(Player.OPPONENT, Direction.HORIZONTAL, Position.getPosition(i, j));
+				OldWinningCombination lOpponentWinningCombination = new OldWinningCombination(OldPlayer.OPPONENT, OldDirection.HORIZONTAL, Position.getPosition(i, j));
 				sAllWinningCombinations.put(lOpponentWinningCombination.mWinningCombinationString, lOpponentWinningCombination);
 				sOpponentWinningCombinations.put(lOpponentWinningCombination.mWinningCombinationString, lOpponentWinningCombination);
 				sLogger.info("Winning Combination Loaded: {}", lOpponentWinningCombination.mWinningCombinationString);
@@ -59,12 +62,12 @@ public class WinningCombination extends BoardAttribute {
 
 		for (int i = 0; i <= (sConnectFourBoardConfig.getNumberOfColumns() - sConnectFourBoardConfig.getWinningCombinationLength()); i++) {
 			for (int j = 0; j <= (sConnectFourBoardConfig.getNumberOfRows() - sConnectFourBoardConfig.getWinningCombinationLength()); j++) {
-				WinningCombination lSelfWinningCombination = new WinningCombination(Player.SELF, Direction.DIAGONAL, Position.getPosition(i, j));
+				OldWinningCombination lSelfWinningCombination = new OldWinningCombination(OldPlayer.SELF, OldDirection.DIAGONAL, Position.getPosition(i, j));
 				sAllWinningCombinations.put(lSelfWinningCombination.mWinningCombinationString, lSelfWinningCombination);
 				sSelfWinningCombinations.put(lSelfWinningCombination.mWinningCombinationString, lSelfWinningCombination);
 				sLogger.info("Winning Combination Loaded: {}", lSelfWinningCombination.mWinningCombinationString);
 
-				WinningCombination lOpponentWinningCombination = new WinningCombination(Player.OPPONENT, Direction.DIAGONAL, Position.getPosition(i, j));
+				OldWinningCombination lOpponentWinningCombination = new OldWinningCombination(OldPlayer.OPPONENT, OldDirection.DIAGONAL, Position.getPosition(i, j));
 				sAllWinningCombinations.put(lOpponentWinningCombination.mWinningCombinationString, lOpponentWinningCombination);
 				sOpponentWinningCombinations.put(lOpponentWinningCombination.mWinningCombinationString, lOpponentWinningCombination);
 				sLogger.info("Winning Combination Loaded: {}", lOpponentWinningCombination.mWinningCombinationString);
@@ -73,12 +76,12 @@ public class WinningCombination extends BoardAttribute {
 
 		for (int i = 0; i <= (sConnectFourBoardConfig.getNumberOfColumns() - sConnectFourBoardConfig.getWinningCombinationLength()); i++) {
 			for (int j = sConnectFourBoardConfig.getWinningCombinationLength() - 1; j < sConnectFourBoardConfig.getNumberOfRows(); j++) {
-				WinningCombination lSelfWinningCombination = new WinningCombination(Player.SELF, Direction.OPPOSITE, Position.getPosition(i, j));
+				OldWinningCombination lSelfWinningCombination = new OldWinningCombination(OldPlayer.SELF, OldDirection.OPPOSITE, Position.getPosition(i, j));
 				sAllWinningCombinations.put(lSelfWinningCombination.mWinningCombinationString, lSelfWinningCombination);
 				sSelfWinningCombinations.put(lSelfWinningCombination.mWinningCombinationString, lSelfWinningCombination);
 				sLogger.info("Winning Combination Loaded: {}", lSelfWinningCombination.mWinningCombinationString);
 
-				WinningCombination lOpponentWinningCombination = new WinningCombination(Player.OPPONENT, Direction.OPPOSITE, Position.getPosition(i, j));
+				OldWinningCombination lOpponentWinningCombination = new OldWinningCombination(OldPlayer.OPPONENT, OldDirection.OPPOSITE, Position.getPosition(i, j));
 				sAllWinningCombinations.put(lOpponentWinningCombination.mWinningCombinationString, lOpponentWinningCombination);
 				sOpponentWinningCombinations.put(lOpponentWinningCombination.mWinningCombinationString, lOpponentWinningCombination);
 				sLogger.info("Winning Combination Loaded: {}", lOpponentWinningCombination.mWinningCombinationString);
@@ -86,18 +89,18 @@ public class WinningCombination extends BoardAttribute {
 		}
 	}
 
-	private WinningCombination(Player pPlayer, Direction pDirection, Position pStartingPosition) {
+	private OldWinningCombination(OldPlayer pPlayer, OldDirection pDirection, Position pStartingPosition) {
 		mPlayer = pPlayer;
 		mDirection = pDirection;
 		mStartingPosition = pStartingPosition;
 		mWinningCombinationString = pPlayer.getPlayerString() + "_" + pDirection.getDirectionString() + "_" + pStartingPosition.getPositionString();
 	}
 
-	public Player getPlayer() {
+	public OldPlayer getPlayer() {
 		return mPlayer;
 	}
 
-	public Direction getDirection() {
+	public OldDirection getDirection() {
 		return mDirection;
 	}
 
@@ -105,26 +108,26 @@ public class WinningCombination extends BoardAttribute {
 		return mStartingPosition;
 	}
 
-	public static WinningCombination getWinningCombination(Player pPlayer, Direction pDirection, Position pPosition) {
+	public static OldWinningCombination getWinningCombination(OldPlayer pPlayer, OldDirection pDirection, Position pPosition) {
 		String lWinningCombinationString = pPlayer.getPlayerString() + "_" + pDirection.getDirectionString() + "_" + pPosition.getPositionString();
 		return sAllWinningCombinations.get(lWinningCombinationString);
 	}
 
-	public static Collection<WinningCombination> getAllWinningCombinations() {
+	public static Collection<OldWinningCombination> getAllWinningCombinations() {
 		return sAllWinningCombinations.values();
 	}
 
-	public static Collection<WinningCombination> getSelfWinningCombinations() {
+	public static Collection<OldWinningCombination> getSelfWinningCombinations() {
 		return sSelfWinningCombinations.values();
 	}
 
-	public static Collection<WinningCombination> getOpponentWinningCombinations() {
+	public static Collection<OldWinningCombination> getOpponentWinningCombinations() {
 		return sOpponentWinningCombinations.values();
 	}
 
 	public static void setWinningCombinationMovePositions() {
-		for (WinningCombination lWinningCombination : sAllWinningCombinations.values()) {
-			Direction lDirection = lWinningCombination.getDirection();
+		for (OldWinningCombination lWinningCombination : sAllWinningCombinations.values()) {
+			OldDirection lDirection = lWinningCombination.getDirection();
 
 			sLogger.info("==================================================================================================================================================");
 			
@@ -135,25 +138,25 @@ public class WinningCombination extends BoardAttribute {
 			lStartingMovePosition.addWinningCombination(lWinningCombination);
 
 			for (int o = 1; o < sConnectFourBoardConfig.getWinningCombinationLength(); o++) {
-				if (lDirection == Direction.HORIZONTAL) {
+				if (lDirection == OldDirection.HORIZONTAL) {
 					Position lNextPosition = Position.getPosition(lStartingPosition.getColumn() + o, lStartingPosition.getRow());
 					MovePosition lNextMovePosition = MovePosition.getMovePosition(lWinningCombination.getPlayer(), lNextPosition);
 					lWinningCombination.mMovePositions.add(lNextMovePosition);
 					sLogger.info("Winning Combination  {} MovePosition Loaded: {}", lWinningCombination.mWinningCombinationString, lNextMovePosition.getMovePositionString());
 					lNextMovePosition.addWinningCombination(lWinningCombination);
-				} else if (lDirection == Direction.VERTICAL) {
+				} else if (lDirection == OldDirection.VERTICAL) {
 					Position lNextPosition = Position.getPosition(lStartingPosition.getColumn(), lStartingPosition.getRow() + o);
 					MovePosition lNextMovePosition = MovePosition.getMovePosition(lWinningCombination.getPlayer(), lNextPosition);
 					lWinningCombination.mMovePositions.add(lNextMovePosition);
 					sLogger.info("Winning Combination  {} MovePosition Loaded: {}", lWinningCombination.mWinningCombinationString, lNextMovePosition.getMovePositionString());
 					lNextMovePosition.addWinningCombination(lWinningCombination);
-				} else if (lDirection == Direction.DIAGONAL) {
+				} else if (lDirection == OldDirection.DIAGONAL) {
 					Position lNextPosition = Position.getPosition(lStartingPosition.getColumn() + o, lStartingPosition.getRow() + o);
 					MovePosition lNextMovePosition = MovePosition.getMovePosition(lWinningCombination.getPlayer(), lNextPosition);
 					lWinningCombination.mMovePositions.add(lNextMovePosition);
 					sLogger.info("Winning Combination  {} MovePosition Loaded: {}", lWinningCombination.mWinningCombinationString, lNextMovePosition.getMovePositionString());
 					lNextMovePosition.addWinningCombination(lWinningCombination);
-				} else if (lDirection == Direction.OPPOSITE) {
+				} else if (lDirection == OldDirection.OPPOSITE) {
 					Position lNextPosition = Position.getPosition(lStartingPosition.getColumn() + o, lStartingPosition.getRow() - o);
 					MovePosition lNextMovePosition = MovePosition.getMovePosition(lWinningCombination.getPlayer(), lNextPosition);
 					lWinningCombination.mMovePositions.add(lNextMovePosition);

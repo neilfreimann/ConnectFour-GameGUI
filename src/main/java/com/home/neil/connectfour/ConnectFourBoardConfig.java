@@ -1,8 +1,9 @@
-package com.home.neil.connectfour.knowledgebase.operations;
+package com.home.neil.connectfour;
 
 import com.home.neil.appconfig.DefaultConfigValue;
+import com.home.neil.game.GameDefinitionConfig;
 
-public interface ConnectFourBoardConfig {
+public interface ConnectFourBoardConfig extends GameDefinitionConfig {
 	@DefaultConfigValue (value = "6")
 	public int getNumberOfRows ();
 	

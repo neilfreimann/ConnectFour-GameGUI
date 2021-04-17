@@ -3,6 +3,9 @@ package com.home.neil.connectfour.boardstate.junit;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.util.BitSet;
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.AfterAll;
@@ -11,8 +14,19 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.home.neil.connectfour.boardstate.MovePosition;
+import com.home.neil.connectfour.boardstate.BoardState;
+import com.home.neil.connectfour.boardstate.Direction;
+import com.home.neil.connectfour.boardstate.DirectionSet;
+import com.home.neil.connectfour.boardstate.Move;
+import com.home.neil.connectfour.boardstate.MoveSet;
+import com.home.neil.connectfour.boardstate.OccupancyPosition;
+import com.home.neil.connectfour.boardstate.OccupancyPositionSet;
+import com.home.neil.connectfour.boardstate.Player;
+import com.home.neil.connectfour.boardstate.PlayerSet;
+import com.home.neil.connectfour.boardstate.Position;
+import com.home.neil.connectfour.boardstate.PositionSet;
 import com.home.neil.connectfour.boardstate.WinningCombination;
+import com.home.neil.connectfour.boardstate.WinningCombinationSet;
 import com.home.neil.junit.sandbox.SandboxTest;
 
 class BoardStateTest extends SandboxTest {
@@ -43,20 +57,82 @@ class BoardStateTest extends SandboxTest {
 	}
 
 	@Test
-	void testBoardStateInit() {
+	void testRowColumnInit() {
 		String lCurrentMethodName = new Object(){}.getClass().getEnclosingMethod().getName();
 
 		setTestPropertiesFileLocation(CLASS_NAME, lCurrentMethodName);
 		
-		WinningCombination.init();
-		MovePosition.init();
+		List <Position> lPositions = PositionSet.getPositions();
+	
+		assertNotNull(lPositions);
 		
-		WinningCombination.setWinningCombinationMovePositions();
+		assertFalse(lPositions.isEmpty());
 		
-		assertNotNull(WinningCombination.getAllWinningCombinations());
+		for (Position lPosition : lPositions) {
+			sLogger.info("Position Found : {{}} , {{}}", lPosition.getAttributeName(), lPosition.getAttributeBitSet().getBitSetString());
+			
+			Position lPositionSearch = PositionSet.getPosition(((BitSet)lPosition.getAttributeBitSet().getBitSet().clone()).get(0, lPosition.getAttributeBitSet().getMaxBitSetSize()));
+
+			sLogger.info("Position Lookup: {{}} , {{}}", lPositionSearch.getAttributeName(), lPositionSearch.getAttributeBitSet().getBitSetString());
+
+			assertNotNull(lPositionSearch);
+		}
 		
-		assertFalse(WinningCombination.getAllWinningCombinations().isEmpty());
+		List <Player> lPlayers = PlayerSet.getPlayers();
+		
+		assertNotNull(lPlayers);
+		
+		assertFalse(lPlayers.isEmpty());
+		
+		assertNotNull(PlayerSet.NULL_PLAYER);
+		
+		
+		List <Move> lMoves = MoveSet.getMoves();
+		
+		assertNotNull(lMoves);
+		
+		assertFalse(lMoves.isEmpty());
+		
+		List <OccupancyPosition> lOccupancyPositions = OccupancyPositionSet.getOccupancyPositions();
+		
+		assertNotNull(lOccupancyPositions);
+		
+		assertFalse(lOccupancyPositions.isEmpty());
+		
+		List <Direction> lDirections = DirectionSet.getDirections();
+		
+		assertNotNull(lDirections);
+		
+		assertFalse(lDirections.isEmpty());
+		
+		List <WinningCombination> lWinningCombinations = WinningCombinationSet.getWinningCombinations();
+		
+		assertNotNull(lWinningCombinations);
+		
+		assertFalse(lWinningCombinations.isEmpty());
+		
+
+		BoardState.init();
+
 	}
+	
+	
+	
+//	@Test
+//	void testBoardStateInit() {
+//		String lCurrentMethodName = new Object(){}.getClass().getEnclosingMethod().getName();
+//
+//		setTestPropertiesFileLocation(CLASS_NAME, lCurrentMethodName);
+//		
+//		WinningCombination.init();
+//		MovePosition.init();
+//		
+//		WinningCombination.setWinningCombinationMovePositions();
+//		
+//		assertNotNull(WinningCombination.getAllWinningCombinations());
+//		
+//		assertFalse(WinningCombination.getAllWinningCombinations().isEmpty());
+//	}
 
 	
 	

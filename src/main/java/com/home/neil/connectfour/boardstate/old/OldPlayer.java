@@ -1,12 +1,12 @@
-package com.home.neil.connectfour.boardstate;
+package com.home.neil.connectfour.boardstate.old;
 
 import java.util.BitSet;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class Player {
-	public static final String CLASS_NAME = Player.class.getName();
+public class OldPlayer {
+	public static final String CLASS_NAME = OldPlayer.class.getName();
 	public static final String PACKAGE_NAME = CLASS_NAME.substring(0, CLASS_NAME.lastIndexOf("."));
 	public static Logger sLogger = LogManager.getLogger(PACKAGE_NAME);
 	
@@ -15,17 +15,17 @@ public class Player {
 	
 	private String mPlayerString;
 	
-	private Player (boolean pIsNullPlayer, boolean pPlayerIsSelf, String pPlayerString) {
+	private OldPlayer (boolean pIsNullPlayer, boolean pPlayerIsSelf, String pPlayerString) {
 		mIsNullPlayer = pIsNullPlayer;
 		mPlayerIsSelf = pPlayerIsSelf;
 		mPlayerString = pPlayerString;
 	}
 	
-	public static final Player SELF = new Player (false, true, "S");
-	public static final Player OPPONENT = new Player (false, false, "O");
-	public static final Player NULLPLAYER = new Player (true, false, "N");
+	public static final OldPlayer SELF = new OldPlayer (false, true, "S");
+	public static final OldPlayer OPPONENT = new OldPlayer (false, false, "O");
+	public static final OldPlayer NULLPLAYER = new OldPlayer (true, false, "N");
 	
-	public Player getPlayer (boolean pIsNullPlayer, boolean pPlayerIsSelf) {
+	public OldPlayer getPlayer (boolean pIsNullPlayer, boolean pPlayerIsSelf) {
 		if (!pIsNullPlayer) {
 			if (pPlayerIsSelf) {
 				return SELF;

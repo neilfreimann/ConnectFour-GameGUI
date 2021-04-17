@@ -1,12 +1,12 @@
-package com.home.neil.connectfour.boardstate;
+package com.home.neil.connectfour.boardstate.old;
 
 import java.util.BitSet;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class Direction {
-	public static final String CLASS_NAME = Direction.class.getName();
+public class OldDirection {
+	public static final String CLASS_NAME = OldDirection.class.getName();
 	public static final String PACKAGE_NAME = CLASS_NAME.substring(0, CLASS_NAME.lastIndexOf("."));
 	public static Logger sLogger = LogManager.getLogger(PACKAGE_NAME);
 	
@@ -14,17 +14,17 @@ public class Direction {
 	
 	private String mDirectionString;
 
-	private Direction (boolean [] pDirection, String pDirectionString) {
+	private OldDirection (boolean [] pDirection, String pDirectionString) {
 		mDirection = pDirection;
 		mDirectionString = pDirectionString;
 	}
 	
-	public static final Direction VERTICAL = new Direction (new boolean [] {false, false}, "V");
-	public static final Direction HORIZONTAL = new Direction (new boolean [] {false, true}, "H");
-	public static final Direction DIAGONAL = new Direction (new boolean [] {true, false}, "D");
-	public static final Direction OPPOSITE = new Direction (new boolean [] {true, true}, "O");
+	public static final OldDirection VERTICAL = new OldDirection (new boolean [] {false, false}, "V");
+	public static final OldDirection HORIZONTAL = new OldDirection (new boolean [] {false, true}, "H");
+	public static final OldDirection DIAGONAL = new OldDirection (new boolean [] {true, false}, "D");
+	public static final OldDirection OPPOSITE = new OldDirection (new boolean [] {true, true}, "O");
 	
-	public Direction getDirection (boolean [] pDirection) {
+	public OldDirection getDirection (boolean [] pDirection) {
 		if (!pDirection [0] && !pDirection[1]) {
 			return VERTICAL;
 		} else if (!pDirection [0] && pDirection[1]) {

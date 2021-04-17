@@ -1,4 +1,4 @@
-package com.home.neil.connectfour.boardstate;
+package com.home.neil.connectfour.boardstate.old;
 
 import java.util.BitSet;
 import java.util.Collection;
@@ -7,8 +7,10 @@ import java.util.HashMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class Move extends BoardAttribute {
-	public static final String CLASS_NAME = Move.class.getName();
+import com.home.neil.connectfour.boardstate.ConnectFourBoardAttribute;
+
+public class OldMove extends ConnectFourBoardAttribute {
+	public static final String CLASS_NAME = OldMove.class.getName();
 	public static final String PACKAGE_NAME = CLASS_NAME.substring(0, CLASS_NAME.lastIndexOf("."));
 	public static final Logger sLogger = LogManager.getLogger(PACKAGE_NAME);
 	
@@ -16,15 +18,15 @@ public class Move extends BoardAttribute {
 
 	
 
-	private static HashMap <String, Move> sMoves = new HashMap <> ();
+	private static HashMap <String, OldMove> sMoves = new HashMap <> ();
 	
 	
-	private Player mPlayer = null;
+	private OldPlayer mPlayer = null;
 	private BitSet mColumnBooleanEncoding = null;
 	private int mColumn = 0;
 	private String mMoveString;
 
-	public static final Move NOMOVE = new Move (Player.NULLPLAYER, -1);
+	public static final OldMove NOMOVE = new OldMove (OldPlayer.NULLPLAYER, -1);
 	
 	static {
 		int lColumns = sConnectFourBoardConfig.getNumberOfColumns();
@@ -36,31 +38,31 @@ public class Move extends BoardAttribute {
 		sMoves.put(NOMOVE.getMoveString(), NOMOVE);
 		
 		for (int i = 0; i < sConnectFourBoardConfig.getNumberOfColumns(); i++) {
-				Move lSelfMove = new Move (Player.SELF, i);
+				OldMove lSelfMove = new OldMove (OldPlayer.SELF, i);
 				sMoves.put(lSelfMove.getMoveString(), lSelfMove);
-				Move lOpponentMove = new Move (Player.OPPONENT, i);
+				OldMove lOpponentMove = new OldMove (OldPlayer.OPPONENT, i);
 				sMoves.put(lOpponentMove.getMoveString(), lOpponentMove);
 		}
 
 		
 	}
 
-	public static Move getMove (Player pPlayer, int pColumn) {
+	public static OldMove getMove (OldPlayer pPlayer, int pColumn) {
 		String lMoveString = constructMoveString(pPlayer, pColumn);
 		return getMove (lMoveString);
 	}
 	
-	public static Move getMove (String pMoveString) {
+	public static OldMove getMove (String pMoveString) {
 		return sMoves.get(pMoveString);
 	}
 	
 	
-	public static String constructMoveString(Player pPlayer, int pColumn) {
+	public static String constructMoveString(OldPlayer pPlayer, int pColumn) {
 		return pPlayer.getPlayerString() + "_" + String.valueOf(pColumn);
 	}
 
 
-	private Move(Player pPlayer, int pColumn) {
+	private OldMove(OldPlayer pPlayer, int pColumn) {
 		mColumn = pColumn;
 		mPlayer = pPlayer;
 		
@@ -86,11 +88,11 @@ public class Move extends BoardAttribute {
 		return mMoveString;
 	}
 	
-	public static Collection <Move> getMoves () {
+	public static Collection <OldMove> getMoves () {
 		return sMoves.values();
 	}
 
-	public Player getPlayer() {
+	public OldPlayer getPlayer() {
 		return mPlayer;
 	}
 	
