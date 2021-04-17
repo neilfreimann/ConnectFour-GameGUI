@@ -1,4 +1,4 @@
-package com.home.neil.connectfour.boardstate.expansiontask;
+package com.home.neil.connectfour.boardstate.old.expansiontask;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -14,10 +14,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.ThreadContext;
 
-import com.home.neil.connectfour.boardstate.BoardState;
-import com.home.neil.connectfour.boardstate.BoardState.GameState;
-import com.home.neil.connectfour.boardstate.InvalidMoveException;
-import com.home.neil.connectfour.boardstate.locks.BoardStateLocks;
+import com.home.neil.connectfour.boardstate.old.InvalidMoveException;
+import com.home.neil.connectfour.boardstate.old.OldBoardState;
+import com.home.neil.connectfour.boardstate.old.OldBoardState.GameState;
+import com.home.neil.connectfour.boardstate.old.locks.BoardStateLocks;
 import com.home.neil.connectfour.knowledgebase.KnowledgeBaseFilePool;
 import com.home.neil.connectfour.knowledgebase.exception.KnowledgeBaseException;
 import com.home.neil.connectfour.managers.appmanager.ApplicationPrecompilerSettings;
@@ -31,11 +31,11 @@ public class ExpansionTask {
 	public static final String PACKAGE_NAME = CLASS_NAME.substring(0, CLASS_NAME.lastIndexOf("."));
 	public static Logger sLogger = LogManager.getLogger(PACKAGE_NAME);
 
-	private BoardState mInitialBoardStateToExpand = null;
+	private OldBoardState mInitialBoardStateToExpand = null;
 
-	private volatile BoardState mBoardStateLock= null;
+	private volatile OldBoardState mBoardStateLock= null;
 
-	private ArrayList<BoardState> mSubBoardStates = null;
+	private ArrayList<OldBoardState> mSubBoardStates = null;
 
 	private boolean mTransactionSuccessful = false;
 
@@ -79,7 +79,7 @@ public class ExpansionTask {
 		}
 	}
 
-	public ExpansionTask(BoardState pInitialBoardStateToExpand, String pLogContext) {
+	public ExpansionTask(OldBoardState pInitialBoardStateToExpand, String pLogContext) {
 		super();
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
@@ -95,7 +95,7 @@ public class ExpansionTask {
 	}
 
 
-	public ArrayList<BoardState> getSubBoardStates() {
+	public ArrayList<OldBoardState> getSubBoardStates() {
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
@@ -105,7 +105,7 @@ public class ExpansionTask {
 		return mSubBoardStates;
 	}
 
-	public void setBoardStateLock(BoardState pBoardState) {
+	public void setBoardStateLock(OldBoardState pBoardState) {
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
@@ -188,12 +188,12 @@ public class ExpansionTask {
 		}
 
 
-		BoardState lCurrentBoardState = mInitialBoardStateToExpand;
-		BoardState lParentBoardState = mInitialBoardStateToExpand.getParentBoardState();
-		BoardState lBoardStateToRescore = null;
+		OldBoardState lCurrentBoardState = mInitialBoardStateToExpand;
+		OldBoardState lParentBoardState = mInitialBoardStateToExpand.getParentBoardState();
+		OldBoardState lBoardStateToRescore = null;
 		boolean lRescore = false;
 		byte lRescoreValue = 0;
-		ArrayList <BoardState> lSubBoardStates = null;
+		ArrayList <OldBoardState> lSubBoardStates = null;
 		
 		sLogger.debug("Starting with the Current BoardState: " + mInitialBoardStateToExpand.getFileIndexString());
 				
@@ -235,7 +235,7 @@ public class ExpansionTask {
 				}
 				return;
 			} catch (ConfigurationException eCE) {
-				sLogger.error("CONFIGURATION EXCEPTION occurred!" + BoardState.Move.SELF_SLOT0.getMoveIntValue());
+				sLogger.error("CONFIGURATION EXCEPTION occurred!" + OldBoardState.Move.SELF_SLOT0.getMoveIntValue());
 	
 				StringWriter lSW = new StringWriter();
 				PrintWriter lPW = new PrintWriter(lSW);
@@ -429,7 +429,7 @@ public class ExpansionTask {
 		}
 	}
 
-	protected boolean reserveBoardState(BoardState pBoardStateToLock) {
+	protected boolean reserveBoardState(OldBoardState pBoardStateToLock) {
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
@@ -474,7 +474,7 @@ public class ExpansionTask {
 		return true;
 	}
 
-	protected void releaseBoardState(BoardState pBoardStateToUnlock) {
+	protected void releaseBoardState(OldBoardState pBoardStateToUnlock) {
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
@@ -488,7 +488,7 @@ public class ExpansionTask {
 		}
 	}
 
-	public byte rescoreNode(BoardState pBoardState, ArrayList<BoardState> pSubBoardStates) {
+	public byte rescoreNode(OldBoardState pBoardState, ArrayList<OldBoardState> pSubBoardStates) {
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
@@ -504,8 +504,8 @@ public class ExpansionTask {
 
 		if (lDepthModulus == 1) { // current move is opponent move, reorder sub
 									// moves by highest score
-			Collections.sort(pSubBoardStates, new Comparator<BoardState>() {
-				public int compare(BoardState p1, BoardState p2) {
+			Collections.sort(pSubBoardStates, new Comparator<OldBoardState>() {
+				public int compare(OldBoardState p1, OldBoardState p2) {
 					byte lP1MoveScore = p1.getMoveScore().getMoveScore();
 					byte lP2MoveScore = p2.getMoveScore().getMoveScore();
 					return (lP2MoveScore > lP1MoveScore) ? 1 : -1;
@@ -513,8 +513,8 @@ public class ExpansionTask {
 			});
 		} else { // current move is a self move, reorder sub moves by lowest
 					// score
-			Collections.sort(pSubBoardStates, new Comparator<BoardState>() {
-				public int compare(BoardState p1, BoardState p2) {
+			Collections.sort(pSubBoardStates, new Comparator<OldBoardState>() {
+				public int compare(OldBoardState p1, OldBoardState p2) {
 					byte lP1MoveScore = p1.getMoveScore().getMoveScore();
 					byte lP2MoveScore = p2.getMoveScore().getMoveScore();
 					return (lP2MoveScore < lP1MoveScore) ? 1 : -1;
@@ -534,85 +534,85 @@ public class ExpansionTask {
 		return lScore;
 	}
 
-	public ArrayList<BoardState> expandSubBoardStates(BoardState pNodeToExpand) throws KnowledgeBaseException, ConfigurationException {
+	public ArrayList<OldBoardState> expandSubBoardStates(OldBoardState pNodeToExpand) throws KnowledgeBaseException, ConfigurationException {
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 
 		GameState lGameState = pNodeToExpand.getGameState();
 
-		if (!lGameState.equals(BoardState.GameState.CONTINUE)) {
+		if (!lGameState.equals(OldBoardState.GameState.CONTINUE)) {
 			sLogger.debug("Invalid GameState.  Cannot Expand Move");
 			sLogger.trace("Exiting");
 			return null;
 		}
 
-		ArrayList<BoardState> lSubBoardState = new ArrayList<BoardState>();
+		ArrayList<OldBoardState> lSubBoardState = new ArrayList<OldBoardState>();
 
-		BoardState.Move lMove = pNodeToExpand.getMove();
+		OldBoardState.Move lMove = pNodeToExpand.getMove();
 		
 		KnowledgeBaseFilePool lKnowledgeBaseFilePool = pNodeToExpand.getKnowledgeBaseFilePool();
 
 		// Current Move was an opponent move
-		if (lMove == BoardState.Move.OPPONENT_NOMOVE || lMove == BoardState.Move.OPPONENT_SLOT0 || lMove == BoardState.Move.OPPONENT_SLOT1
-				|| lMove == BoardState.Move.OPPONENT_SLOT2 || lMove == BoardState.Move.OPPONENT_SLOT3 || lMove == BoardState.Move.OPPONENT_SLOT4
-				|| lMove == BoardState.Move.OPPONENT_SLOT5 || lMove == BoardState.Move.OPPONENT_SLOT6) {
+		if (lMove == OldBoardState.Move.OPPONENT_NOMOVE || lMove == OldBoardState.Move.OPPONENT_SLOT0 || lMove == OldBoardState.Move.OPPONENT_SLOT1
+				|| lMove == OldBoardState.Move.OPPONENT_SLOT2 || lMove == OldBoardState.Move.OPPONENT_SLOT3 || lMove == OldBoardState.Move.OPPONENT_SLOT4
+				|| lMove == OldBoardState.Move.OPPONENT_SLOT5 || lMove == OldBoardState.Move.OPPONENT_SLOT6) {
 			try {
-				BoardState lNewBoardState = new BoardState(lKnowledgeBaseFilePool, pNodeToExpand, BoardState.Move.SELF_SLOT0, true, mLogContext);
+				OldBoardState lNewBoardState = new OldBoardState(lKnowledgeBaseFilePool, pNodeToExpand, OldBoardState.Move.SELF_SLOT0, true, mLogContext);
 				lSubBoardState.add(lNewBoardState);
 			} catch (InvalidMoveException eE) {
 				if (sLogger.isDebugEnabled()) {
-					sLogger.debug("Invalid Evaluated Move: " + BoardState.Move.SELF_SLOT0.getMoveIntValue());
+					sLogger.debug("Invalid Evaluated Move: " + OldBoardState.Move.SELF_SLOT0.getMoveIntValue());
 				}
 			}
 			try {
-				BoardState lNewBoardState = new BoardState(lKnowledgeBaseFilePool, pNodeToExpand, BoardState.Move.SELF_SLOT1, true, mLogContext);
+				OldBoardState lNewBoardState = new OldBoardState(lKnowledgeBaseFilePool, pNodeToExpand, OldBoardState.Move.SELF_SLOT1, true, mLogContext);
 				lSubBoardState.add(lNewBoardState);
 			} catch (InvalidMoveException eE) {
 				if (sLogger.isDebugEnabled()) {
-					sLogger.debug("Invalid Evaluated Move: " + BoardState.Move.SELF_SLOT1.getMoveIntValue());
+					sLogger.debug("Invalid Evaluated Move: " + OldBoardState.Move.SELF_SLOT1.getMoveIntValue());
 				}
 			}
 			try {
-				BoardState lNewBoardState = new BoardState(lKnowledgeBaseFilePool, pNodeToExpand, BoardState.Move.SELF_SLOT2, true, mLogContext);
+				OldBoardState lNewBoardState = new OldBoardState(lKnowledgeBaseFilePool, pNodeToExpand, OldBoardState.Move.SELF_SLOT2, true, mLogContext);
 				lSubBoardState.add(lNewBoardState);
 			} catch (InvalidMoveException eE) {
 				if (sLogger.isDebugEnabled()) {
-					sLogger.debug("Invalid Evaluated Move: " + BoardState.Move.SELF_SLOT2.getMoveIntValue());
+					sLogger.debug("Invalid Evaluated Move: " + OldBoardState.Move.SELF_SLOT2.getMoveIntValue());
 				}
 			}
 			try {
-				BoardState lNewBoardState = new BoardState(lKnowledgeBaseFilePool, pNodeToExpand, BoardState.Move.SELF_SLOT3, true, mLogContext);
+				OldBoardState lNewBoardState = new OldBoardState(lKnowledgeBaseFilePool, pNodeToExpand, OldBoardState.Move.SELF_SLOT3, true, mLogContext);
 				lSubBoardState.add(lNewBoardState);
 			} catch (InvalidMoveException eE) {
 				if (sLogger.isDebugEnabled()) {
-					sLogger.debug("Invalid Evaluated Move: " + BoardState.Move.SELF_SLOT3.getMoveIntValue());
+					sLogger.debug("Invalid Evaluated Move: " + OldBoardState.Move.SELF_SLOT3.getMoveIntValue());
 				}
 			}
 			try {
-				BoardState lNewBoardState = new BoardState(lKnowledgeBaseFilePool, pNodeToExpand, BoardState.Move.SELF_SLOT4, true, mLogContext);
+				OldBoardState lNewBoardState = new OldBoardState(lKnowledgeBaseFilePool, pNodeToExpand, OldBoardState.Move.SELF_SLOT4, true, mLogContext);
 				lSubBoardState.add(lNewBoardState);
 			} catch (InvalidMoveException eE) {
 				if (sLogger.isDebugEnabled()) {
-					sLogger.debug("Invalid Evaluated Move: " + BoardState.Move.SELF_SLOT4.getMoveIntValue());
+					sLogger.debug("Invalid Evaluated Move: " + OldBoardState.Move.SELF_SLOT4.getMoveIntValue());
 				}
 			}
 			
 			try {
-				BoardState lNewBoardState = new BoardState(lKnowledgeBaseFilePool, pNodeToExpand, BoardState.Move.SELF_SLOT5, true, mLogContext);
+				OldBoardState lNewBoardState = new OldBoardState(lKnowledgeBaseFilePool, pNodeToExpand, OldBoardState.Move.SELF_SLOT5, true, mLogContext);
 				lSubBoardState.add(lNewBoardState);
 			} catch (InvalidMoveException eE) {
 				if (sLogger.isDebugEnabled()) {
-					sLogger.debug("Invalid Evaluated Move: " + BoardState.Move.SELF_SLOT5.getMoveIntValue());
+					sLogger.debug("Invalid Evaluated Move: " + OldBoardState.Move.SELF_SLOT5.getMoveIntValue());
 					
 				}
 			}
 			try {
-				BoardState lNewBoardState = new BoardState(lKnowledgeBaseFilePool, pNodeToExpand, BoardState.Move.SELF_SLOT6, true, mLogContext);
+				OldBoardState lNewBoardState = new OldBoardState(lKnowledgeBaseFilePool, pNodeToExpand, OldBoardState.Move.SELF_SLOT6, true, mLogContext);
 				lSubBoardState.add(lNewBoardState);
 			} catch (InvalidMoveException eE) {
 				if (sLogger.isDebugEnabled()) {
-					sLogger.debug("Invalid Evaluated Move: " + BoardState.Move.SELF_SLOT6.getMoveIntValue());
+					sLogger.debug("Invalid Evaluated Move: " + OldBoardState.Move.SELF_SLOT6.getMoveIntValue());
 				}
 			}
 
@@ -620,64 +620,64 @@ public class ExpansionTask {
 				sLogger.trace("Exiting");
 			}
 			return lSubBoardState;
-		} else if (lMove == BoardState.Move.SELF_NOMOVE || lMove == BoardState.Move.SELF_SLOT0 || lMove == BoardState.Move.SELF_SLOT1
-				|| lMove == BoardState.Move.SELF_SLOT2 || lMove == BoardState.Move.SELF_SLOT3 || lMove == BoardState.Move.SELF_SLOT4
-				|| lMove == BoardState.Move.SELF_SLOT5 || lMove == BoardState.Move.SELF_SLOT6) {
+		} else if (lMove == OldBoardState.Move.SELF_NOMOVE || lMove == OldBoardState.Move.SELF_SLOT0 || lMove == OldBoardState.Move.SELF_SLOT1
+				|| lMove == OldBoardState.Move.SELF_SLOT2 || lMove == OldBoardState.Move.SELF_SLOT3 || lMove == OldBoardState.Move.SELF_SLOT4
+				|| lMove == OldBoardState.Move.SELF_SLOT5 || lMove == OldBoardState.Move.SELF_SLOT6) {
 			try {
-				BoardState lNewBoardState = new BoardState(lKnowledgeBaseFilePool, pNodeToExpand, BoardState.Move.OPPONENT_SLOT0, true, mLogContext);
+				OldBoardState lNewBoardState = new OldBoardState(lKnowledgeBaseFilePool, pNodeToExpand, OldBoardState.Move.OPPONENT_SLOT0, true, mLogContext);
 				lSubBoardState.add(lNewBoardState);
 			} catch (InvalidMoveException eE) {
 				if (sLogger.isDebugEnabled()) {
-					sLogger.debug("Invalid Evaluated Move: " + BoardState.Move.OPPONENT_SLOT0.getMoveIntValue());
+					sLogger.debug("Invalid Evaluated Move: " + OldBoardState.Move.OPPONENT_SLOT0.getMoveIntValue());
 				}
 			}
 			try {
-				BoardState lNewBoardState = new BoardState(lKnowledgeBaseFilePool, pNodeToExpand, BoardState.Move.OPPONENT_SLOT1, true, mLogContext);
+				OldBoardState lNewBoardState = new OldBoardState(lKnowledgeBaseFilePool, pNodeToExpand, OldBoardState.Move.OPPONENT_SLOT1, true, mLogContext);
 				lSubBoardState.add(lNewBoardState);
 			} catch (InvalidMoveException eE) {
 				if (sLogger.isDebugEnabled()) {
-					sLogger.debug("Invalid Evaluated Move: " + BoardState.Move.OPPONENT_SLOT1.getMoveIntValue());
+					sLogger.debug("Invalid Evaluated Move: " + OldBoardState.Move.OPPONENT_SLOT1.getMoveIntValue());
 				}
 			}
 			try {
-				BoardState lNewBoardState = new BoardState(lKnowledgeBaseFilePool, pNodeToExpand, BoardState.Move.OPPONENT_SLOT2, true, mLogContext);
+				OldBoardState lNewBoardState = new OldBoardState(lKnowledgeBaseFilePool, pNodeToExpand, OldBoardState.Move.OPPONENT_SLOT2, true, mLogContext);
 				lSubBoardState.add(lNewBoardState);
 			} catch (InvalidMoveException eE) {
 				if (sLogger.isDebugEnabled()) {
-					sLogger.debug("Invalid Evaluated Move: " + BoardState.Move.OPPONENT_SLOT2.getMoveIntValue());
+					sLogger.debug("Invalid Evaluated Move: " + OldBoardState.Move.OPPONENT_SLOT2.getMoveIntValue());
 				}
 			}
 			try {
-				BoardState lNewBoardState = new BoardState(lKnowledgeBaseFilePool, pNodeToExpand, BoardState.Move.OPPONENT_SLOT3, true, mLogContext);
+				OldBoardState lNewBoardState = new OldBoardState(lKnowledgeBaseFilePool, pNodeToExpand, OldBoardState.Move.OPPONENT_SLOT3, true, mLogContext);
 				lSubBoardState.add(lNewBoardState);
 			} catch (InvalidMoveException eE) {
 				if (sLogger.isDebugEnabled()) {
-					sLogger.debug("Invalid Evaluated Move: " + BoardState.Move.OPPONENT_SLOT3.getMoveIntValue());
+					sLogger.debug("Invalid Evaluated Move: " + OldBoardState.Move.OPPONENT_SLOT3.getMoveIntValue());
 				}
 			}
 			try {
-				BoardState lNewBoardState = new BoardState(lKnowledgeBaseFilePool, pNodeToExpand, BoardState.Move.OPPONENT_SLOT4, true, mLogContext);
+				OldBoardState lNewBoardState = new OldBoardState(lKnowledgeBaseFilePool, pNodeToExpand, OldBoardState.Move.OPPONENT_SLOT4, true, mLogContext);
 				lSubBoardState.add(lNewBoardState);
 			} catch (InvalidMoveException eE) {
 				if (sLogger.isDebugEnabled()) {
-					sLogger.debug("Invalid Evaluated Move: " + BoardState.Move.OPPONENT_SLOT4.getMoveIntValue());
+					sLogger.debug("Invalid Evaluated Move: " + OldBoardState.Move.OPPONENT_SLOT4.getMoveIntValue());
 				}
 			}
 			
 			try {
-				BoardState lNewBoardState = new BoardState(lKnowledgeBaseFilePool, pNodeToExpand, BoardState.Move.OPPONENT_SLOT5, true, mLogContext);
+				OldBoardState lNewBoardState = new OldBoardState(lKnowledgeBaseFilePool, pNodeToExpand, OldBoardState.Move.OPPONENT_SLOT5, true, mLogContext);
 				lSubBoardState.add(lNewBoardState);
 			} catch (InvalidMoveException eE) {
 				if (sLogger.isDebugEnabled()) {
-					sLogger.debug("Invalid Evaluated Move: " + BoardState.Move.OPPONENT_SLOT5.getMoveIntValue());
+					sLogger.debug("Invalid Evaluated Move: " + OldBoardState.Move.OPPONENT_SLOT5.getMoveIntValue());
 				}
 			}
 			try {
-				BoardState lNewBoardState = new BoardState(lKnowledgeBaseFilePool, pNodeToExpand, BoardState.Move.OPPONENT_SLOT6, true, mLogContext);
+				OldBoardState lNewBoardState = new OldBoardState(lKnowledgeBaseFilePool, pNodeToExpand, OldBoardState.Move.OPPONENT_SLOT6, true, mLogContext);
 				lSubBoardState.add(lNewBoardState);
 			} catch (InvalidMoveException eE) {
 				if (sLogger.isDebugEnabled()) {
-					sLogger.debug("Invalid Evaluated Move: " + BoardState.Move.OPPONENT_SLOT6.getMoveIntValue());
+					sLogger.debug("Invalid Evaluated Move: " + OldBoardState.Move.OPPONENT_SLOT6.getMoveIntValue());
 				}
 			}
 

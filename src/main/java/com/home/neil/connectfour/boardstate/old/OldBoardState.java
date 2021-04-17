@@ -1,4 +1,4 @@
-package com.home.neil.connectfour.boardstate;
+package com.home.neil.connectfour.boardstate.old;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,8 +19,8 @@ import com.home.neil.connectfour.knowledgebase.exception.KnowledgeBaseException;
 import com.home.neil.connectfour.managers.appmanager.ApplicationPrecompilerSettings;
 
 
-public class BoardState {
-	public static final String CLASS_NAME = BoardState.class.getName();
+public class OldBoardState {
+	public static final String CLASS_NAME = OldBoardState.class.getName();
 	public static final String PACKAGE_NAME = CLASS_NAME.substring(0, CLASS_NAME.lastIndexOf("."));
 	public static Logger sLogger = LogManager.getLogger(PACKAGE_NAME);
 
@@ -250,7 +250,7 @@ public class BoardState {
 		SELF_OPPOSITE_3_5(	true, 		true, true,   		false, true, true,   	true, false, true, 		"SO35", 68);                        
 				
 		
-		private BitSet mWinningCombo = new BitSet(BoardState.WINNING_COMBO_SIZE_IN_BITS);
+		private BitSet mWinningCombo = new BitSet(OldBoardState.WINNING_COMBO_SIZE_IN_BITS);
 		private String mWinningComboString = new String();
 		private int mWinningComboBitPosition = 0;
 		ArrayList <MovePosition> mRequiredMovePositions = null;
@@ -1698,7 +1698,7 @@ public class BoardState {
 					
 			
 		
-		private BitSet mMovePosition = new BitSet(BoardState.WINNING_COMBO_SIZE_IN_BITS);
+		private BitSet mMovePosition = new BitSet(OldBoardState.WINNING_COMBO_SIZE_IN_BITS);
 		private String mMovePositionString = new String();
 		private int mColumn = 0;
 		private int mRow = 0;
@@ -2127,7 +2127,7 @@ public class BoardState {
 	private String mFileIndexString = null;
 	private String mReciprocalFileIndexString = null;
 
-	private BoardState mPreviousMoveNode = null;
+	private OldBoardState mPreviousMoveNode = null;
 
 	public String toString() {
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
@@ -2141,7 +2141,7 @@ public class BoardState {
 
 	public static enum GameState {
 		WIN(true, true, "WIN"), LOSS(true, false, "LOSS"), DRAW(false, true, "DRAW"), CONTINUE(false, false, "CONTINUE");
-		private BitSet mGameState = new BitSet(BoardState.GAME_STATE_SIZE_IN_BITS);
+		private BitSet mGameState = new BitSet(OldBoardState.GAME_STATE_SIZE_IN_BITS);
 		private String mGameStateString = new String();
 
 		GameState(boolean pFirst, boolean pSecond, String lGameStateString) {
@@ -2162,7 +2162,7 @@ public class BoardState {
 	public static enum CellState {
 		UNOCCUPIED(false, false, " ", 0), OPPONENT_OCCUPIED(false, true, "O", 1), SELF_OCCUPIED(true, true, "X", 2);
 
-		private BitSet mCellState = new BitSet(BoardState.CELL_STATE_SIZE_IN_BITS);
+		private BitSet mCellState = new BitSet(OldBoardState.CELL_STATE_SIZE_IN_BITS);
 		private String mOccupationString = new String();
 		private int mOccupationInt = 0;
 
@@ -2193,7 +2193,7 @@ public class BoardState {
 				false, false, true, true, 4), OPPONENT_SLOT4(false, true, false, false, 5), OPPONENT_SLOT5(false, true, false, true, 6), OPPONENT_SLOT6(false,
 				true, true, false, 7), SELF_NOMOVE(true, true, true, true, 0), OPPONENT_NOMOVE(false, true, true, true, 0);
 
-		private final BitSet mMove = new BitSet(BoardState.MOVE_STATE_SIZE_IN_BITS);
+		private final BitSet mMove = new BitSet(OldBoardState.MOVE_STATE_SIZE_IN_BITS);
 		private int mMoveIntValue = 0;
 
 		Move(boolean pFirst, boolean pSecond, boolean pThird, boolean pFourth, int pValue) {
@@ -2211,68 +2211,68 @@ public class BoardState {
 		public static Move getOpponentMove(int pMoveInt) {
 			if (pMoveInt == OPPONENT_SLOT0.getMoveIntValue()) {
 				if (sLogger.isDebugEnabled()) {
-					sLogger.debug("Returning move: " + BoardState.Move.OPPONENT_SLOT0.toString());
+					sLogger.debug("Returning move: " + OldBoardState.Move.OPPONENT_SLOT0.toString());
 				}
 				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
-				return BoardState.Move.OPPONENT_SLOT0;
+				return OldBoardState.Move.OPPONENT_SLOT0;
 			} else if (pMoveInt == OPPONENT_SLOT1.getMoveIntValue()) {
 				if (sLogger.isDebugEnabled()) {
-					sLogger.debug("Returning move: " + BoardState.Move.OPPONENT_SLOT1.toString());
+					sLogger.debug("Returning move: " + OldBoardState.Move.OPPONENT_SLOT1.toString());
 				}
 				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
-				return BoardState.Move.OPPONENT_SLOT1;
+				return OldBoardState.Move.OPPONENT_SLOT1;
 			} else if (pMoveInt == OPPONENT_SLOT2.getMoveIntValue()) {
 				if (sLogger.isDebugEnabled()) {
-					sLogger.debug("Returning move: " + BoardState.Move.OPPONENT_SLOT2.toString());
+					sLogger.debug("Returning move: " + OldBoardState.Move.OPPONENT_SLOT2.toString());
 				}
 				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
-				return BoardState.Move.OPPONENT_SLOT2;
+				return OldBoardState.Move.OPPONENT_SLOT2;
 			} else if (pMoveInt == OPPONENT_SLOT3.getMoveIntValue()) {
 				if (sLogger.isDebugEnabled()) {
-					sLogger.debug("Returning move: " + BoardState.Move.OPPONENT_SLOT3.toString());
+					sLogger.debug("Returning move: " + OldBoardState.Move.OPPONENT_SLOT3.toString());
 				}
 				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
-				return BoardState.Move.OPPONENT_SLOT3;
+				return OldBoardState.Move.OPPONENT_SLOT3;
 			} else if (pMoveInt == OPPONENT_SLOT4.getMoveIntValue()) {
 				if (sLogger.isDebugEnabled()) {
-					sLogger.debug("Returning move: " + BoardState.Move.OPPONENT_SLOT4.toString());
+					sLogger.debug("Returning move: " + OldBoardState.Move.OPPONENT_SLOT4.toString());
 				}
 				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
-				return BoardState.Move.OPPONENT_SLOT4;
+				return OldBoardState.Move.OPPONENT_SLOT4;
 			} else if (pMoveInt == OPPONENT_SLOT5.getMoveIntValue()) {
 				if (sLogger.isDebugEnabled()) {
-					sLogger.debug("Returning move: " + BoardState.Move.OPPONENT_SLOT5.toString());
+					sLogger.debug("Returning move: " + OldBoardState.Move.OPPONENT_SLOT5.toString());
 				}
 				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
-				return BoardState.Move.OPPONENT_SLOT5;
+				return OldBoardState.Move.OPPONENT_SLOT5;
 			} else if (pMoveInt == OPPONENT_SLOT6.getMoveIntValue()) {
 				if (sLogger.isDebugEnabled()) {
-					sLogger.debug("Returning move: " + BoardState.Move.OPPONENT_SLOT6.toString());
+					sLogger.debug("Returning move: " + OldBoardState.Move.OPPONENT_SLOT6.toString());
 				}
 				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
-				return BoardState.Move.OPPONENT_SLOT6;
+				return OldBoardState.Move.OPPONENT_SLOT6;
 			} else if (pMoveInt == OPPONENT_NOMOVE.getMoveIntValue()) {
 				if (sLogger.isDebugEnabled()) {
-					sLogger.debug("Returning move: " + BoardState.Move.OPPONENT_NOMOVE.toString());
+					sLogger.debug("Returning move: " + OldBoardState.Move.OPPONENT_NOMOVE.toString());
 				}
 				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
-				return BoardState.Move.OPPONENT_NOMOVE;
+				return OldBoardState.Move.OPPONENT_NOMOVE;
 			} else {
 				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
@@ -2285,68 +2285,68 @@ public class BoardState {
 		public static Move getSelfMove(int pMoveInt) {
 			if (pMoveInt == SELF_SLOT0.getMoveIntValue()) {
 				if (sLogger.isDebugEnabled()) {
-					sLogger.debug("Returning move: " + BoardState.Move.SELF_SLOT0.toString());
+					sLogger.debug("Returning move: " + OldBoardState.Move.SELF_SLOT0.toString());
 				}
 				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
-				return BoardState.Move.SELF_SLOT0;
+				return OldBoardState.Move.SELF_SLOT0;
 			} else if (pMoveInt == SELF_SLOT1.getMoveIntValue()) {
 				if (sLogger.isDebugEnabled()) {
-					sLogger.debug("Returning move: " + BoardState.Move.SELF_SLOT1.toString());
+					sLogger.debug("Returning move: " + OldBoardState.Move.SELF_SLOT1.toString());
 				}
 				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
-				return BoardState.Move.SELF_SLOT1;
+				return OldBoardState.Move.SELF_SLOT1;
 			} else if (pMoveInt == SELF_SLOT2.getMoveIntValue()) {
 				if (sLogger.isDebugEnabled()) {
-					sLogger.debug("Returning move: " + BoardState.Move.SELF_SLOT2.toString());
+					sLogger.debug("Returning move: " + OldBoardState.Move.SELF_SLOT2.toString());
 				}
 				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
-				return BoardState.Move.SELF_SLOT2;
+				return OldBoardState.Move.SELF_SLOT2;
 			} else if (pMoveInt == SELF_SLOT3.getMoveIntValue()) {
 				if (sLogger.isDebugEnabled()) {
-					sLogger.debug("Returning move: " + BoardState.Move.SELF_SLOT3.toString());
+					sLogger.debug("Returning move: " + OldBoardState.Move.SELF_SLOT3.toString());
 				}
 				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
-				return BoardState.Move.SELF_SLOT3;
+				return OldBoardState.Move.SELF_SLOT3;
 			} else if (pMoveInt == SELF_SLOT4.getMoveIntValue()) {
 				if (sLogger.isDebugEnabled()) {
-					sLogger.debug("Returning move: " + BoardState.Move.SELF_SLOT4.toString());
+					sLogger.debug("Returning move: " + OldBoardState.Move.SELF_SLOT4.toString());
 				}
 				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
-				return BoardState.Move.SELF_SLOT4;
+				return OldBoardState.Move.SELF_SLOT4;
 			} else if (pMoveInt == SELF_SLOT5.getMoveIntValue()) {
 				if (sLogger.isDebugEnabled()) {
-					sLogger.debug("Returning move: " + BoardState.Move.SELF_SLOT5.toString());
+					sLogger.debug("Returning move: " + OldBoardState.Move.SELF_SLOT5.toString());
 				}
 				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
-				return BoardState.Move.SELF_SLOT5;
+				return OldBoardState.Move.SELF_SLOT5;
 			} else if (pMoveInt == SELF_SLOT6.getMoveIntValue()) {
 				if (sLogger.isDebugEnabled()) {
-					sLogger.debug("Returning move: " + BoardState.Move.SELF_SLOT6.toString());
+					sLogger.debug("Returning move: " + OldBoardState.Move.SELF_SLOT6.toString());
 				}
 				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
-				return BoardState.Move.SELF_SLOT6;
+				return OldBoardState.Move.SELF_SLOT6;
 			} else if (pMoveInt == SELF_NOMOVE.getMoveIntValue()) {
 				if (sLogger.isDebugEnabled()) {
-					sLogger.debug("Returning move: " + BoardState.Move.SELF_NOMOVE.toString());
+					sLogger.debug("Returning move: " + OldBoardState.Move.SELF_NOMOVE.toString());
 				}
 				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
-				return BoardState.Move.SELF_NOMOVE;
+				return OldBoardState.Move.SELF_NOMOVE;
 			} else {
 				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
@@ -2361,7 +2361,7 @@ public class BoardState {
 		}
 	}
 
-	public BoardState getParentBoardState() {
+	public OldBoardState getParentBoardState() {
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
@@ -3288,7 +3288,7 @@ public class BoardState {
 	
 	
 	
-	public BoardState(KnowledgeBaseFilePool pKnowledgeBaseFilePool, BoardState.Move pFirstMove, boolean pEvaluation, String pLogContext) throws InvalidMoveException, KnowledgeBaseException,
+	public OldBoardState(KnowledgeBaseFilePool pKnowledgeBaseFilePool, OldBoardState.Move pFirstMove, boolean pEvaluation, String pLogContext) throws InvalidMoveException, KnowledgeBaseException,
 			ConfigurationException {
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
@@ -3315,7 +3315,7 @@ public class BoardState {
 		}
 
 		for (int i = 0; i < GAME_STATE_SIZE_IN_BITS; i++) {
-			mBoardStateInBits.set(GAMESTATE_STARTLOCATION_BIT + i, BoardState.GameState.CONTINUE.getGameStateBitSet().get(i));
+			mBoardStateInBits.set(GAMESTATE_STARTLOCATION_BIT + i, OldBoardState.GameState.CONTINUE.getGameStateBitSet().get(i));
 		}
 
 		mMoveScore = new MoveScore(this);
@@ -3364,63 +3364,63 @@ public class BoardState {
 			}
 		}
 		
-		if (pFirstMove.equals(BoardState.Move.OPPONENT_SLOT0)) {
+		if (pFirstMove.equals(OldBoardState.Move.OPPONENT_SLOT0)) {
 			for (int i = 0; i < MAX_ROWS; i++) {
-				if (getCellState(0, i).equals(BoardState.CellState.UNOCCUPIED)) {
-					setCellState(0, i, BoardState.CellState.OPPONENT_OCCUPIED);
+				if (getCellState(0, i).equals(OldBoardState.CellState.UNOCCUPIED)) {
+					setCellState(0, i, OldBoardState.CellState.OPPONENT_OCCUPIED);
 					mCurrentMovePosition = MovePosition.getMovePosition(CellState.OPPONENT_OCCUPIED, 0, i);
 					break;
 				}
 			}
-		} else if (pFirstMove.equals(BoardState.Move.OPPONENT_SLOT1)) {
+		} else if (pFirstMove.equals(OldBoardState.Move.OPPONENT_SLOT1)) {
 			for (int i = 0; i < MAX_ROWS; i++) {
-				if (getCellState(1, i).equals(BoardState.CellState.UNOCCUPIED)) {
-					setCellState(1, i, BoardState.CellState.OPPONENT_OCCUPIED);
+				if (getCellState(1, i).equals(OldBoardState.CellState.UNOCCUPIED)) {
+					setCellState(1, i, OldBoardState.CellState.OPPONENT_OCCUPIED);
 					mCurrentMovePosition = MovePosition.getMovePosition(CellState.OPPONENT_OCCUPIED, 1, i);
 					break;
 				}
 			}
-		} else if (pFirstMove.equals(BoardState.Move.OPPONENT_SLOT2)) {
+		} else if (pFirstMove.equals(OldBoardState.Move.OPPONENT_SLOT2)) {
 			for (int i = 0; i < MAX_ROWS; i++) {
-				if (getCellState(2, i).equals(BoardState.CellState.UNOCCUPIED)) {
-					setCellState(2, i, BoardState.CellState.OPPONENT_OCCUPIED);
+				if (getCellState(2, i).equals(OldBoardState.CellState.UNOCCUPIED)) {
+					setCellState(2, i, OldBoardState.CellState.OPPONENT_OCCUPIED);
 					mCurrentMovePosition = MovePosition.getMovePosition(CellState.OPPONENT_OCCUPIED, 2, i);
 					break;
 				}
 			}
-		} else if (pFirstMove.equals(BoardState.Move.OPPONENT_SLOT3)) {
+		} else if (pFirstMove.equals(OldBoardState.Move.OPPONENT_SLOT3)) {
 			for (int i = 0; i < MAX_ROWS; i++) {
-				if (getCellState(3, i).equals(BoardState.CellState.UNOCCUPIED)) {
-					setCellState(3, i, BoardState.CellState.OPPONENT_OCCUPIED);
+				if (getCellState(3, i).equals(OldBoardState.CellState.UNOCCUPIED)) {
+					setCellState(3, i, OldBoardState.CellState.OPPONENT_OCCUPIED);
 					mCurrentMovePosition = MovePosition.getMovePosition(CellState.OPPONENT_OCCUPIED, 3, i);
 					break;
 				}
 			}
-		} else if (pFirstMove.equals(BoardState.Move.OPPONENT_SLOT4)) {
+		} else if (pFirstMove.equals(OldBoardState.Move.OPPONENT_SLOT4)) {
 			for (int i = 0; i < MAX_ROWS; i++) {
-				if (getCellState(4, i).equals(BoardState.CellState.UNOCCUPIED)) {
-					setCellState(4, i, BoardState.CellState.OPPONENT_OCCUPIED);
+				if (getCellState(4, i).equals(OldBoardState.CellState.UNOCCUPIED)) {
+					setCellState(4, i, OldBoardState.CellState.OPPONENT_OCCUPIED);
 					mCurrentMovePosition = MovePosition.getMovePosition(CellState.OPPONENT_OCCUPIED, 4, i);
 					break;
 				}
 			}
-		} else if (pFirstMove.equals(BoardState.Move.OPPONENT_SLOT5)) {
+		} else if (pFirstMove.equals(OldBoardState.Move.OPPONENT_SLOT5)) {
 			for (int i = 0; i < MAX_ROWS; i++) {
-				if (getCellState(5, i).equals(BoardState.CellState.UNOCCUPIED)) {
-					setCellState(5, i, BoardState.CellState.OPPONENT_OCCUPIED);
+				if (getCellState(5, i).equals(OldBoardState.CellState.UNOCCUPIED)) {
+					setCellState(5, i, OldBoardState.CellState.OPPONENT_OCCUPIED);
 					mCurrentMovePosition = MovePosition.getMovePosition(CellState.OPPONENT_OCCUPIED, 5, i);
 					break;
 				}
 			}
-		} else if (pFirstMove.equals(BoardState.Move.OPPONENT_SLOT6)) {
+		} else if (pFirstMove.equals(OldBoardState.Move.OPPONENT_SLOT6)) {
 			for (int i = 0; i < MAX_ROWS; i++) {
-				if (getCellState(6, i).equals(BoardState.CellState.UNOCCUPIED)) {
-					setCellState(6, i, BoardState.CellState.OPPONENT_OCCUPIED);
+				if (getCellState(6, i).equals(OldBoardState.CellState.UNOCCUPIED)) {
+					setCellState(6, i, OldBoardState.CellState.OPPONENT_OCCUPIED);
 					mCurrentMovePosition = MovePosition.getMovePosition(CellState.OPPONENT_OCCUPIED, 6, i);
 					break;
 				}
 			}
-		} else if (!pFirstMove.equals(BoardState.Move.OPPONENT_NOMOVE)) {
+		} else if (!pFirstMove.equals(OldBoardState.Move.OPPONENT_NOMOVE)) {
 			sLogger.error("Invalid First move");
 			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
@@ -3436,7 +3436,7 @@ public class BoardState {
 		
 		
 		sLogger.debug("Evaluating Board");
-		BoardState.GameState lGameState = evaluateGameState(false);
+		OldBoardState.GameState lGameState = evaluateGameState(false);
 		BitSet lGameStateBitSet = lGameState.getGameStateBitSet();
 		for (int i = 0; i < GAME_STATE_SIZE_IN_BITS; i++) {
 			mBoardStateInBits.set(GAMESTATE_STARTLOCATION_BIT + i, lGameStateBitSet.get(i));
@@ -3458,10 +3458,10 @@ public class BoardState {
 	public static final int OPPONENT_MOVE_NEXT = 1;
 
 	public int whosMove() {
-		BoardState.Move lMove = getMove();
-		if (lMove.equals(BoardState.Move.OPPONENT_NOMOVE) || lMove.equals(BoardState.Move.OPPONENT_SLOT0) || lMove.equals(BoardState.Move.OPPONENT_SLOT1)
-				|| lMove.equals(BoardState.Move.OPPONENT_SLOT2) || lMove.equals(BoardState.Move.OPPONENT_SLOT3) || lMove.equals(BoardState.Move.OPPONENT_SLOT4)
-				|| lMove.equals(BoardState.Move.OPPONENT_SLOT5) || lMove.equals(BoardState.Move.OPPONENT_SLOT6)) {
+		OldBoardState.Move lMove = getMove();
+		if (lMove.equals(OldBoardState.Move.OPPONENT_NOMOVE) || lMove.equals(OldBoardState.Move.OPPONENT_SLOT0) || lMove.equals(OldBoardState.Move.OPPONENT_SLOT1)
+				|| lMove.equals(OldBoardState.Move.OPPONENT_SLOT2) || lMove.equals(OldBoardState.Move.OPPONENT_SLOT3) || lMove.equals(OldBoardState.Move.OPPONENT_SLOT4)
+				|| lMove.equals(OldBoardState.Move.OPPONENT_SLOT5) || lMove.equals(OldBoardState.Move.OPPONENT_SLOT6)) {
 			return SELF_MOVE_NEXT;
 		} else {
 			return OPPONENT_MOVE_NEXT;
@@ -3490,7 +3490,7 @@ public class BoardState {
 
 		int lFileMoveStringModulus = lActionString.length() % mKnowledgeBaseFilePool.getActionsPerFile();
 
-		BoardState lBoardStateforMoveFile = this; 
+		OldBoardState lBoardStateforMoveFile = this; 
 		for (int i = 0; i < lFileMoveStringModulus; i++) {
 			lBoardStateforMoveFile = lBoardStateforMoveFile.getParentBoardState();
 		}
@@ -3499,8 +3499,8 @@ public class BoardState {
 		
 		
 		mReciprocalStateStringForKB = new String();
-		for (int i = 0; i < BoardState.MAX_ROWS * BoardState.MAX_COLUMNS; i = i + BoardState.MAX_COLUMNS) {
-			String lRowString = mStateStringForKB.substring(i, i + BoardState.MAX_COLUMNS);
+		for (int i = 0; i < OldBoardState.MAX_ROWS * OldBoardState.MAX_COLUMNS; i = i + OldBoardState.MAX_COLUMNS) {
+			String lRowString = mStateStringForKB.substring(i, i + OldBoardState.MAX_COLUMNS);
 			StringBuilder lReverseStringBuilder = new StringBuilder();
 			lReverseStringBuilder.append(lRowString);
 			lRowString = lReverseStringBuilder.reverse().toString();
@@ -3531,7 +3531,7 @@ public class BoardState {
 				for (int k = 0; k < CELL_STATE_SIZE_IN_BITS; k++) {
 					lCellState.set(k, mBoardStateInBits.get((j * MAX_COLUMNS + i) * CELL_STATE_SIZE_IN_BITS + k));
 				}
-				BoardState.CellState lActualCellState = getCellState(lCellState);
+				OldBoardState.CellState lActualCellState = getCellState(lCellState);
 				String lOccupationString = lActualCellState.getOccupationString();
 				if (lOccupationString.equals(" ")) {
 					lLine += "E";
@@ -3551,7 +3551,7 @@ public class BoardState {
 	
 	
 	
-	public BoardState(KnowledgeBaseFilePool pKnowledgeBaseFilePool, BoardState pPreviousBoardState, BoardState.Move pMove, boolean pEvaluation, String pLogContext) throws InvalidMoveException,
+	public OldBoardState(KnowledgeBaseFilePool pKnowledgeBaseFilePool, OldBoardState pPreviousBoardState, OldBoardState.Move pMove, boolean pEvaluation, String pLogContext) throws InvalidMoveException,
 			KnowledgeBaseException, ConfigurationException {
 		
 		
@@ -3566,8 +3566,8 @@ public class BoardState {
 		sLogger.debug("Cloning Board");
 		mBoardStateInBits = (BitSet) pPreviousBoardState.getBoardStateInBits().clone();
 
-		BoardState.GameState lGameState = getGameState();
-		if (lGameState != BoardState.GameState.CONTINUE) {
+		OldBoardState.GameState lGameState = getGameState();
+		if (lGameState != OldBoardState.GameState.CONTINUE) {
 			sLogger.info("Game is Over. Move is invalid.");
 			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
@@ -3613,14 +3613,14 @@ public class BoardState {
 		
 		
 		
-		BoardState.Move lMove = getMove();
-		if ((pMove.equals(BoardState.Move.OPPONENT_SLOT0) || pMove.equals(BoardState.Move.OPPONENT_SLOT1) || pMove.equals(BoardState.Move.OPPONENT_SLOT2)
-				|| pMove.equals(BoardState.Move.OPPONENT_SLOT3) || pMove.equals(BoardState.Move.OPPONENT_SLOT4) || pMove.equals(BoardState.Move.OPPONENT_SLOT5) || pMove
-					.equals(BoardState.Move.OPPONENT_SLOT6))
-				&& (lMove.equals(BoardState.Move.OPPONENT_NOMOVE) || lMove.equals(BoardState.Move.OPPONENT_SLOT0)
-						|| lMove.equals(BoardState.Move.OPPONENT_SLOT1) || lMove.equals(BoardState.Move.OPPONENT_SLOT2)
-						|| lMove.equals(BoardState.Move.OPPONENT_SLOT3) || lMove.equals(BoardState.Move.OPPONENT_SLOT4)
-						|| lMove.equals(BoardState.Move.OPPONENT_SLOT5) || lMove.equals(BoardState.Move.OPPONENT_SLOT6))) {
+		OldBoardState.Move lMove = getMove();
+		if ((pMove.equals(OldBoardState.Move.OPPONENT_SLOT0) || pMove.equals(OldBoardState.Move.OPPONENT_SLOT1) || pMove.equals(OldBoardState.Move.OPPONENT_SLOT2)
+				|| pMove.equals(OldBoardState.Move.OPPONENT_SLOT3) || pMove.equals(OldBoardState.Move.OPPONENT_SLOT4) || pMove.equals(OldBoardState.Move.OPPONENT_SLOT5) || pMove
+					.equals(OldBoardState.Move.OPPONENT_SLOT6))
+				&& (lMove.equals(OldBoardState.Move.OPPONENT_NOMOVE) || lMove.equals(OldBoardState.Move.OPPONENT_SLOT0)
+						|| lMove.equals(OldBoardState.Move.OPPONENT_SLOT1) || lMove.equals(OldBoardState.Move.OPPONENT_SLOT2)
+						|| lMove.equals(OldBoardState.Move.OPPONENT_SLOT3) || lMove.equals(OldBoardState.Move.OPPONENT_SLOT4)
+						|| lMove.equals(OldBoardState.Move.OPPONENT_SLOT5) || lMove.equals(OldBoardState.Move.OPPONENT_SLOT6))) {
 			sLogger.info("Opponent is attempting to move twice");
 			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
@@ -3628,12 +3628,12 @@ public class BoardState {
 			throw new InvalidMoveException();
 		}
 
-		if ((pMove.equals(BoardState.Move.SELF_SLOT0) || pMove.equals(BoardState.Move.SELF_SLOT1) || pMove.equals(BoardState.Move.SELF_SLOT2)
-				|| pMove.equals(BoardState.Move.SELF_SLOT3) || pMove.equals(BoardState.Move.SELF_SLOT4) || pMove.equals(BoardState.Move.SELF_SLOT5) || pMove
-					.equals(BoardState.Move.SELF_SLOT6))
-				&& (lMove.equals(BoardState.Move.SELF_NOMOVE) || lMove.equals(BoardState.Move.SELF_SLOT0) || lMove.equals(BoardState.Move.SELF_SLOT1)
-						|| lMove.equals(BoardState.Move.SELF_SLOT2) || lMove.equals(BoardState.Move.SELF_SLOT3) || lMove.equals(BoardState.Move.SELF_SLOT4)
-						|| lMove.equals(BoardState.Move.SELF_SLOT5) || lMove.equals(BoardState.Move.SELF_SLOT6))) {
+		if ((pMove.equals(OldBoardState.Move.SELF_SLOT0) || pMove.equals(OldBoardState.Move.SELF_SLOT1) || pMove.equals(OldBoardState.Move.SELF_SLOT2)
+				|| pMove.equals(OldBoardState.Move.SELF_SLOT3) || pMove.equals(OldBoardState.Move.SELF_SLOT4) || pMove.equals(OldBoardState.Move.SELF_SLOT5) || pMove
+					.equals(OldBoardState.Move.SELF_SLOT6))
+				&& (lMove.equals(OldBoardState.Move.SELF_NOMOVE) || lMove.equals(OldBoardState.Move.SELF_SLOT0) || lMove.equals(OldBoardState.Move.SELF_SLOT1)
+						|| lMove.equals(OldBoardState.Move.SELF_SLOT2) || lMove.equals(OldBoardState.Move.SELF_SLOT3) || lMove.equals(OldBoardState.Move.SELF_SLOT4)
+						|| lMove.equals(OldBoardState.Move.SELF_SLOT5) || lMove.equals(OldBoardState.Move.SELF_SLOT6))) {
 			sLogger.info("Self is attempting to move twice");
 			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
@@ -3642,127 +3642,127 @@ public class BoardState {
 		}
 
 		boolean lMoveValid = false;
-		if (pMove.equals(BoardState.Move.OPPONENT_SLOT0)) {
+		if (pMove.equals(OldBoardState.Move.OPPONENT_SLOT0)) {
 			for (int i = 0; i < MAX_ROWS; i++) {
-				if (getCellState(0, i).equals(BoardState.CellState.UNOCCUPIED)) {
-					setCellState(0, i, BoardState.CellState.OPPONENT_OCCUPIED);
+				if (getCellState(0, i).equals(OldBoardState.CellState.UNOCCUPIED)) {
+					setCellState(0, i, OldBoardState.CellState.OPPONENT_OCCUPIED);
 					mCurrentMovePosition = MovePosition.getMovePosition(CellState.OPPONENT_OCCUPIED, 0, i);
 					lMoveValid = true;
 					break;
 				}
 			}
-		} else if (pMove.equals(BoardState.Move.OPPONENT_SLOT1)) {
+		} else if (pMove.equals(OldBoardState.Move.OPPONENT_SLOT1)) {
 			for (int i = 0; i < MAX_ROWS; i++) {
-				if (getCellState(1, i).equals(BoardState.CellState.UNOCCUPIED)) {
-					setCellState(1, i, BoardState.CellState.OPPONENT_OCCUPIED);
+				if (getCellState(1, i).equals(OldBoardState.CellState.UNOCCUPIED)) {
+					setCellState(1, i, OldBoardState.CellState.OPPONENT_OCCUPIED);
 					mCurrentMovePosition = MovePosition.getMovePosition(CellState.OPPONENT_OCCUPIED, 1, i);
 					lMoveValid = true;
 					break;
 				}
 			}
-		} else if (pMove.equals(BoardState.Move.OPPONENT_SLOT2)) {
+		} else if (pMove.equals(OldBoardState.Move.OPPONENT_SLOT2)) {
 			for (int i = 0; i < MAX_ROWS; i++) {
-				if (getCellState(2, i).equals(BoardState.CellState.UNOCCUPIED)) {
-					setCellState(2, i, BoardState.CellState.OPPONENT_OCCUPIED);
+				if (getCellState(2, i).equals(OldBoardState.CellState.UNOCCUPIED)) {
+					setCellState(2, i, OldBoardState.CellState.OPPONENT_OCCUPIED);
 					mCurrentMovePosition = MovePosition.getMovePosition(CellState.OPPONENT_OCCUPIED, 2, i);
 					lMoveValid = true;
 					break;
 				}
 			}
-		} else if (pMove.equals(BoardState.Move.OPPONENT_SLOT3)) {
+		} else if (pMove.equals(OldBoardState.Move.OPPONENT_SLOT3)) {
 			for (int i = 0; i < MAX_ROWS; i++) {
-				if (getCellState(3, i).equals(BoardState.CellState.UNOCCUPIED)) {
-					setCellState(3, i, BoardState.CellState.OPPONENT_OCCUPIED);
+				if (getCellState(3, i).equals(OldBoardState.CellState.UNOCCUPIED)) {
+					setCellState(3, i, OldBoardState.CellState.OPPONENT_OCCUPIED);
 					mCurrentMovePosition = MovePosition.getMovePosition(CellState.OPPONENT_OCCUPIED, 3, i);
 					lMoveValid = true;
 					break;
 				}
 			}
-		} else if (pMove.equals(BoardState.Move.OPPONENT_SLOT4)) {
+		} else if (pMove.equals(OldBoardState.Move.OPPONENT_SLOT4)) {
 			for (int i = 0; i < MAX_ROWS; i++) {
-				if (getCellState(4, i).equals(BoardState.CellState.UNOCCUPIED)) {
-					setCellState(4, i, BoardState.CellState.OPPONENT_OCCUPIED);
+				if (getCellState(4, i).equals(OldBoardState.CellState.UNOCCUPIED)) {
+					setCellState(4, i, OldBoardState.CellState.OPPONENT_OCCUPIED);
 					mCurrentMovePosition = MovePosition.getMovePosition(CellState.OPPONENT_OCCUPIED, 4, i);
 					lMoveValid = true;
 					break;
 				}
 			}
-		} else if (pMove.equals(BoardState.Move.OPPONENT_SLOT5)) {
+		} else if (pMove.equals(OldBoardState.Move.OPPONENT_SLOT5)) {
 			for (int i = 0; i < MAX_ROWS; i++) {
-				if (getCellState(5, i).equals(BoardState.CellState.UNOCCUPIED)) {
-					setCellState(5, i, BoardState.CellState.OPPONENT_OCCUPIED);
+				if (getCellState(5, i).equals(OldBoardState.CellState.UNOCCUPIED)) {
+					setCellState(5, i, OldBoardState.CellState.OPPONENT_OCCUPIED);
 					mCurrentMovePosition = MovePosition.getMovePosition(CellState.OPPONENT_OCCUPIED, 5, i);
 					lMoveValid = true;
 					break;
 				}
 			}
-		} else if (pMove.equals(BoardState.Move.OPPONENT_SLOT6)) {
+		} else if (pMove.equals(OldBoardState.Move.OPPONENT_SLOT6)) {
 			for (int i = 0; i < MAX_ROWS; i++) {
-				if (getCellState(6, i).equals(BoardState.CellState.UNOCCUPIED)) {
-					setCellState(6, i, BoardState.CellState.OPPONENT_OCCUPIED);
+				if (getCellState(6, i).equals(OldBoardState.CellState.UNOCCUPIED)) {
+					setCellState(6, i, OldBoardState.CellState.OPPONENT_OCCUPIED);
 					mCurrentMovePosition = MovePosition.getMovePosition(CellState.OPPONENT_OCCUPIED, 6, i);
 					lMoveValid = true;
 					break;
 				}
 			}
-		} else if (pMove.equals(BoardState.Move.SELF_SLOT0)) {
+		} else if (pMove.equals(OldBoardState.Move.SELF_SLOT0)) {
 			for (int i = 0; i < MAX_ROWS; i++) {
-				if (getCellState(0, i).equals(BoardState.CellState.UNOCCUPIED)) {
-					setCellState(0, i, BoardState.CellState.SELF_OCCUPIED);
+				if (getCellState(0, i).equals(OldBoardState.CellState.UNOCCUPIED)) {
+					setCellState(0, i, OldBoardState.CellState.SELF_OCCUPIED);
 					mCurrentMovePosition = MovePosition.getMovePosition(CellState.SELF_OCCUPIED, 0, i);
 					lMoveValid = true;
 					break;
 				}
 			}
-		} else if (pMove.equals(BoardState.Move.SELF_SLOT1)) {
+		} else if (pMove.equals(OldBoardState.Move.SELF_SLOT1)) {
 			for (int i = 0; i < MAX_ROWS; i++) {
-				if (getCellState(1, i).equals(BoardState.CellState.UNOCCUPIED)) {
-					setCellState(1, i, BoardState.CellState.SELF_OCCUPIED);
+				if (getCellState(1, i).equals(OldBoardState.CellState.UNOCCUPIED)) {
+					setCellState(1, i, OldBoardState.CellState.SELF_OCCUPIED);
 					mCurrentMovePosition = MovePosition.getMovePosition(CellState.SELF_OCCUPIED, 1, i);
 					lMoveValid = true;
 					break;
 				}
 			}
-		} else if (pMove.equals(BoardState.Move.SELF_SLOT2)) {
+		} else if (pMove.equals(OldBoardState.Move.SELF_SLOT2)) {
 			for (int i = 0; i < MAX_ROWS; i++) {
-				if (getCellState(2, i).equals(BoardState.CellState.UNOCCUPIED)) {
-					setCellState(2, i, BoardState.CellState.SELF_OCCUPIED);
+				if (getCellState(2, i).equals(OldBoardState.CellState.UNOCCUPIED)) {
+					setCellState(2, i, OldBoardState.CellState.SELF_OCCUPIED);
 					mCurrentMovePosition = MovePosition.getMovePosition(CellState.SELF_OCCUPIED, 2, i);
 					lMoveValid = true;
 					break;
 				}
 			}
-		} else if (pMove.equals(BoardState.Move.SELF_SLOT3)) {
+		} else if (pMove.equals(OldBoardState.Move.SELF_SLOT3)) {
 			for (int i = 0; i < MAX_ROWS; i++) {
-				if (getCellState(3, i).equals(BoardState.CellState.UNOCCUPIED)) {
-					setCellState(3, i, BoardState.CellState.SELF_OCCUPIED);
+				if (getCellState(3, i).equals(OldBoardState.CellState.UNOCCUPIED)) {
+					setCellState(3, i, OldBoardState.CellState.SELF_OCCUPIED);
 					mCurrentMovePosition = MovePosition.getMovePosition(CellState.SELF_OCCUPIED, 3, i);
 					lMoveValid = true;
 					break;
 				}
 			}
-		} else if (pMove.equals(BoardState.Move.SELF_SLOT4)) {
+		} else if (pMove.equals(OldBoardState.Move.SELF_SLOT4)) {
 			for (int i = 0; i < MAX_ROWS; i++) {
-				if (getCellState(4, i).equals(BoardState.CellState.UNOCCUPIED)) {
-					setCellState(4, i, BoardState.CellState.SELF_OCCUPIED);
+				if (getCellState(4, i).equals(OldBoardState.CellState.UNOCCUPIED)) {
+					setCellState(4, i, OldBoardState.CellState.SELF_OCCUPIED);
 					mCurrentMovePosition = MovePosition.getMovePosition(CellState.SELF_OCCUPIED, 4, i);
 					lMoveValid = true;
 					break;
 				}
 			}
-		} else if (pMove.equals(BoardState.Move.SELF_SLOT5)) {
+		} else if (pMove.equals(OldBoardState.Move.SELF_SLOT5)) {
 			for (int i = 0; i < MAX_ROWS; i++) {
-				if (getCellState(5, i).equals(BoardState.CellState.UNOCCUPIED)) {
-					setCellState(5, i, BoardState.CellState.SELF_OCCUPIED);
+				if (getCellState(5, i).equals(OldBoardState.CellState.UNOCCUPIED)) {
+					setCellState(5, i, OldBoardState.CellState.SELF_OCCUPIED);
 					mCurrentMovePosition = MovePosition.getMovePosition(CellState.SELF_OCCUPIED, 5, i);
 					lMoveValid = true;
 					break;
 				}
 			}
-		} else if (pMove.equals(BoardState.Move.SELF_SLOT6)) {
+		} else if (pMove.equals(OldBoardState.Move.SELF_SLOT6)) {
 			for (int i = 0; i < MAX_ROWS; i++) {
-				if (getCellState(6, i).equals(BoardState.CellState.UNOCCUPIED)) {
-					setCellState(6, i, BoardState.CellState.SELF_OCCUPIED);
+				if (getCellState(6, i).equals(OldBoardState.CellState.UNOCCUPIED)) {
+					setCellState(6, i, OldBoardState.CellState.SELF_OCCUPIED);
 					mCurrentMovePosition = MovePosition.getMovePosition(CellState.SELF_OCCUPIED, 6, i);
 					lMoveValid = true;
 					break;
@@ -3949,7 +3949,7 @@ public class BoardState {
 						lCellState.set(k, mBoardStateInBits.get((j * MAX_COLUMNS + i) * CELL_STATE_SIZE_IN_BITS + k));
 					}
 
-					BoardState.CellState lActualCellState = getCellState(lCellState);
+					OldBoardState.CellState lActualCellState = getCellState(lCellState);
 					lLine += "   ";
 					lLine += lActualCellState.getOccupationString();
 				}
@@ -3967,7 +3967,7 @@ public class BoardState {
 	}
 
 
-	public BoardState.GameState getGameState() {
+	public OldBoardState.GameState getGameState() {
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
@@ -3977,31 +3977,31 @@ public class BoardState {
 			lGameStateBitSet.set(i, mBoardStateInBits.get(GAMESTATE_STARTLOCATION_BIT + i));
 		}
 
-		if (lGameStateBitSet.equals(BoardState.GameState.CONTINUE.getGameStateBitSet())) {
+		if (lGameStateBitSet.equals(OldBoardState.GameState.CONTINUE.getGameStateBitSet())) {
 			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
-			return BoardState.GameState.CONTINUE;
-		} else if (lGameStateBitSet.equals(BoardState.GameState.WIN.getGameStateBitSet())) {
+			return OldBoardState.GameState.CONTINUE;
+		} else if (lGameStateBitSet.equals(OldBoardState.GameState.WIN.getGameStateBitSet())) {
 			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
-			return BoardState.GameState.WIN;
-		} else if (lGameStateBitSet.equals(BoardState.GameState.LOSS.getGameStateBitSet())) {
+			return OldBoardState.GameState.WIN;
+		} else if (lGameStateBitSet.equals(OldBoardState.GameState.LOSS.getGameStateBitSet())) {
 			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
-			return BoardState.GameState.LOSS;
+			return OldBoardState.GameState.LOSS;
 		} else {
 			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
-			return BoardState.GameState.DRAW;
+			return OldBoardState.GameState.DRAW;
 		}
 
 	}
 
-	public BoardState.Move getMove() {
+	public OldBoardState.Move getMove() {
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
@@ -4011,90 +4011,90 @@ public class BoardState {
 			lMoveBitSet.set(i, mBoardStateInBits.get(MOVE_STARTLOCATION_BIT + i));
 		}
 
-		if (lMoveBitSet.equals(BoardState.Move.OPPONENT_SLOT0.getMoveBitSet())) {
+		if (lMoveBitSet.equals(OldBoardState.Move.OPPONENT_SLOT0.getMoveBitSet())) {
 			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
-			return BoardState.Move.OPPONENT_SLOT0;
-		} else if (lMoveBitSet.equals(BoardState.Move.OPPONENT_SLOT1.getMoveBitSet())) {
+			return OldBoardState.Move.OPPONENT_SLOT0;
+		} else if (lMoveBitSet.equals(OldBoardState.Move.OPPONENT_SLOT1.getMoveBitSet())) {
 			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
-			return BoardState.Move.OPPONENT_SLOT1;
-		} else if (lMoveBitSet.equals(BoardState.Move.OPPONENT_SLOT2.getMoveBitSet())) {
+			return OldBoardState.Move.OPPONENT_SLOT1;
+		} else if (lMoveBitSet.equals(OldBoardState.Move.OPPONENT_SLOT2.getMoveBitSet())) {
 			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
-			return BoardState.Move.OPPONENT_SLOT2;
-		} else if (lMoveBitSet.equals(BoardState.Move.OPPONENT_SLOT3.getMoveBitSet())) {
+			return OldBoardState.Move.OPPONENT_SLOT2;
+		} else if (lMoveBitSet.equals(OldBoardState.Move.OPPONENT_SLOT3.getMoveBitSet())) {
 			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
-			return BoardState.Move.OPPONENT_SLOT3;
-		} else if (lMoveBitSet.equals(BoardState.Move.OPPONENT_SLOT4.getMoveBitSet())) {
+			return OldBoardState.Move.OPPONENT_SLOT3;
+		} else if (lMoveBitSet.equals(OldBoardState.Move.OPPONENT_SLOT4.getMoveBitSet())) {
 			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
-			return BoardState.Move.OPPONENT_SLOT4;
-		} else if (lMoveBitSet.equals(BoardState.Move.OPPONENT_SLOT5.getMoveBitSet())) {
+			return OldBoardState.Move.OPPONENT_SLOT4;
+		} else if (lMoveBitSet.equals(OldBoardState.Move.OPPONENT_SLOT5.getMoveBitSet())) {
 			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
-			return BoardState.Move.OPPONENT_SLOT5;
-		} else if (lMoveBitSet.equals(BoardState.Move.OPPONENT_SLOT6.getMoveBitSet())) {
+			return OldBoardState.Move.OPPONENT_SLOT5;
+		} else if (lMoveBitSet.equals(OldBoardState.Move.OPPONENT_SLOT6.getMoveBitSet())) {
 			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
-			return BoardState.Move.OPPONENT_SLOT6;
-		} else if (lMoveBitSet.equals(BoardState.Move.SELF_SLOT0.getMoveBitSet())) {
+			return OldBoardState.Move.OPPONENT_SLOT6;
+		} else if (lMoveBitSet.equals(OldBoardState.Move.SELF_SLOT0.getMoveBitSet())) {
 			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
-			return BoardState.Move.SELF_SLOT0;
-		} else if (lMoveBitSet.equals(BoardState.Move.SELF_SLOT1.getMoveBitSet())) {
+			return OldBoardState.Move.SELF_SLOT0;
+		} else if (lMoveBitSet.equals(OldBoardState.Move.SELF_SLOT1.getMoveBitSet())) {
 			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
-			return BoardState.Move.SELF_SLOT1;
-		} else if (lMoveBitSet.equals(BoardState.Move.SELF_SLOT2.getMoveBitSet())) {
+			return OldBoardState.Move.SELF_SLOT1;
+		} else if (lMoveBitSet.equals(OldBoardState.Move.SELF_SLOT2.getMoveBitSet())) {
 			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
-			return BoardState.Move.SELF_SLOT2;
-		} else if (lMoveBitSet.equals(BoardState.Move.SELF_SLOT3.getMoveBitSet())) {
+			return OldBoardState.Move.SELF_SLOT2;
+		} else if (lMoveBitSet.equals(OldBoardState.Move.SELF_SLOT3.getMoveBitSet())) {
 			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
-			return BoardState.Move.SELF_SLOT3;
-		} else if (lMoveBitSet.equals(BoardState.Move.SELF_SLOT4.getMoveBitSet())) {
+			return OldBoardState.Move.SELF_SLOT3;
+		} else if (lMoveBitSet.equals(OldBoardState.Move.SELF_SLOT4.getMoveBitSet())) {
 			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
-			return BoardState.Move.SELF_SLOT4;
-		} else if (lMoveBitSet.equals(BoardState.Move.SELF_SLOT5.getMoveBitSet())) {
+			return OldBoardState.Move.SELF_SLOT4;
+		} else if (lMoveBitSet.equals(OldBoardState.Move.SELF_SLOT5.getMoveBitSet())) {
 			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
-			return BoardState.Move.SELF_SLOT5;
-		} else if (lMoveBitSet.equals(BoardState.Move.SELF_SLOT6.getMoveBitSet())) {
+			return OldBoardState.Move.SELF_SLOT5;
+		} else if (lMoveBitSet.equals(OldBoardState.Move.SELF_SLOT6.getMoveBitSet())) {
 			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
-			return BoardState.Move.SELF_SLOT6;
-		} else if (lMoveBitSet.equals(BoardState.Move.SELF_NOMOVE.getMoveBitSet())) {
+			return OldBoardState.Move.SELF_SLOT6;
+		} else if (lMoveBitSet.equals(OldBoardState.Move.SELF_NOMOVE.getMoveBitSet())) {
 			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
-			return BoardState.Move.SELF_NOMOVE;
+			return OldBoardState.Move.SELF_NOMOVE;
 		} else {
 			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
-			return BoardState.Move.OPPONENT_NOMOVE;
+			return OldBoardState.Move.OPPONENT_NOMOVE;
 		}
 	}
 
-	public BoardState.CellState getCellState(BitSet pBitSet) {
+	public OldBoardState.CellState getCellState(BitSet pBitSet) {
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
@@ -4117,7 +4117,7 @@ public class BoardState {
 		}
 	}
 
-	public BoardState.CellState getCellState(int lColumn, int lRow) {
+	public OldBoardState.CellState getCellState(int lColumn, int lRow) {
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
@@ -4149,7 +4149,7 @@ public class BoardState {
 
 	
 	
-	public void setCellState(int lColumn, int lRow, BoardState.CellState pNewCellState) {
+	public void setCellState(int lColumn, int lRow, OldBoardState.CellState pNewCellState) {
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
@@ -4168,7 +4168,7 @@ public class BoardState {
 	
 	
 
-	private BoardState.GameState evaluateGameState(boolean lWriteGameStateToKnowledgeBase) throws InvalidMoveException, KnowledgeBaseException {
+	private OldBoardState.GameState evaluateGameState(boolean lWriteGameStateToKnowledgeBase) throws InvalidMoveException, KnowledgeBaseException {
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
@@ -4256,7 +4256,7 @@ public class BoardState {
 			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
-			return BoardState.GameState.WIN;
+			return OldBoardState.GameState.WIN;
 		} else if (lNewFoundLoser) {
 			mMoveScore.setMoveScore(SCORE_LOSING_MOVE);
 			if (sLogger.isDebugEnabled()) {
@@ -4266,7 +4266,7 @@ public class BoardState {
 			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
-			return BoardState.GameState.LOSS;
+			return OldBoardState.GameState.LOSS;
 		} else if ((mFileIndexString.startsWith("0") && mFileIndexString.length() <= 42) || (!mFileIndexString.startsWith("0") && mFileIndexString.length() <= 41)) {
 			if (lNewOpponentWinningMoves == 0 && lNewSelfWinningMoves == 0) {
 				//No Valid Winning Moves left
@@ -4278,7 +4278,7 @@ public class BoardState {
 				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace("Exiting");
 				}
-				return BoardState.GameState.DRAW;
+				return OldBoardState.GameState.DRAW;
 			}
 			mMoveScore.setMoveScore((byte) (lNewMoveScore));
 			if (sLogger.isDebugEnabled()) {
@@ -4290,7 +4290,7 @@ public class BoardState {
 			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
-			return BoardState.GameState.CONTINUE;
+			return OldBoardState.GameState.CONTINUE;
 		} else {
 			mMoveScore.setMoveScore(SCORE_DRAW_MOVE);
 			if (sLogger.isDebugEnabled()) {
@@ -4300,7 +4300,7 @@ public class BoardState {
 			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace("Exiting");
 			}
-			return BoardState.GameState.DRAW;
+			return OldBoardState.GameState.DRAW;
 		}
 
 

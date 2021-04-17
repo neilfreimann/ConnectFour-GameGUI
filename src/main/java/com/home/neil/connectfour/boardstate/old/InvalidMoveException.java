@@ -1,4 +1,4 @@
-package com.home.neil.connectfour.boardstate;
+package com.home.neil.connectfour.boardstate.old;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

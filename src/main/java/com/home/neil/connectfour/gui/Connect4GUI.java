@@ -31,9 +31,9 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.home.neil.connectfour.boardstate.BoardState;
-import com.home.neil.connectfour.boardstate.InvalidMoveException;
-import com.home.neil.connectfour.boardstate.expansiontask.ExpansionTask;
+import com.home.neil.connectfour.boardstate.old.InvalidMoveException;
+import com.home.neil.connectfour.boardstate.old.OldBoardState;
+import com.home.neil.connectfour.boardstate.old.expansiontask.ExpansionTask;
 import com.home.neil.connectfour.gamethreads.AutomaticMoveThread;
 import com.home.neil.connectfour.gamethreads.BestMoveAutomaticMoveThread;
 import com.home.neil.connectfour.knowledgebase.KnowledgeBaseFilePool;
@@ -82,11 +82,11 @@ public class Connect4GUI {
 
 	private Timer mUpdateRecommendedMovesTimer;
 
-	private static final int XSIZE = BoardState.MAX_COLUMNS;
-	private static final int YSIZE = BoardState.MAX_ROWS;
+	private static final int XSIZE = OldBoardState.MAX_COLUMNS;
+	private static final int YSIZE = OldBoardState.MAX_ROWS;
 
-	private BoardState mCurrentBoardState = null;
-	private ArrayList<BoardState> mCurrentSubBoardStates = null;
+	private OldBoardState mCurrentBoardState = null;
+	private ArrayList<OldBoardState> mCurrentSubBoardStates = null;
 	
 	private KnowledgeBaseFilePool mKnowledgeBaseFilePool = null;
 
@@ -96,7 +96,7 @@ public class Connect4GUI {
 		
 		mKnowledgeBaseFilePool = KnowledgeBaseFilePool.getMasterInstance();
 		try {
-			mCurrentBoardState = new BoardState(mKnowledgeBaseFilePool, BoardState.Move.OPPONENT_NOMOVE, false, null);
+			mCurrentBoardState = new OldBoardState(mKnowledgeBaseFilePool, OldBoardState.Move.OPPONENT_NOMOVE, false, null);
 		} catch (InvalidMoveException eIME) {
 			sLogger.fatal("Invalid Move on the first move?  WOW!");
 			sLogger.trace("Exiting");
@@ -322,9 +322,9 @@ public class Connect4GUI {
 		updateBoard();
 	}
 
-	public synchronized void performAutomaticMove(BoardState.Move pMove) {
+	public synchronized void performAutomaticMove(OldBoardState.Move pMove) {
 		try {
-			mCurrentBoardState = new BoardState(mKnowledgeBaseFilePool, mCurrentBoardState, pMove, false, null);
+			mCurrentBoardState = new OldBoardState(mKnowledgeBaseFilePool, mCurrentBoardState, pMove, false, null);
 		} catch (InvalidMoveException e) {
 			JOptionPane.showMessageDialog(null, "Move is invalid.", "Move is invalid.", JOptionPane.INFORMATION_MESSAGE);
 		} catch (KnowledgeBaseException e) {
@@ -387,9 +387,9 @@ public class Connect4GUI {
 		}
 
 		sLogger.trace("Entering");
-		if (mCurrentBoardState.whosMove() == BoardState.SELF_MOVE_NEXT) {
+		if (mCurrentBoardState.whosMove() == OldBoardState.SELF_MOVE_NEXT) {
 			try {
-				mCurrentBoardState = new BoardState(mKnowledgeBaseFilePool, mCurrentBoardState, BoardState.Move.getSelfMove(lActionCommand), false, null);
+				mCurrentBoardState = new OldBoardState(mKnowledgeBaseFilePool, mCurrentBoardState, OldBoardState.Move.getSelfMove(lActionCommand), false, null);
 			} catch (InvalidMoveException e) {
 				JOptionPane.showMessageDialog(null, "Move is invalid.", "Move is invalid.", JOptionPane.INFORMATION_MESSAGE);
 			} catch (ConfigurationException e) {
@@ -400,7 +400,7 @@ public class Connect4GUI {
 			}
 		} else {
 			try {
-				mCurrentBoardState = new BoardState(mKnowledgeBaseFilePool, mCurrentBoardState, BoardState.Move.getOpponentMove(lActionCommand), false, null);
+				mCurrentBoardState = new OldBoardState(mKnowledgeBaseFilePool, mCurrentBoardState, OldBoardState.Move.getOpponentMove(lActionCommand), false, null);
 			} catch (ConfigurationException e) {
 				JOptionPane.showMessageDialog(null, "Configuration Exception occurred.", "Knowledge Base Exception occurred.", JOptionPane.INFORMATION_MESSAGE);
 			} catch (InvalidMoveException e) {
@@ -420,7 +420,7 @@ public class Connect4GUI {
 
 	public synchronized void clearBoard() {
 		try {
-			mCurrentBoardState = new BoardState(mKnowledgeBaseFilePool, BoardState.Move.OPPONENT_NOMOVE, false, null);
+			mCurrentBoardState = new OldBoardState(mKnowledgeBaseFilePool, OldBoardState.Move.OPPONENT_NOMOVE, false, null);
 		} catch (InvalidMoveException e) {
 			JOptionPane.showMessageDialog(null, "Move is invalid.", "Move is invalid.", JOptionPane.INFORMATION_MESSAGE);
 		} catch (ConfigurationException e) {
@@ -511,13 +511,13 @@ public synchronized void stopLearningThread() {
 		mCurrentBoardState.logBoardState(Level.FATAL);
 		for (int lRow = 0; lRow < YSIZE; lRow++) {
 			for (int lColumn = 0; lColumn < XSIZE; lColumn++) {
-				BoardState.CellState lCurrentCellState = mCurrentBoardState.getCellState(lColumn, lRow);
-				if (lCurrentCellState == BoardState.CellState.SELF_OCCUPIED) {
+				OldBoardState.CellState lCurrentCellState = mCurrentBoardState.getCellState(lColumn, lRow);
+				if (lCurrentCellState == OldBoardState.CellState.SELF_OCCUPIED) {
 					mSlots[lColumn][lRow].setOpaque(true);
 					mSlots[lColumn][lRow].setBackground(Color.red);
 					mSlots[lColumn][lRow].setForeground(Color.BLACK);
 					mSlots[lColumn][lRow].setText("X");
-				} else if (lCurrentCellState == BoardState.CellState.OPPONENT_OCCUPIED) {
+				} else if (lCurrentCellState == OldBoardState.CellState.OPPONENT_OCCUPIED) {
 					mSlots[lColumn][lRow].setOpaque(true);
 					mSlots[lColumn][lRow].setBackground(Color.blue);
 					mSlots[lColumn][lRow].setForeground(Color.WHITE);
@@ -537,8 +537,8 @@ public synchronized void stopLearningThread() {
 //		}
 
 		if (mCurrentSubBoardStates != null && !mCurrentSubBoardStates.isEmpty()) {
-			for (Iterator<BoardState> lIterator = mCurrentSubBoardStates.iterator(); lIterator.hasNext();) {
-				BoardState lCurrentSubBoardState = lIterator.next();
+			for (Iterator<OldBoardState> lIterator = mCurrentSubBoardStates.iterator(); lIterator.hasNext();) {
+				OldBoardState lCurrentSubBoardState = lIterator.next();
 				int lButtonIndex = lCurrentSubBoardState.getMove().getMoveIntValue() - 1;
 				byte lCurrentSubBoardStateScore = lCurrentSubBoardState.getMoveScore().getMoveScore();
 //				mButtons[lButtonIndex].setText(lButtonIndex + "(" + lCurrentSubBoardStateScore + ")");

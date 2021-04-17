@@ -15,8 +15,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.ThreadContext;
 
-import com.home.neil.connectfour.boardstate.BoardState;
-import com.home.neil.connectfour.boardstate.expansiontask.ExpansionTask;
+import com.home.neil.connectfour.boardstate.old.OldBoardState;
+import com.home.neil.connectfour.boardstate.old.expansiontask.ExpansionTask;
 import com.home.neil.connectfour.knowledgebase.KnowledgeBaseFilePool;
 import com.home.neil.connectfour.knowledgebase.exception.KnowledgeBaseException;
 import com.home.neil.connectfour.learninggamethread.FixedDurationLearningThread;
@@ -35,15 +35,15 @@ public class GivenMoveFixedDurationLearningThread extends FixedDurationLearningT
 
 	public static final long MAX_MEMORY_FOOTPRINT = 250000;
 
-	private BoardState mInitialBoardState = null;
+	private OldBoardState mInitialBoardState = null;
 
 	private String mCurrentMoveEvaluated = null;
 
 	private int mStartingDepth = 0;
 	private int mEndingDepth = 0;
 
-	private LinkedList<BoardState> mResultantBoardStates = null;
-	private LinkedList<BoardState> mResultantBoardStatesToEvaluate = null;
+	private LinkedList<OldBoardState> mResultantBoardStates = null;
+	private LinkedList<OldBoardState> mResultantBoardStatesToEvaluate = null;
 
 	public synchronized void renameThread(String pLogContext) {
 		sLogger.trace("Entering");
@@ -62,14 +62,14 @@ public class GivenMoveFixedDurationLearningThread extends FixedDurationLearningT
 		sLogger.trace("Exiting");
 	}
 
-	private GivenMoveFixedDurationLearningThread(KnowledgeBaseFilePool pKnowledgeBaseFilePool, BoardState pInitialBoardState, long pDurationToRunInMs, String pLogContext) throws ConfigurationException,
+	private GivenMoveFixedDurationLearningThread(KnowledgeBaseFilePool pKnowledgeBaseFilePool, OldBoardState pInitialBoardState, long pDurationToRunInMs, String pLogContext) throws ConfigurationException,
 			IOException {
 		super(pKnowledgeBaseFilePool, pDurationToRunInMs, pLogContext);
 		sLogger.trace("Entering");
 
 		mInitialBoardState = pInitialBoardState;
-		mResultantBoardStates = new LinkedList<BoardState>();
-		mResultantBoardStatesToEvaluate = new LinkedList<BoardState>();
+		mResultantBoardStates = new LinkedList<OldBoardState>();
+		mResultantBoardStatesToEvaluate = new LinkedList<OldBoardState>();
 
 		mBeanName = MBEAN_NAME_PREFIX + sThreadNumber;
 
@@ -80,7 +80,7 @@ public class GivenMoveFixedDurationLearningThread extends FixedDurationLearningT
 		sLogger.trace("Exiting");
 	}
 
-	public static synchronized GivenMoveFixedDurationLearningThread getInstance(KnowledgeBaseFilePool pKnowledgeBaseFilePool, BoardState pInitialBoardState, long pDurationToRunInMs, String pLogContext)
+	public static synchronized GivenMoveFixedDurationLearningThread getInstance(KnowledgeBaseFilePool pKnowledgeBaseFilePool, OldBoardState pInitialBoardState, long pDurationToRunInMs, String pLogContext)
 			throws ConfigurationException, IOException {
 		sLogger.trace("Entering");
 
@@ -118,7 +118,7 @@ public class GivenMoveFixedDurationLearningThread extends FixedDurationLearningT
 		while (!isTimeToTerminate()) {
 
 			mResultantBoardStatesToEvaluate = mResultantBoardStates;
-			mResultantBoardStates = new LinkedList<BoardState>();
+			mResultantBoardStates = new LinkedList<OldBoardState>();
 
 			sortSubBoardState(mResultantBoardStatesToEvaluate);
 
@@ -130,7 +130,7 @@ public class GivenMoveFixedDurationLearningThread extends FixedDurationLearningT
 			while (!mResultantBoardStatesToEvaluate.isEmpty()) {
 				sLogger.debug("Starting Exhaustive Search Phase");
 
-				BoardState lCurrentBoardState = mResultantBoardStatesToEvaluate.pop();
+				OldBoardState lCurrentBoardState = mResultantBoardStatesToEvaluate.pop();
 
 				mStartingDepth = lCurrentBoardState.getFileIndexString().length();
 				mEndingDepth = mStartingDepth + MAX_EXHAUSTIVE_DEPTH;
@@ -168,7 +168,7 @@ public class GivenMoveFixedDurationLearningThread extends FixedDurationLearningT
 		sLogger.trace("Exiting");
 	}
 
-	private void performExhaustiveSearch(BoardState pBoardStateToExpand) throws KnowledgeBaseException {
+	private void performExhaustiveSearch(OldBoardState pBoardStateToExpand) throws KnowledgeBaseException {
 		sLogger.trace("Entering");
 
 		mCurrentMoveEvaluated = pBoardStateToExpand.getFileIndexString();
@@ -192,11 +192,11 @@ public class GivenMoveFixedDurationLearningThread extends FixedDurationLearningT
 			throw new KnowledgeBaseException();
 		}
 
-		ArrayList<BoardState> lSubBoardStates = lExpandNodeThread.getSubBoardStates();
+		ArrayList<OldBoardState> lSubBoardStates = lExpandNodeThread.getSubBoardStates();
 
 		if (lSubBoardStates != null && !lSubBoardStates.isEmpty()) {
-			for (Iterator<BoardState> lIterator = lSubBoardStates.iterator(); lIterator.hasNext();) {
-				BoardState lSubBoardState = lIterator.next();
+			for (Iterator<OldBoardState> lIterator = lSubBoardStates.iterator(); lIterator.hasNext();) {
+				OldBoardState lSubBoardState = lIterator.next();
 				if (isTimeToTerminate()) {
 					sLogger.debug("Timer Exhausted");
 					break;
@@ -208,7 +208,7 @@ public class GivenMoveFixedDurationLearningThread extends FixedDurationLearningT
 		sLogger.trace("Exiting");
 	}
 
-	public void sortSubBoardState(List<BoardState> pBoardState) {
+	public void sortSubBoardState(List<OldBoardState> pBoardState) {
 		sLogger.trace("Entering");
 
 		sLogger.debug("Starting Sorting Phase");
@@ -219,8 +219,8 @@ public class GivenMoveFixedDurationLearningThread extends FixedDurationLearningT
 		if (lDepthModulus == 1) { // current move is opponent move, reorder
 									// sub
 									// moves by highest score
-			Collections.sort(pBoardState, new Comparator<BoardState>() {
-				public int compare(BoardState p1, BoardState p2) {
+			Collections.sort(pBoardState, new Comparator<OldBoardState>() {
+				public int compare(OldBoardState p1, OldBoardState p2) {
 					byte lP1MoveScore = p1.getMoveScore().getMoveScore();
 					byte lP2MoveScore = p2.getMoveScore().getMoveScore();
 					if (lP2MoveScore > lP1MoveScore)
@@ -233,8 +233,8 @@ public class GivenMoveFixedDurationLearningThread extends FixedDurationLearningT
 			});
 		} else { // current move is a self move, reorder sub moves by lowest
 					// score
-			Collections.sort(pBoardState, new Comparator<BoardState>() {
-				public int compare(BoardState p1, BoardState p2) {
+			Collections.sort(pBoardState, new Comparator<OldBoardState>() {
+				public int compare(OldBoardState p1, OldBoardState p2) {
 					byte lP1MoveScore = p1.getMoveScore().getMoveScore();
 					byte lP2MoveScore = p2.getMoveScore().getMoveScore();
 					if (lP2MoveScore < lP1MoveScore)

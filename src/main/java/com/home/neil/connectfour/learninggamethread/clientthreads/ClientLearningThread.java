@@ -13,7 +13,7 @@ import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.home.neil.connectfour.boardstate.BoardState;
+import com.home.neil.connectfour.boardstate.old.OldBoardState;
 import com.home.neil.connectfour.knowledgebase.KnowledgeBaseFilePool;
 import com.home.neil.connectfour.performancemetrics.ThreadPerformanceMetricsMBean;
 
@@ -24,7 +24,7 @@ public abstract class ClientLearningThread extends Thread implements ClientLearn
 
 	protected String mBeanName = null;
 
-	protected BoardState mCurrentBoardState = null;
+	protected OldBoardState mCurrentBoardState = null;
 
 	protected static int sThreadNumber = 1;
 

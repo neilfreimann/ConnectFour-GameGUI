@@ -12,7 +12,7 @@ import javax.management.openmbean.OpenDataException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.home.neil.connectfour.boardstate.BoardState;
+import com.home.neil.connectfour.boardstate.old.OldBoardState;
 import com.home.neil.connectfour.performancemetrics.ThreadPerformanceMetricsMBean;
 
 
@@ -30,7 +30,7 @@ public abstract class Player extends Thread implements ActionInterface {
 
 	protected GameController mGameController = null;
 
-	protected BoardState mCurrentBoardState = null;
+	protected OldBoardState mCurrentBoardState = null;
 	
 	protected PLAYER mPlayerType = null;
 

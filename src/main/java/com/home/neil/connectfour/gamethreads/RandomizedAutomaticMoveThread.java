@@ -15,8 +15,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.ThreadContext;
 
-import com.home.neil.connectfour.boardstate.BoardState;
-import com.home.neil.connectfour.boardstate.expansiontask.ExpansionTask;
+import com.home.neil.connectfour.boardstate.old.OldBoardState;
+import com.home.neil.connectfour.boardstate.old.expansiontask.ExpansionTask;
 import com.home.neil.connectfour.gui.Connect4GUI;
 import com.home.neil.connectfour.knowledgebase.KnowledgeBaseFilePool;
 import com.home.neil.connectfour.learninggamethread.givenmove.GivenMoveFixedDurationLearningThread;
@@ -46,7 +46,7 @@ public class RandomizedAutomaticMoveThread extends AutomaticMoveThread {
 		sLogger.trace("Exiting");
 	}
 
-	public RandomizedAutomaticMoveThread(KnowledgeBaseFilePool pKnowledgeBaseFilePool, BoardState pCurrentBoardState, long pDurationPerMoveInMs, Connect4GUI pGUI, String pLogContext)
+	public RandomizedAutomaticMoveThread(KnowledgeBaseFilePool pKnowledgeBaseFilePool, OldBoardState pCurrentBoardState, long pDurationPerMoveInMs, Connect4GUI pGUI, String pLogContext)
 			throws ConfigurationException, IOException {
 		super(pKnowledgeBaseFilePool, pCurrentBoardState, pDurationPerMoveInMs, pGUI, pLogContext);
 		sLogger.trace("Entering");
@@ -60,7 +60,7 @@ public class RandomizedAutomaticMoveThread extends AutomaticMoveThread {
 		sLogger.trace("Exiting");
 	}
 
-	public static synchronized RandomizedAutomaticMoveThread getInstance(KnowledgeBaseFilePool pKnowledgeBaseFilePool, BoardState pCurrentBoardState, long pDurationToRunInMs, Connect4GUI pGUI,
+	public static synchronized RandomizedAutomaticMoveThread getInstance(KnowledgeBaseFilePool pKnowledgeBaseFilePool, OldBoardState pCurrentBoardState, long pDurationToRunInMs, Connect4GUI pGUI,
 			String pLogContext) throws ConfigurationException, IOException {
 		sLogger.trace("Entering");
 
@@ -114,7 +114,7 @@ public class RandomizedAutomaticMoveThread extends AutomaticMoveThread {
 			}
 
 			if (lExpandNodeThread != null) {
-				ArrayList<BoardState> lSubBoardStates = lExpandNodeThread.getSubBoardStates();
+				ArrayList<OldBoardState> lSubBoardStates = lExpandNodeThread.getSubBoardStates();
 
 				sLogger.debug("SubBoardStates size : " + lSubBoardStates.size());
 
@@ -122,8 +122,8 @@ public class RandomizedAutomaticMoveThread extends AutomaticMoveThread {
 					sLogger.error("Somethings wrong... BoardStates is continue and I can't");
 					mTransactionSuccessful = false;
 				} else {
-					for (Iterator<BoardState> lIterator = lSubBoardStates.iterator(); lIterator.hasNext();) {
-						BoardState lCurrentBoardState = lIterator.next();
+					for (Iterator<OldBoardState> lIterator = lSubBoardStates.iterator(); lIterator.hasNext();) {
+						OldBoardState lCurrentBoardState = lIterator.next();
 						sLogger.error("SubMoves: " + lCurrentBoardState.getFileIndexString() + " Score: " + lCurrentBoardState.getMoveScore().getMoveScore());
 					}
 

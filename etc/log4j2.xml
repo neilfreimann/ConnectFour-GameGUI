@@ -1,158 +1,204 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN">
 	<Appenders>
-
-		<RollingFile name="KBRollingLogFile" 
-				fileName="C:/Personal/Dev/Connect4/KnowledgeBase/logs/KBPackage.log"
-				filePattern="logs/$${date:yyyy-MM}/KBPackage-%d{yyyy-MM-dd-HH}-%i.log">
+		<RollingFile name="All" 
+				fileName="C:/Personal/TestingZone/Logs/All.log" 
+				filePattern="C:/Personal/TestingZone/Logs/$${date:yyyy-MM-dd-HH}/All-%d{yyyy-MM-dd-HH}-%i.log">
     		<PatternLayout>
         		<Pattern>[%d{ISO8601}] %p [%t] (%F:%L) %m%n</Pattern>
       		</PatternLayout>
 			<Policies>
         		<TimeBasedTriggeringPolicy interval="1" modulate="true"/>
         		<SizeBasedTriggeringPolicy size="10 MB"/>
+        		<OnStartupTriggeringPolicy/>
       		</Policies>
-   		</RollingFile>
-
-		<RollingFile name="ManagersRollingLogFile" 
-				fileName="C:/Personal/Dev/Connect4/KnowledgeBase/logs/ManagersPackage.log"
-				filePattern="logs/$${date:yyyy-MM}/ManagersPackage-%d{yyyy-MM-dd-HH}-%i.log">
+		</RollingFile>
+	
+	
+		<RollingFile name="AppConfig" 
+				fileName="C:/Personal/TestingZone/Logs/AppConfig.log" 
+				filePattern="C:/Personal/TestingZone/Logs/$${date:yyyy-MM-dd-HH}/AppConfig-%d{yyyy-MM-dd-HH}-%i.log">
     		<PatternLayout>
         		<Pattern>[%d{ISO8601}] %p [%t] (%F:%L) %m%n</Pattern>
       		</PatternLayout>
 			<Policies>
         		<TimeBasedTriggeringPolicy interval="1" modulate="true"/>
         		<SizeBasedTriggeringPolicy size="10 MB"/>
+        		<OnStartupTriggeringPolicy/>
       		</Policies>
-   		</RollingFile>
-
-		<RollingFile name="BoardStateThreadsRollingLogFile" 
-				fileName="C:/Personal/Dev/Connect4/KnowledgeBase/logs/BoardStateThreadsPackage.log"
-				filePattern="logs/$${date:yyyy-MM}/BoardStateThreadsPackage-%d{yyyy-MM-dd-HH}-%i.log">
+		</RollingFile>
+	
+		<RollingFile name="Pool" 
+				fileName="C:/Personal/TestingZone/Logs/Pool.log" 
+				filePattern="C:/Personal/TestingZone/Logs/$${date:yyyy-MM-dd-HH}/Pool-%d{yyyy-MM-dd-HH}-%i.log">
     		<PatternLayout>
         		<Pattern>[%d{ISO8601}] %p [%t] (%F:%L) %m%n</Pattern>
       		</PatternLayout>
 			<Policies>
         		<TimeBasedTriggeringPolicy interval="1" modulate="true"/>
         		<SizeBasedTriggeringPolicy size="10 MB"/>
+        		<OnStartupTriggeringPolicy/>
       		</Policies>
-   		</RollingFile>
-
-		<RollingFile name="BoardStateLocksRollingLogFile" 
-				fileName="C:/Personal/Dev/Connect4/KnowledgeBase/logs/BoardStateLocksPackage.log"
-				filePattern="logs/$${date:yyyy-MM}/BoardStateLocksPackage-%d{yyyy-MM-dd-HH}-%i.log">
-    		<PatternLayout>
-        		<Pattern>[%d{ISO8601}] %p [%t] (%F:%L) %m%n</Pattern>
-      		</PatternLayout>
-			<Policies>
-        		<TimeBasedTriggeringPolicy interval="1" modulate="true"/>
-        		<SizeBasedTriggeringPolicy size="10 MB"/>
-      		</Policies>
-   		</RollingFile>
-
-		<RollingFile name="BoardStateRollingLogFile" 
-				fileName="C:/Personal/Dev/Connect4/KnowledgeBase/logs/BoardStatePackage.log"
-				filePattern="logs/$${date:yyyy-MM}/BoardStatePackage-%d{yyyy-MM-dd-HH}-%i.log">
-    		<PatternLayout>
-        		<Pattern>[%d{ISO8601}] %p [%t] (%F:%L) %m%n</Pattern>
-      		</PatternLayout>
-			<Policies>
-        		<TimeBasedTriggeringPolicy interval="1" modulate="true"/>
-        		<SizeBasedTriggeringPolicy size="10 MB"/>
-      		</Policies>
-   		</RollingFile>
-
-		<RollingFile name="LearningGameThreadsRollingLogFile" 
-				fileName="C:/Personal/Dev/Connect4/KnowledgeBase/logs/LearningGameThreadsPackage.log"
-				filePattern="logs/$${date:yyyy-MM}/LearningGameThreadsPackage-%d{yyyy-MM-dd-HH}-%i.log">
-    		<PatternLayout>
-        		<Pattern>[%d{ISO8601}] %p [%t] (%F:%L) %m%n</Pattern>
-      		</PatternLayout>
-			<Policies>
-        		<TimeBasedTriggeringPolicy interval="1" modulate="true"/>
-        		<SizeBasedTriggeringPolicy size="10 MB"/>
-      		</Policies>
-   		</RollingFile>
-
-
-		<Routing name="Connect4Routing">
-			<Routes pattern="$${ctx:LogContext}">             
- 				<Route key="$${ctx:LogContext}">
-					<RollingFile name="Connect4RollingLogFile-Unknown" 
-							fileName="C:/Personal/Dev/Connect4/KnowledgeBase/logs/Connect4-Unknown.log" 
-							filePattern="logs/$${date:yyyy-MM}/Connect4-Unknown-%d{yyyy-MM-dd-HH}-%i.log">
+		</RollingFile>
+	
+		<Routing name="TaskLogContextRouting">
+			<Routes pattern="$${ctx:TaskLogContext}">
+  				<Route>
+					<RollingFile name="Task-${ctx:TaskLogContext}" 
+							fileName="C:/Personal/TestingZone/Logs/Tasks/Task-${ctx:TaskLogContext}.log" 
+							filePattern="C:/Personal/TestingZone/Logs/$${date:yyyy-MM-dd-HH}/Tasks/Task-${ctx:TaskLogContext}-%d{yyyy-MM-dd-HH}-%i.log">
 			    		<PatternLayout>
-			        		<Pattern>[%d{ISO8601}] %p [%t] (%F:%L) %m%n</Pattern>
-			      		</PatternLayout>
+    				    		<Pattern>[%d{ISO8601}] %p [%t] [%X{TaskLogContext}] (%F:%L) %m%n</Pattern>
+				      	</PatternLayout>
 						<Policies>
 			        		<TimeBasedTriggeringPolicy interval="1" modulate="true"/>
 			        		<SizeBasedTriggeringPolicy size="10 MB"/>
+			        		<OnStartupTriggeringPolicy/>
 			      		</Policies>
 					</RollingFile>
 				</Route>
- 				<Route>
-					<RollingFile name="Connect4RollingLogFile-${ctx:LogContext}" 
-							fileName="C:/Personal/Dev/Connect4/KnowledgeBase/logs/Connect4-${ctx:LogContext}.log" 
-							filePattern="logs/$${date:yyyy-MM}/Connect4-${ctx:LogContext}-%d{yyyy-MM-dd-HH}-%i.log">
-			    		<PatternLayout>
-							<!-- <Pattern>[%d{ISO8601}] %p [%t]:[CONNECT4] at %C.%M(%F:%L):[%X{ClientSessionID}] %m%n</Pattern> -->
-    				    		<Pattern>[%d{ISO8601}] %p [%t] (%F:%L) %m%n</Pattern>
-				      		</PatternLayout>
-						<Policies>
-			        		<TimeBasedTriggeringPolicy interval="1" modulate="true"/>
-			        		<SizeBasedTriggeringPolicy size="10 MB"/>
-			      		</Policies>
-					</RollingFile>
-				</Route>
+			 	<Route ref="BlackHole" key="$${ctx:TaskLogContext}"/>
 			</Routes>
 		</Routing> 
+
+		<Routing name="AllTaskLogContextRouting">
+			<Routes pattern="$${ctx:TaskLogContext}">
+  				<Route>
+					<RollingFile name="Task-${ctx:TaskLogContext}" 
+							fileName="C:/Personal/TestingZone/Logs/Tasks/Task-All.log" 
+							filePattern="C:/Personal/TestingZone/Logs/$${date:yyyy-MM-dd-HH}/Tasks/Task-All-%d{yyyy-MM-dd-HH}-%i.log">
+			    		<PatternLayout>
+    				    		<Pattern>[%d{ISO8601}] %p [%t] [%X{TaskLogContext}] (%F:%L) %m%n</Pattern>
+				      	</PatternLayout>
+						<Policies>
+			        		<TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+			        		<SizeBasedTriggeringPolicy size="10 MB"/>
+			        		<OnStartupTriggeringPolicy/>
+			      		</Policies>
+					</RollingFile>
+				</Route>
+			 	<Route ref="BlackHole" key="$${ctx:TaskLogContext}"/>
+			</Routes>
+		</Routing> 
+
+		<Routing name="ThreadLogContextRouting">
+			<Routes pattern="$${ctx:ThreadLogContext}">
+  				<Route>
+					<RollingFile name="Thread-${ctx:ThreadLogContext}" 
+							fileName="C:/Personal/TestingZone/Logs/Thread/Thread-${ctx:ThreadLogContext}.log" 
+							filePattern="C:/Personal/TestingZone/Logs/$${date:yyyy-MM-dd-HH}/Thread/Thread-${ctx:ThreadLogContext}-%d{yyyy-MM-dd-HH}-%i.log">
+			    		<PatternLayout>
+    				    		<Pattern>[%d{ISO8601}] %p [%t] [%X{TaskLogContext}] (%F:%L) %m%n</Pattern>
+				      	</PatternLayout>
+						<Policies>
+			        		<TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+			        		<SizeBasedTriggeringPolicy size="10 MB"/>
+			        		<OnStartupTriggeringPolicy/>
+			      		</Policies>
+					</RollingFile>
+				</Route>
+			 	<Route ref="BlackHole" key="$${ctx:ThreadLogContext}"/>
+			</Routes>
+		</Routing> 
+
+		<Routing name="AllThreadLogContextRouting">
+			<Routes pattern="$${ctx:ThreadLogContext}">
+  				<Route>
+					<RollingFile name="Thread-${ctx:ThreadLogContext}" 
+							fileName="C:/Personal/TestingZone/Logs/Thread/Thread-All.log" 
+							filePattern="C:/Personal/TestingZone/Logs/$${date:yyyy-MM-dd-HH}/Thread/Thread-All-%d{yyyy-MM-dd-HH}-%i.log">
+			    		<PatternLayout>
+    				    		<Pattern>[%d{ISO8601}] %p [%t] [%X{TaskLogContext}] (%F:%L) %m%n</Pattern>
+				      	</PatternLayout>
+						<Policies>
+			        		<TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+			        		<SizeBasedTriggeringPolicy size="10 MB"/>
+			        		<OnStartupTriggeringPolicy/>
+			      		</Policies>
+					</RollingFile>
+				</Route>
+			 	<Route ref="BlackHole" key="$${ctx:ThreadLogContext}"/>
+			</Routes>
+		</Routing> 
+
+
+
+
+		<Routing name="PoolItemLifecycleContextRouting">
+			<Routes pattern="$${ctx:PoolItemLifecycle}">
+  				<Route>
+					<RollingFile name="PoolItemLifecycle-${ctx:PoolItemLifecycle}" 
+							fileName="C:/Personal/TestingZone/Logs/PoolItemLifecycles/PoolItemLifecycle-${ctx:PoolItemLifecycle}.log" 
+							filePattern="C:/Personal/TestingZone/Logs/$${date:yyyy-MM-dd-HH}/PoolItemLifecycles/PoolItemLifecycle-${ctx:PoolItemLifecycle}-%d{yyyy-MM-dd-HH}-%i.log">
+			    		<PatternLayout>
+    				    		<Pattern>[%d{ISO8601}] %p [%t] [%X{PoolItemLifecycle}] (%F:%L) %m%n</Pattern>
+				      	</PatternLayout>
+						<Policies>
+			        		<TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+			        		<SizeBasedTriggeringPolicy size="10 MB"/>
+			        		<OnStartupTriggeringPolicy/>
+			      		</Policies>
+					</RollingFile>
+				</Route>
+			 	<Route ref="BlackHole" key="$${ctx:PoolItemLifecycle}"/>
+			</Routes>
+		</Routing> 
+
+		<Routing name="AllPoolItemLifecycleContextRouting">
+			<Routes pattern="$${ctx:PoolItemLifecycle}">
+				<Route>
+					<RollingFile name="PoolItemLifecycle-${ctx:PoolItemLifecycle}" 
+							fileName="C:/Personal/TestingZone/Logs/PoolItemLifecycles/PoolItemLifecycle-All.log" 
+							filePattern="C:/Personal/TestingZone/Logs/$${date:yyyy-MM-dd-HH}/PoolItemLifecycles/PoolItemLifecycle-All-%d{yyyy-MM-dd-HH}-%i.log">
+			    		<PatternLayout>
+    				    		<Pattern>[%d{ISO8601}] %p [%t] [%X{PoolItemLifecycle}] (%F:%L) %m%n</Pattern>
+				      	</PatternLayout>
+						<Policies>
+			        		<TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+			        		<SizeBasedTriggeringPolicy size="10 MB"/>
+			        		<OnStartupTriggeringPolicy/>
+			      		</Policies>
+					</RollingFile>
+				</Route>
+			 	<Route ref="BlackHole" key="$${ctx:PoolItemLifecycle}"/>
+			</Routes>
+		</Routing> 
+
+	
+  		<Null name="BlackHole" />
    		
 		<Console name="Console" target="SYSTEM_OUT">
-           <PatternLayout pattern="[%d{ISO8601}] %p [%t]:[CONNECT4] at %C.%M(%F:%L):[%X{ClientSessionID}] %m%n"/>
+           <PatternLayout pattern="[%d{ISO8601}] %p [%t] [%X{ClientSessionID}] %m           (%F:%L) (%C.%M)%n"/>
    		</Console>
 
 
     </Appenders>
     <Loggers>
-    	<logger name="com.home.neil.ConnectFour.KnowledgeBase" level="info">
-        	<!-- <AppenderRef ref="Console"/> -->
-        	<AppenderRef ref="KBRollingLogFile"/>
+     	<logger name="com.home.neil.appconfig" level="debug">
+        	<AppenderRef ref="AppConfig"/>
     	</logger>
 
-    	<logger name="com.home.neil.ConnectFour.Managers" level="info">
-        	<!-- <AppenderRef ref="Console"/> -->
-        	<AppenderRef ref="ManagersRollingLogFile"/>
-    	</logger>
-
-    	<logger name="com.home.neil.ConnectFour.BoardState.Threads" level="info">
-        	<!-- <AppenderRef ref="Console"/> -->
-        	<AppenderRef ref="BoardStateThreadsRollingLogFile"/>
-    	</logger>
-    	
-    	<logger name="com.home.neil.ConnectFour.BoardState.Locks" level="info">
-        	<!-- <AppenderRef ref="Console"/> -->
-        	<AppenderRef ref="BoardStateLocksRollingLogFile"/>
-    	</logger>
-    	
-    	<logger name="com.home.neil.ConnectFour.BoardState" level="info">
-        	<!-- <AppenderRef ref="Console"/> -->
-        	<AppenderRef ref="BoardStateRollingLogFile"/>
-    	</logger>
-    	
-    	<logger name="com.home.neil.ConnectFour.LearningGameThreads" level="info">
-        	<!-- <AppenderRef ref="Console"/> -->
-        	<AppenderRef ref="LearningGameThreadsRollingLogFile"/>
-    	</logger>
-
-    	<logger name="com.home.neil.ConnectFour.GUI" level="info">
-        	<!-- <AppenderRef ref="Console"/> -->
-    	</logger>
-
-    	
-    	<logger name="com.home.neil" level="info">
+	   	<logger name="com.home.neil.pool" level="debug">
         	<AppenderRef ref="Console"/> 
-        	<AppenderRef ref="Connect4Routing"/>
+        	<AppenderRef ref="Pool"/>
     	</logger>
+
+		<logger name="com.home.neil" level="debug">
+		    <AppenderRef ref="Console"/> 
+        	<AppenderRef ref="All"/>
+        	<AppenderRef ref="ThreadLogContextRouting"/> 
+        	<AppenderRef ref="AllThreadLogContextRouting"/> 
+        	<AppenderRef ref="TaskLogContextRouting"/> 
+        	<AppenderRef ref="AllTaskLogContextRouting"/> 
+        	<AppenderRef ref="PoolItemLifecycleContextRouting"/> 
+        	<AppenderRef ref="AllPoolItemLifecycleContextRouting"/> 
+    	</logger>
+    	
+		<!-- 
+		<logger name="com.home.neil" level="debug">
+        	<AppenderRef ref="ContextRouting"/> 
+    	</logger>
+		-->
 
 		<Root level="error">
 			<!-- <AppenderRef ref="Console"/> -->

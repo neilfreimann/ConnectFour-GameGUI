@@ -21,8 +21,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.home.neil.connectfour.appconfig.Connect4PropertiesConfiguration;
-import com.home.neil.connectfour.boardstate.BoardState;
-import com.home.neil.connectfour.boardstate.InvalidMoveException;
+import com.home.neil.connectfour.boardstate.old.InvalidMoveException;
+import com.home.neil.connectfour.boardstate.old.OldBoardState;
 import com.home.neil.connectfour.knowledgebase.KnowledgeBaseFilePool;
 import com.home.neil.connectfour.knowledgebase.exception.KnowledgeBaseException;
 import com.home.neil.connectfour.performancemetrics.ThreadPerformanceMetricsMBean;
@@ -37,7 +37,7 @@ public abstract class StatefulClientLearningThread extends ClientLearningThread 
 
 	private String mFileLocation = null;
 
-	protected BoardState mCurrentBoardState = null;
+	protected OldBoardState mCurrentBoardState = null;
 
 	protected String mBreadCrumbs = null;
 
@@ -92,7 +92,7 @@ public abstract class StatefulClientLearningThread extends ClientLearningThread 
 
 		if (!lFile.exists()) {
 			mBreadCrumbs = "0";
-			mCurrentBoardState = new BoardState(mKnowledgeBaseFilePool, BoardState.Move.OPPONENT_NOMOVE, true, mLogContext);
+			mCurrentBoardState = new OldBoardState(mKnowledgeBaseFilePool, OldBoardState.Move.OPPONENT_NOMOVE, true, mLogContext);
 			sLogger.trace("Exiting");
 			return;
 		}
@@ -107,7 +107,7 @@ public abstract class StatefulClientLearningThread extends ClientLearningThread 
 
 		if (lLine == null || lLine.trim().length() == 0) {
 			mBreadCrumbs = "0";
-			mCurrentBoardState = new BoardState(mKnowledgeBaseFilePool, BoardState.Move.OPPONENT_NOMOVE, true, mLogContext);
+			mCurrentBoardState = new OldBoardState(mKnowledgeBaseFilePool, OldBoardState.Move.OPPONENT_NOMOVE, true, mLogContext);
 			sLogger.trace("Exiting");
 			return;
 		}
@@ -117,7 +117,7 @@ public abstract class StatefulClientLearningThread extends ClientLearningThread 
 		sLogger.debug("Line Read, Current File Index: " + lLine);
 
 		mBreadCrumbs = lLine;
-		mCurrentBoardState = new BoardState(mKnowledgeBaseFilePool, BoardState.Move.OPPONENT_NOMOVE, true, mLogContext);
+		mCurrentBoardState = new OldBoardState(mKnowledgeBaseFilePool, OldBoardState.Move.OPPONENT_NOMOVE, true, mLogContext);
 
 		sLogger.trace("Exiting");
 	}

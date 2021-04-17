@@ -15,7 +15,7 @@ import javax.swing.JTextField;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.home.neil.connectfour.boardstate.BoardState;
+import com.home.neil.connectfour.boardstate.old.OldBoardState;
 import com.home.neil.connectfour.controller.Game;
 import com.home.neil.connectfour.controller.GameController;
 import com.home.neil.connectfour.controller.HumanPlayer;
@@ -62,7 +62,7 @@ public class HumanInputJPanel extends JPanel {
 		sLogger.trace("Exiting");
 	}
 
-	public void setMoveButtons(BoardState[] pValidMoves, boolean lForceDisabled) {
+	public void setMoveButtons(OldBoardState[] pValidMoves, boolean lForceDisabled) {
 		sLogger.trace("Entering");
 
 		mBoardMoveColumn1Button.setEnabled(false);
@@ -83,8 +83,8 @@ public class HumanInputJPanel extends JPanel {
 
 		if (pValidMoves != null) {
 			for (int i = 0; i < pValidMoves.length; i++) {
-				BoardState lCurrentValidMoveBoardState = pValidMoves[i];
-				BoardState.Move lCurrentValidMove = lCurrentValidMoveBoardState.getMove();
+				OldBoardState lCurrentValidMoveBoardState = pValidMoves[i];
+				OldBoardState.Move lCurrentValidMove = lCurrentValidMoveBoardState.getMove();
 				int lCurrentValidMoveIntValue = lCurrentValidMove.getMoveIntValue();
 				byte lCurrentValidMoveScore = lCurrentValidMoveBoardState.getMoveScore().getMoveScore();
 				if (lCurrentValidMoveIntValue == 1) {
@@ -115,7 +115,7 @@ public class HumanInputJPanel extends JPanel {
 		sLogger.trace("Exiting");
 	}
 
-	public void setInputPanelByGameState(Game.GAMESTATE pInputGameState, BoardState[] pValidMoves) {
+	public void setInputPanelByGameState(Game.GAMESTATE pInputGameState, OldBoardState[] pValidMoves) {
 		sLogger.trace("Entering");
 
 		sLogger.debug("CurrentGameState is: " + pInputGameState.getGameStateString());

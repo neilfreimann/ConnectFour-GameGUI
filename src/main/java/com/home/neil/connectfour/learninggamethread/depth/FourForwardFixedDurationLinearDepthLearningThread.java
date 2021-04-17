@@ -14,9 +14,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.ThreadContext;
 
-import com.home.neil.connectfour.boardstate.BoardState;
-import com.home.neil.connectfour.boardstate.InvalidMoveException;
-import com.home.neil.connectfour.boardstate.expansiontask.ExpansionTask;
+import com.home.neil.connectfour.boardstate.old.InvalidMoveException;
+import com.home.neil.connectfour.boardstate.old.OldBoardState;
+import com.home.neil.connectfour.boardstate.old.expansiontask.ExpansionTask;
 import com.home.neil.connectfour.knowledgebase.KnowledgeBaseFilePool;
 import com.home.neil.connectfour.knowledgebase.exception.KnowledgeBaseException;
 import com.home.neil.connectfour.learninggamethread.StatefulFixedDurationLearningThread;
@@ -78,15 +78,15 @@ public class FourForwardFixedDurationLinearDepthLearningThread extends StatefulF
 			String lChar = mBreadCrumbs.substring(i, i + 1);
 			sLogger.debug("Tracing Last Move: " + lChar);
 			int lMoveInt = Integer.parseInt(lChar);
-			BoardState.Move lMove = null;
+			OldBoardState.Move lMove = null;
 			if (i % 2 == 0) {
-				lMove = BoardState.Move.getOpponentMove(lMoveInt);
+				lMove = OldBoardState.Move.getOpponentMove(lMoveInt);
 			} else {
-				lMove = BoardState.Move.getSelfMove(lMoveInt);
+				lMove = OldBoardState.Move.getSelfMove(lMoveInt);
 			}
 			if (mCurrentBoardState == null) {
 				try {
-					mCurrentBoardState = new BoardState(mKnowledgeBaseFilePool, lMove, true, mLogContext);
+					mCurrentBoardState = new OldBoardState(mKnowledgeBaseFilePool, lMove, true, mLogContext);
 				} catch (InvalidMoveException e) {
 					sLogger.error("Could not expand node, exiting");
 					mTransactionSuccessful = false;
@@ -114,10 +114,10 @@ public class FourForwardFixedDurationLinearDepthLearningThread extends StatefulF
 					return;
 				}
 
-				ArrayList<BoardState> lSubBoardStates = lExpandNodeThread.getSubBoardStates();
+				ArrayList<OldBoardState> lSubBoardStates = lExpandNodeThread.getSubBoardStates();
 
-				for (Iterator<BoardState> lIterator = lSubBoardStates.iterator(); lIterator.hasNext();) {
-					BoardState lCurrentBoardState = lIterator.next();
+				for (Iterator<OldBoardState> lIterator = lSubBoardStates.iterator(); lIterator.hasNext();) {
+					OldBoardState lCurrentBoardState = lIterator.next();
 					if (lCurrentBoardState.getMove() == lMove) {
 						mCurrentBoardState = lCurrentBoardState;
 						break;
@@ -151,12 +151,12 @@ public class FourForwardFixedDurationLinearDepthLearningThread extends StatefulF
 
 			sLogger.debug ("Looking for next state");
 			
-			ArrayList<BoardState> lSubBoardStates = lExpandNodeThread.getSubBoardStates();
+			ArrayList<OldBoardState> lSubBoardStates = lExpandNodeThread.getSubBoardStates();
 
 			if (lSubBoardStates == null || lSubBoardStates.isEmpty()) {
 
 
-				BoardState lLastSubState = mCurrentBoardState;
+				OldBoardState lLastSubState = mCurrentBoardState;
 
 				mCurrentBoardState = mCurrentBoardState.getParentBoardState();
 
@@ -184,8 +184,8 @@ public class FourForwardFixedDurationLinearDepthLearningThread extends StatefulF
 
 					sortSubBoardState(lSubBoardStates);
 
-					for (Iterator<BoardState> lIterator = lSubBoardStates.iterator(); lIterator.hasNext();) {
-						BoardState lCurrentBoardState = lIterator.next();
+					for (Iterator<OldBoardState> lIterator = lSubBoardStates.iterator(); lIterator.hasNext();) {
+						OldBoardState lCurrentBoardState = lIterator.next();
 						if (lCurrentBoardState.getMove() == lLastSubState.getMove()) {
 							if (lIterator.hasNext()) {
 								mCurrentBoardState = lIterator.next();
@@ -218,10 +218,10 @@ public class FourForwardFixedDurationLinearDepthLearningThread extends StatefulF
 	}
 
 
-	public void sortSubBoardState(List <BoardState> pBoardStates) {
+	public void sortSubBoardState(List <OldBoardState> pBoardStates) {
 		sLogger.trace("Entering");
-		Collections.sort(pBoardStates, new Comparator<BoardState>() {
-			public int compare(BoardState p1, BoardState p2) {
+		Collections.sort(pBoardStates, new Comparator<OldBoardState>() {
+			public int compare(OldBoardState p1, OldBoardState p2) {
 				int lMove1Value = p1.getMove().getMoveIntValue();
 				int lMove2Value = p2.getMove().getMoveIntValue();
 				

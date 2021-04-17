@@ -17,8 +17,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.ThreadContext;
 
-import com.home.neil.connectfour.boardstate.BoardState;
-import com.home.neil.connectfour.boardstate.expansiontask.ExpansionTask;
+import com.home.neil.connectfour.boardstate.old.OldBoardState;
+import com.home.neil.connectfour.boardstate.old.expansiontask.ExpansionTask;
 import com.home.neil.connectfour.gui.Connect4GUI;
 import com.home.neil.connectfour.knowledgebase.KnowledgeBaseFilePool;
 import com.home.neil.connectfour.learninggamethread.givenmove.GivenMoveFixedDurationLearningThread;
@@ -48,7 +48,7 @@ public class BestMoveAutomaticMoveThread extends AutomaticMoveThread {
 		sLogger.trace("Exiting");
 	}
 
-	private BestMoveAutomaticMoveThread(KnowledgeBaseFilePool pKnowledgeBaseFilePool, BoardState pCurrentBoardState, long pDurationPerMoveInMs, Connect4GUI pGUI, String pContext)
+	private BestMoveAutomaticMoveThread(KnowledgeBaseFilePool pKnowledgeBaseFilePool, OldBoardState pCurrentBoardState, long pDurationPerMoveInMs, Connect4GUI pGUI, String pContext)
 			throws ConfigurationException, IOException {
 		super(pKnowledgeBaseFilePool, pCurrentBoardState, pDurationPerMoveInMs, pGUI, pContext);
 		sLogger.trace("Entering");
@@ -62,7 +62,7 @@ public class BestMoveAutomaticMoveThread extends AutomaticMoveThread {
 		sLogger.trace("Exiting");
 	}
 
-	public static synchronized BestMoveAutomaticMoveThread getInstance(KnowledgeBaseFilePool pKnowledgeBaseFilePool, BoardState pCurrentBoardState, long pDurationToRunInMs, Connect4GUI pGUI, String pContext)
+	public static synchronized BestMoveAutomaticMoveThread getInstance(KnowledgeBaseFilePool pKnowledgeBaseFilePool, OldBoardState pCurrentBoardState, long pDurationToRunInMs, Connect4GUI pGUI, String pContext)
 			throws ConfigurationException, IOException {
 		sLogger.trace("Entering");
 
@@ -117,7 +117,7 @@ public class BestMoveAutomaticMoveThread extends AutomaticMoveThread {
 			}
 
 			if (lExpandNodeThread != null) {
-				ArrayList<BoardState> lSubBoardStates = lExpandNodeThread.getSubBoardStates();
+				ArrayList<OldBoardState> lSubBoardStates = lExpandNodeThread.getSubBoardStates();
 
 				sLogger.debug("SubBoardStates size : " + lSubBoardStates.size());
 
@@ -125,8 +125,8 @@ public class BestMoveAutomaticMoveThread extends AutomaticMoveThread {
 					sLogger.error("Somethings wrong... BoardStates is continue and I can't");
 					mTransactionSuccessful = false;
 				} else {
-					for (Iterator<BoardState> lIterator = lSubBoardStates.iterator(); lIterator.hasNext();) {
-						BoardState lCurrentBoardState = lIterator.next();
+					for (Iterator<OldBoardState> lIterator = lSubBoardStates.iterator(); lIterator.hasNext();) {
+						OldBoardState lCurrentBoardState = lIterator.next();
 						sLogger.error("SubMoves: " + lCurrentBoardState.getFileIndexString() + " Score: " + lCurrentBoardState.getMoveScore().getMoveScore());
 					}
 
@@ -183,7 +183,7 @@ public class BestMoveAutomaticMoveThread extends AutomaticMoveThread {
 
 	}
 
-	public void sortSubBoardState(List<BoardState> pBoardState) {
+	public void sortSubBoardState(List<OldBoardState> pBoardState) {
 		sLogger.trace("Entering");
 
 		sLogger.debug("Starting Sorting Phase");
@@ -194,8 +194,8 @@ public class BestMoveAutomaticMoveThread extends AutomaticMoveThread {
 		if (lDepthModulus == 1) { // current move is opponent move, reorder
 									// sub
 									// moves by highest score
-			Collections.sort(pBoardState, new Comparator<BoardState>() {
-				public int compare(BoardState p1, BoardState p2) {
+			Collections.sort(pBoardState, new Comparator<OldBoardState>() {
+				public int compare(OldBoardState p1, OldBoardState p2) {
 					byte lP1MoveScore = p1.getMoveScore().getMoveScore();
 					byte lP2MoveScore = p2.getMoveScore().getMoveScore();
 					if (lP2MoveScore > lP1MoveScore)
@@ -208,8 +208,8 @@ public class BestMoveAutomaticMoveThread extends AutomaticMoveThread {
 			});
 		} else { // current move is a self move, reorder sub moves by lowest
 					// score
-			Collections.sort(pBoardState, new Comparator<BoardState>() {
-				public int compare(BoardState p1, BoardState p2) {
+			Collections.sort(pBoardState, new Comparator<OldBoardState>() {
+				public int compare(OldBoardState p1, OldBoardState p2) {
 					byte lP1MoveScore = p1.getMoveScore().getMoveScore();
 					byte lP2MoveScore = p2.getMoveScore().getMoveScore();
 					if (lP2MoveScore < lP1MoveScore)

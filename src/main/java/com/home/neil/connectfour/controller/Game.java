@@ -3,7 +3,7 @@ package com.home.neil.connectfour.controller;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.home.neil.connectfour.boardstate.BoardState;
+import com.home.neil.connectfour.boardstate.old.OldBoardState;
 
 public abstract class Game {
 	public static final String CLASS_NAME = Game.class.getName();
@@ -15,7 +15,7 @@ public abstract class Game {
 	private GameController mGameController = null;
 
 	private GAMESTATE mCurrentGameState = null;
-	private BoardState mCurrentBoardState = null;
+	private OldBoardState mCurrentBoardState = null;
 	
 
 	public GameController getGameController() {

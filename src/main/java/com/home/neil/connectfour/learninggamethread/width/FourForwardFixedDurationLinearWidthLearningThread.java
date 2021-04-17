@@ -15,8 +15,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.ThreadContext;
 
-import com.home.neil.connectfour.boardstate.BoardState;
-import com.home.neil.connectfour.boardstate.expansiontask.ExpansionTask;
+import com.home.neil.connectfour.boardstate.old.OldBoardState;
+import com.home.neil.connectfour.boardstate.old.expansiontask.ExpansionTask;
 import com.home.neil.connectfour.knowledgebase.KnowledgeBaseFilePool;
 import com.home.neil.connectfour.knowledgebase.exception.KnowledgeBaseException;
 import com.home.neil.connectfour.learninggamethread.StatefulFixedDurationLearningThread;
@@ -137,7 +137,7 @@ public class FourForwardFixedDurationLinearWidthLearningThread extends StatefulF
 		sLogger.trace("Exiting");
 	}
 
-	private void performExhaustiveSearch(BoardState pBoardStateToExpand) throws KnowledgeBaseException {
+	private void performExhaustiveSearch(OldBoardState pBoardStateToExpand) throws KnowledgeBaseException {
 		sLogger.trace("Entering");
 		
 
@@ -173,7 +173,7 @@ public class FourForwardFixedDurationLinearWidthLearningThread extends StatefulF
 
 			sLogger.debug("The starting index is set! Expansion Successful to: " + pBoardStateToExpand.getFileIndexString());
 
-			ArrayList<BoardState> lSubBoardStates = lExpandNodeThread.getSubBoardStates();
+			ArrayList<OldBoardState> lSubBoardStates = lExpandNodeThread.getSubBoardStates();
 
 			if (lSubBoardStates == null || lSubBoardStates.isEmpty()) {
 				mTransactionSuccessful = false;
@@ -185,8 +185,8 @@ public class FourForwardFixedDurationLinearWidthLearningThread extends StatefulF
 			sortSubBoardState(lSubBoardStates);
 
 			boolean lStartTraversing = false;
-			for (Iterator<BoardState> lIterator = lSubBoardStates.iterator(); lIterator.hasNext();) {
-				BoardState lSubBoardState = lIterator.next();
+			for (Iterator<OldBoardState> lIterator = lSubBoardStates.iterator(); lIterator.hasNext();) {
+				OldBoardState lSubBoardState = lIterator.next();
 				if (mStartingIndex == null || mStartingIndex.startsWith(lSubBoardState.getFileIndexString())) {
 					lStartTraversing = true;
 				}
@@ -230,7 +230,7 @@ public class FourForwardFixedDurationLinearWidthLearningThread extends StatefulF
 		
 		sLogger.debug("Write Last Move Successful:" + pBoardStateToExpand.getFileIndexString());
 
-		ArrayList<BoardState> lSubBoardStates = lExpandNodeThread.getSubBoardStates();
+		ArrayList<OldBoardState> lSubBoardStates = lExpandNodeThread.getSubBoardStates();
 
 		if (lSubBoardStates != null && !lSubBoardStates.isEmpty()) {
 
@@ -238,8 +238,8 @@ public class FourForwardFixedDurationLinearWidthLearningThread extends StatefulF
 
 			sortSubBoardState (lSubBoardStates);
 			
-			for (Iterator<BoardState> lIterator = lSubBoardStates.iterator(); lIterator.hasNext();) {
-				BoardState lSubBoardState = lIterator.next();
+			for (Iterator<OldBoardState> lIterator = lSubBoardStates.iterator(); lIterator.hasNext();) {
+				OldBoardState lSubBoardState = lIterator.next();
 				sLogger.debug("Recursive Call Start: " + lSubBoardState.getFileIndexString());
 				if (!isTimeToTerminate()) {
 					performExhaustiveSearch(lSubBoardState);
@@ -257,10 +257,10 @@ public class FourForwardFixedDurationLinearWidthLearningThread extends StatefulF
 	}
 
 
-	public void sortSubBoardState(List <BoardState> pBoardStates) {
+	public void sortSubBoardState(List <OldBoardState> pBoardStates) {
 		sLogger.trace("Entering");
-		Collections.sort(pBoardStates, new Comparator<BoardState>() {
-			public int compare(BoardState p1, BoardState p2) {
+		Collections.sort(pBoardStates, new Comparator<OldBoardState>() {
+			public int compare(OldBoardState p1, OldBoardState p2) {
 				int lMove1Value = p1.getMove().getMoveIntValue();
 				int lMove2Value = p2.getMove().getMoveIntValue();
 				

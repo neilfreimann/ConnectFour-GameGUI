@@ -1,4 +1,4 @@
-package com.home.neil.connectfour.boardstate;
+package com.home.neil.connectfour.boardstate.old;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,11 +14,11 @@ public class MoveScore {
 			CLASS_NAME.lastIndexOf("."));
 	public static Logger sLogger = LogManager.getLogger(PACKAGE_NAME);
 	
-	public BoardState mBoardState;
+	public OldBoardState mBoardState;
 	
 	private byte mMoveScore = 0;
 
-	public MoveScore(BoardState pBoardState) {
+	public MoveScore(OldBoardState pBoardState) {
 		super();
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");

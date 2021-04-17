@@ -29,9 +29,9 @@ import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.home.neil.connectfour.boardstate.BoardState;
-import com.home.neil.connectfour.boardstate.InvalidMoveException;
-import com.home.neil.connectfour.boardstate.expansiontask.ExpansionTask;
+import com.home.neil.connectfour.boardstate.old.InvalidMoveException;
+import com.home.neil.connectfour.boardstate.old.OldBoardState;
+import com.home.neil.connectfour.boardstate.old.expansiontask.ExpansionTask;
 import com.home.neil.connectfour.knowledgebase.KnowledgeBaseFilePool;
 import com.home.neil.connectfour.knowledgebase.exception.KnowledgeBaseException;
 
@@ -46,7 +46,7 @@ public class MoveTreeJPanel extends JPanel implements TreeSelectionListener, Tre
 
 	private JTree mMoveTree;
 	private DefaultTreeModel mModel;
-	private BoardState mRootBoardState = null;
+	private OldBoardState mRootBoardState = null;
 	private DefaultMutableTreeNode mRootBoardStateNode = null;
 	
 	private KnowledgeBaseFilePool mKnowledgeBaseFilePool = null;
@@ -97,7 +97,7 @@ public class MoveTreeJPanel extends JPanel implements TreeSelectionListener, Tre
 	private void createInitialNodes() throws ConfigurationException, InvalidMoveException, KnowledgeBaseException {
 		sLogger.trace("Entering");
 
-		mRootBoardState = new BoardState(mKnowledgeBaseFilePool, BoardState.Move.OPPONENT_NOMOVE, true, null);
+		mRootBoardState = new OldBoardState(mKnowledgeBaseFilePool, OldBoardState.Move.OPPONENT_NOMOVE, true, null);
 		mRootBoardStateNode = new DefaultMutableTreeNode(mRootBoardState);
 
 		ExpansionTask lExpansionTask = new ExpansionTask(mRootBoardState, null);
@@ -108,12 +108,12 @@ public class MoveTreeJPanel extends JPanel implements TreeSelectionListener, Tre
 			return;
 		}
 
-		ArrayList<BoardState> lSubBoardStates = lExpansionTask.getSubBoardStates();
+		ArrayList<OldBoardState> lSubBoardStates = lExpansionTask.getSubBoardStates();
 
 		sortSubBoardState(lSubBoardStates);
 
-		for (Iterator<BoardState> lIterator = lSubBoardStates.iterator(); lIterator.hasNext();) {
-			BoardState lCurrentBoardState = lIterator.next();
+		for (Iterator<OldBoardState> lIterator = lSubBoardStates.iterator(); lIterator.hasNext();) {
+			OldBoardState lCurrentBoardState = lIterator.next();
 
 			DefaultMutableTreeNode lCurrentBoardStateNode = new DefaultMutableTreeNode(lCurrentBoardState);
 
@@ -127,12 +127,12 @@ public class MoveTreeJPanel extends JPanel implements TreeSelectionListener, Tre
 				return;
 			}
 
-			ArrayList<BoardState> lSubBoardStates2 = lExpansionTask2.getSubBoardStates();
+			ArrayList<OldBoardState> lSubBoardStates2 = lExpansionTask2.getSubBoardStates();
 
 			sortSubBoardState(lSubBoardStates2);
 
-			for (Iterator<BoardState> lIterator2 = lSubBoardStates2.iterator(); lIterator2.hasNext();) {
-				BoardState lCurrentBoardState2 = lIterator2.next();
+			for (Iterator<OldBoardState> lIterator2 = lSubBoardStates2.iterator(); lIterator2.hasNext();) {
+				OldBoardState lCurrentBoardState2 = lIterator2.next();
 
 				DefaultMutableTreeNode lCurrentBoardStateNode2 = new DefaultMutableTreeNode(lCurrentBoardState2);
 
@@ -145,9 +145,9 @@ public class MoveTreeJPanel extends JPanel implements TreeSelectionListener, Tre
 		sLogger.trace("Exiting");
 	}
 
-	public void sortSubBoardState(List<BoardState> pBoardStates) {
-		Collections.sort(pBoardStates, new Comparator<BoardState>() {
-			public int compare(BoardState p1, BoardState p2) {
+	public void sortSubBoardState(List<OldBoardState> pBoardStates) {
+		Collections.sort(pBoardStates, new Comparator<OldBoardState>() {
+			public int compare(OldBoardState p1, OldBoardState p2) {
 				int lMove1Value = p1.getMove().getMoveIntValue();
 				int lMove2Value = p2.getMove().getMoveIntValue();
 				if (lMove1Value > lMove2Value)
@@ -239,7 +239,7 @@ public class MoveTreeJPanel extends JPanel implements TreeSelectionListener, Tre
 		DefaultTreeModel lModel = ((DefaultTreeModel) mMoveTree.getModel());
 
 		DefaultMutableTreeNode lNode = (DefaultMutableTreeNode) lTreePath.getLastPathComponent();
-		BoardState lExpandedNode = (BoardState) lNode.getUserObject();
+		OldBoardState lExpandedNode = (OldBoardState) lNode.getUserObject();
 
 		for (Enumeration lEnum = lNode.children(); lEnum.hasMoreElements();) {
 
@@ -247,7 +247,7 @@ public class MoveTreeJPanel extends JPanel implements TreeSelectionListener, Tre
 
 			lNodeChild.removeAllChildren();
 			
-			BoardState lCurrentBoardState = (BoardState) lNodeChild.getUserObject();
+			OldBoardState lCurrentBoardState = (OldBoardState) lNodeChild.getUserObject();
 
 			ExpansionTask lExpansionTask2 = new ExpansionTask(lCurrentBoardState, null);
 			boolean lSuccess = lExpansionTask2.executeTask();
@@ -260,12 +260,12 @@ public class MoveTreeJPanel extends JPanel implements TreeSelectionListener, Tre
 			lNodeChild.setUserObject(lNodeChild.getUserObject());
 			lModel.nodeChanged(lNodeChild);
 			
-			ArrayList<BoardState> lSubBoardStates2 = lExpansionTask2.getSubBoardStates();
+			ArrayList<OldBoardState> lSubBoardStates2 = lExpansionTask2.getSubBoardStates();
 			if (lSubBoardStates2 != null && !lSubBoardStates2.isEmpty()) {
 				sortSubBoardState(lSubBoardStates2);
 
-				for (Iterator<BoardState> lIterator2 = lSubBoardStates2.iterator(); lIterator2.hasNext();) {
-					BoardState lCurrentBoardState2 = lIterator2.next();
+				for (Iterator<OldBoardState> lIterator2 = lSubBoardStates2.iterator(); lIterator2.hasNext();) {
+					OldBoardState lCurrentBoardState2 = lIterator2.next();
 
 					DefaultMutableTreeNode lCurrentBoardStateNode2 = new DefaultMutableTreeNode(lCurrentBoardState2);
 

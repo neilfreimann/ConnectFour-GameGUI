@@ -16,9 +16,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.ThreadContext;
 
-import com.home.neil.connectfour.boardstate.BoardState;
-import com.home.neil.connectfour.boardstate.InvalidMoveException;
-import com.home.neil.connectfour.boardstate.expansiontask.ExpansionTask;
+import com.home.neil.connectfour.boardstate.old.InvalidMoveException;
+import com.home.neil.connectfour.boardstate.old.OldBoardState;
+import com.home.neil.connectfour.boardstate.old.expansiontask.ExpansionTask;
 import com.home.neil.connectfour.knowledgebase.KnowledgeBaseFilePool;
 import com.home.neil.connectfour.knowledgebase.exception.KnowledgeBaseException;
 import com.home.neil.connectfour.learninggamethread.StatefulFixedDurationLearningThread;
@@ -171,7 +171,7 @@ public class FixedDurationEfficientBestMoveLinearDepthLearningThread extends Sta
 		}
 	}
 
-	private void performExhaustiveSearch(BoardState pBoardStateToExpand, String pStack, String pBreadCrumbs, int pLayersToRead)
+	private void performExhaustiveSearch(OldBoardState pBoardStateToExpand, String pStack, String pBreadCrumbs, int pLayersToRead)
 			throws KnowledgeBaseException {
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
@@ -251,7 +251,7 @@ public class FixedDurationEfficientBestMoveLinearDepthLearningThread extends Sta
 					+ pBoardStateToExpand.getFileIndexString());
 
 
-			ArrayList<BoardState> lSubBoardStates = expandBoardStates(pBoardStateToExpand, pLayersToRead, true);
+			ArrayList<OldBoardState> lSubBoardStates = expandBoardStates(pBoardStateToExpand, pLayersToRead, true);
 
 			if (pBoardStateToExpand.getFileIndexString().length() >= UPPER_LAYERS_THRESHOLD + 1) {
 				sLogger.error("SubBoardStatesCount: "
@@ -261,8 +261,8 @@ public class FixedDurationEfficientBestMoveLinearDepthLearningThread extends Sta
 
 				int lUniqueCount = 0;
 				String lCurrentSubBoardStateFileString = null;
-				for (Iterator <BoardState> lIter = lSubBoardStates.iterator(); lIter.hasNext();) {
-					BoardState lCurrentSubBoardState = lIter.next();
+				for (Iterator <OldBoardState> lIter = lSubBoardStates.iterator(); lIter.hasNext();) {
+					OldBoardState lCurrentSubBoardState = lIter.next();
 					if (lCurrentSubBoardStateFileString == null ) {
 						lCurrentSubBoardStateFileString = lCurrentSubBoardState.getBoardStateString();
 						lUniqueCount++;
@@ -288,8 +288,8 @@ public class FixedDurationEfficientBestMoveLinearDepthLearningThread extends Sta
 				
 				StringBuilder lStackBuilder = new StringBuilder();
 	
-				for (Iterator<BoardState> lIterator = lSubBoardStates.iterator(); lIterator.hasNext();) {
-					BoardState lSubBoardState = lIterator.next();
+				for (Iterator<OldBoardState> lIterator = lSubBoardStates.iterator(); lIterator.hasNext();) {
+					OldBoardState lSubBoardState = lIterator.next();
 	
 					lStackBuilder.append(lSubBoardState.getFileIndexString()).append(",");
 	
@@ -301,8 +301,8 @@ public class FixedDurationEfficientBestMoveLinearDepthLearningThread extends Sta
 	
 				boolean lStartTraversing = false;
 	
-				for (Iterator<BoardState> lIterator = lSubBoardStates.iterator(); lIterator.hasNext();) {
-					BoardState lSubBoardState = lIterator.next();
+				for (Iterator<OldBoardState> lIterator = lSubBoardStates.iterator(); lIterator.hasNext();) {
+					OldBoardState lSubBoardState = lIterator.next();
 	
 					if (mStartingIndex == null || lCurrentLayerNode.startsWith(lSubBoardState.getFileIndexString())) {
 						lStartTraversing = true;
@@ -391,7 +391,7 @@ public class FixedDurationEfficientBestMoveLinearDepthLearningThread extends Sta
 
 		sLogger.debug("Expanding Node:" + pBoardStateToExpand.getFileIndexString());
 
-		ArrayList<BoardState> lSubBoardStates = expandBoardStates(pBoardStateToExpand, pLayersToRead, false);
+		ArrayList<OldBoardState> lSubBoardStates = expandBoardStates(pBoardStateToExpand, pLayersToRead, false);
 	
 		
 		if (lSubBoardStates != null && !lSubBoardStates.isEmpty()) {
@@ -405,8 +405,8 @@ public class FixedDurationEfficientBestMoveLinearDepthLearningThread extends Sta
 
 				int lUniqueCount = 0;
 				String lCurrentSubBoardStateFileString = null;
-				for (Iterator <BoardState> lIter = lSubBoardStates.iterator(); lIter.hasNext();) {
-					BoardState lCurrentSubBoardState = lIter.next();
+				for (Iterator <OldBoardState> lIter = lSubBoardStates.iterator(); lIter.hasNext();) {
+					OldBoardState lCurrentSubBoardState = lIter.next();
 					if (lCurrentSubBoardStateFileString == null ) {
 						lCurrentSubBoardStateFileString = lCurrentSubBoardState.getBoardStateString();
 						lUniqueCount++;
@@ -426,8 +426,8 @@ public class FixedDurationEfficientBestMoveLinearDepthLearningThread extends Sta
 
 			StringBuilder lStackBuilder = new StringBuilder();
 
-			for (Iterator<BoardState> lIterator = lSubBoardStates.iterator(); lIterator.hasNext();) {
-				BoardState lSubBoardState = lIterator.next();
+			for (Iterator<OldBoardState> lIterator = lSubBoardStates.iterator(); lIterator.hasNext();) {
+				OldBoardState lSubBoardState = lIterator.next();
 
 				lStackBuilder.append(lSubBoardState.getFileIndexString()).append(",");
 
@@ -437,8 +437,8 @@ public class FixedDurationEfficientBestMoveLinearDepthLearningThread extends Sta
 
 			String lStackList = lStackBuilder.toString();
 
-			for (Iterator<BoardState> lIterator = lSubBoardStates.iterator(); lIterator.hasNext();) {
-				BoardState lSubBoardState = lIterator.next();
+			for (Iterator<OldBoardState> lIterator = lSubBoardStates.iterator(); lIterator.hasNext();) {
+				OldBoardState lSubBoardState = lIterator.next();
 
 				if (pBoardStateToExpand.getFileIndexString().length() > UPPER_LAYERS_THRESHOLD) {
 
@@ -520,7 +520,7 @@ public class FixedDurationEfficientBestMoveLinearDepthLearningThread extends Sta
 		}
 	}
 
-	public ArrayList<BoardState> expandBoardStates(BoardState pBoardStateToExpand, int pLayers, boolean pCheckBreadCrumbs) throws KnowledgeBaseException {
+	public ArrayList<OldBoardState> expandBoardStates(OldBoardState pBoardStateToExpand, int pLayers, boolean pCheckBreadCrumbs) throws KnowledgeBaseException {
 
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
@@ -554,7 +554,7 @@ public class FixedDurationEfficientBestMoveLinearDepthLearningThread extends Sta
 			throw new KnowledgeBaseException();
 		}
 
-		BoardState lCurrentBoardStateToExpand = pBoardStateToExpand;
+		OldBoardState lCurrentBoardStateToExpand = pBoardStateToExpand;
 
 		ExpansionTask lExpandNodeThread = new ExpansionTask(lCurrentBoardStateToExpand, mLogContext);
 		boolean lSuccess = lExpandNodeThread.executeTask();
@@ -579,7 +579,7 @@ public class FixedDurationEfficientBestMoveLinearDepthLearningThread extends Sta
 			return null;
 		}
 
-		ArrayList<BoardState> lSubBoardStates = lExpandNodeThread.getSubBoardStates();
+		ArrayList<OldBoardState> lSubBoardStates = lExpandNodeThread.getSubBoardStates();
 		
 		if (pCheckBreadCrumbs && (lSubBoardStates == null || lSubBoardStates.isEmpty())) {
 			mTransactionSuccessful = false;
@@ -604,10 +604,10 @@ public class FixedDurationEfficientBestMoveLinearDepthLearningThread extends Sta
 			}
 	
 			if (pLayers > 0) {
-				ArrayList<BoardState> lAllExpandedBoardStates = new ArrayList<BoardState>();
-				for (Iterator <BoardState>lIterator = lSubBoardStates.iterator(); lIterator.hasNext();) {
-					BoardState lNextBoardStateToExpand = lIterator.next();
-					ArrayList<BoardState> lExpandedBoardStates = expandBoardStates (lNextBoardStateToExpand, pLayers, false);
+				ArrayList<OldBoardState> lAllExpandedBoardStates = new ArrayList<OldBoardState>();
+				for (Iterator <OldBoardState>lIterator = lSubBoardStates.iterator(); lIterator.hasNext();) {
+					OldBoardState lNextBoardStateToExpand = lIterator.next();
+					ArrayList<OldBoardState> lExpandedBoardStates = expandBoardStates (lNextBoardStateToExpand, pLayers, false);
 					if (lExpandedBoardStates != null && !lExpandedBoardStates.isEmpty() ) {
 						lAllExpandedBoardStates.addAll(lExpandedBoardStates);
 					}
@@ -622,8 +622,8 @@ public class FixedDurationEfficientBestMoveLinearDepthLearningThread extends Sta
 
 						int lUniqueCount = 0;
 						String lCurrentSubBoardStateFileString = null;
-						for (Iterator <BoardState> lIter = lAllExpandedBoardStates.iterator(); lIter.hasNext();) {
-							BoardState lCurrentSubBoardState = lIter.next();
+						for (Iterator <OldBoardState> lIter = lAllExpandedBoardStates.iterator(); lIter.hasNext();) {
+							OldBoardState lCurrentSubBoardState = lIter.next();
 							if (lCurrentSubBoardStateFileString == null ) {
 								lCurrentSubBoardStateFileString = lCurrentSubBoardState.getBoardStateString();
 								lUniqueCount++;
@@ -641,7 +641,7 @@ public class FixedDurationEfficientBestMoveLinearDepthLearningThread extends Sta
 
 						stopAndDrainBoardStates(lAllExpandedBoardStates);
 
-						lAllExpandedBoardStates = new ArrayList<BoardState> ();
+						lAllExpandedBoardStates = new ArrayList<OldBoardState> ();
 					}
 				}
 				
@@ -657,12 +657,12 @@ public class FixedDurationEfficientBestMoveLinearDepthLearningThread extends Sta
 	}
 
 	
-	public void stopAndDrainBoardStates (ArrayList<BoardState> pBoardStatesToDrain) throws KnowledgeBaseException {
+	public void stopAndDrainBoardStates (ArrayList<OldBoardState> pBoardStatesToDrain) throws KnowledgeBaseException {
 
-		for (Iterator <BoardState> lDrainIterator = pBoardStatesToDrain.iterator(); lDrainIterator.hasNext();) {
-			BoardState lCurrentBoardStateToDrain = lDrainIterator.next();
+		for (Iterator <OldBoardState> lDrainIterator = pBoardStatesToDrain.iterator(); lDrainIterator.hasNext();) {
+			OldBoardState lCurrentBoardStateToDrain = lDrainIterator.next();
 			
-			ArrayList<BoardState> lSubBoardStates = expandBoardStates(lCurrentBoardStateToDrain, 1, false);
+			ArrayList<OldBoardState> lSubBoardStates = expandBoardStates(lCurrentBoardStateToDrain, 1, false);
 			
 			if (lSubBoardStates != null && !lSubBoardStates.isEmpty()) {
 				stopAndDrainBoardStates (lSubBoardStates);
@@ -679,7 +679,7 @@ public class FixedDurationEfficientBestMoveLinearDepthLearningThread extends Sta
 	
 	
 	
-	public void markSubBoardsComplete(BoardState pBoardStateToMark, int pLayers) throws KnowledgeBaseException {
+	public void markSubBoardsComplete(OldBoardState pBoardStateToMark, int pLayers) throws KnowledgeBaseException {
 
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
@@ -693,7 +693,7 @@ public class FixedDurationEfficientBestMoveLinearDepthLearningThread extends Sta
 		
 		sLogger.debug("Executing Marking of: " + pBoardStateToMark.getFileIndexString());
 
-		BoardState lCurrentBoardStateToExpand = pBoardStateToMark;
+		OldBoardState lCurrentBoardStateToExpand = pBoardStateToMark;
 
 		ExpansionTask lExpandNodeThread = new ExpansionTask(lCurrentBoardStateToExpand, mLogContext);
 		boolean lSuccess = lExpandNodeThread.executeTask();
@@ -711,13 +711,13 @@ public class FixedDurationEfficientBestMoveLinearDepthLearningThread extends Sta
 				+ lCurrentBoardStateToExpand.getFileIndexString());
 
 
-		ArrayList<BoardState> lSubBoardStates = lExpandNodeThread.getSubBoardStates();
+		ArrayList<OldBoardState> lSubBoardStates = lExpandNodeThread.getSubBoardStates();
 
 		
 		
 		if (lSubBoardStates != null && !lSubBoardStates.isEmpty()) {
-			for (Iterator <BoardState>lIterator = lSubBoardStates.iterator(); lIterator.hasNext();) {
-				BoardState lNextBoardStateToMark = lIterator.next();
+			for (Iterator <OldBoardState>lIterator = lSubBoardStates.iterator(); lIterator.hasNext();) {
+				OldBoardState lNextBoardStateToMark = lIterator.next();
 				
 				markSubBoardsComplete(lNextBoardStateToMark, pLayers);
 				
@@ -747,9 +747,9 @@ public class FixedDurationEfficientBestMoveLinearDepthLearningThread extends Sta
 	
 	
 	
-	public void sortSubBoardState(List<BoardState> pBoardStates) {
-		Collections.sort(pBoardStates, new Comparator<BoardState>() {
-			public int compare(BoardState p1, BoardState p2) {
+	public void sortSubBoardState(List<OldBoardState> pBoardStates) {
+		Collections.sort(pBoardStates, new Comparator<OldBoardState>() {
+			public int compare(OldBoardState p1, OldBoardState p2) {
 				int lMove1Value = p1.getMove().getMoveIntValue();
 				int lMove2Value = p2.getMove().getMoveIntValue();
 				if (lMove1Value > lMove2Value)
@@ -762,10 +762,10 @@ public class FixedDurationEfficientBestMoveLinearDepthLearningThread extends Sta
 		});
 	}
 
-	public void sortSubBoardState(List<BoardState> pBoardStates, HashMap<String, Integer> pOrderedBoardStates) {
+	public void sortSubBoardState(List<OldBoardState> pBoardStates, HashMap<String, Integer> pOrderedBoardStates) {
 
-		Collections.sort(pBoardStates, new Comparator<BoardState>() {
-			public int compare(BoardState p1, BoardState p2) {
+		Collections.sort(pBoardStates, new Comparator<OldBoardState>() {
+			public int compare(OldBoardState p1, OldBoardState p2) {
 				int lMove1Value = pOrderedBoardStates.get(p1.getFileIndexString());
 				int lMove2Value = pOrderedBoardStates.get(p2.getFileIndexString());
 
@@ -780,9 +780,9 @@ public class FixedDurationEfficientBestMoveLinearDepthLearningThread extends Sta
 	}
 	
 
-	public void sortSubBoardStateByStateString(List<BoardState> pBoardStates) {
-		Collections.sort(pBoardStates, new Comparator<BoardState>() {
-			public int compare(BoardState p1, BoardState p2) {
+	public void sortSubBoardStateByStateString(List<OldBoardState> pBoardStates) {
+		Collections.sort(pBoardStates, new Comparator<OldBoardState>() {
+			public int compare(OldBoardState p1, OldBoardState p2) {
 				String lMove1StateString = p1.getBoardStateString();
 				String lMove2StateString = p2.getBoardStateString();
 				return lMove1StateString.compareTo(lMove2StateString);
@@ -791,9 +791,9 @@ public class FixedDurationEfficientBestMoveLinearDepthLearningThread extends Sta
 	}
 	
 
-	public void sortSubBoardStateByScore(List<BoardState> pBoardStates) {
-		Collections.sort(pBoardStates, new Comparator<BoardState>() {
-			public int compare(BoardState p1, BoardState p2) {
+	public void sortSubBoardStateByScore(List<OldBoardState> pBoardStates) {
+		Collections.sort(pBoardStates, new Comparator<OldBoardState>() {
+			public int compare(OldBoardState p1, OldBoardState p2) {
 				byte lMove1ScoreValue = p1.getMoveScore().getMoveScore();
 				byte lMove2ScoreValue = p2.getMoveScore().getMoveScore();
 				if (lMove1ScoreValue > lMove2ScoreValue)
@@ -806,9 +806,9 @@ public class FixedDurationEfficientBestMoveLinearDepthLearningThread extends Sta
 		});
 	}
 
-	public void sortSubBoardStateByReverseScore(List<BoardState> pBoardStates) {
-		Collections.sort(pBoardStates, new Comparator<BoardState>() {
-			public int compare(BoardState p1, BoardState p2) {
+	public void sortSubBoardStateByReverseScore(List<OldBoardState> pBoardStates) {
+		Collections.sort(pBoardStates, new Comparator<OldBoardState>() {
+			public int compare(OldBoardState p1, OldBoardState p2) {
 				byte lMove1ScoreValue = p1.getMoveScore().getMoveScore();
 				byte lMove2ScoreValue = p2.getMoveScore().getMoveScore();
 				if (lMove1ScoreValue > lMove2ScoreValue)

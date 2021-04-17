@@ -3,7 +3,7 @@ package com.home.neil.connectfour.gamethreads;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.home.neil.connectfour.boardstate.BoardState;
+import com.home.neil.connectfour.boardstate.old.OldBoardState;
 import com.home.neil.connectfour.gui.Connect4GUI;
 import com.home.neil.connectfour.knowledgebase.KnowledgeBaseFilePool;
 import com.home.neil.connectfour.learninggamethread.givenmove.GivenMoveFixedDurationLearningThread;
@@ -21,8 +21,8 @@ public abstract class AutomaticMoveThread extends GameThread implements Automati
 
 	protected long mDurationPerMoveInMs = 600000;
 
-	protected BoardState mCurrentBoardState = null;
-	protected BoardState.Move mNextMove = null;
+	protected OldBoardState mCurrentBoardState = null;
+	protected OldBoardState.Move mNextMove = null;
 
 	protected GivenMoveFixedDurationLearningThread mGameLearningThread;
 	
@@ -37,7 +37,7 @@ public abstract class AutomaticMoveThread extends GameThread implements Automati
 	
 	protected KnowledgeBaseFilePool mKnowledgeBaseFilePool = null;
 
-	public AutomaticMoveThread(KnowledgeBaseFilePool pKnowledgeBaseFilePool, BoardState pCurrentBoardState, long pDurationPerMoveInMs, Connect4GUI pGUI, String pContext) {
+	public AutomaticMoveThread(KnowledgeBaseFilePool pKnowledgeBaseFilePool, OldBoardState pCurrentBoardState, long pDurationPerMoveInMs, Connect4GUI pGUI, String pContext) {
 		sLogger.trace("Entering");
 				
 		renameThread(pContext);
@@ -59,7 +59,7 @@ public abstract class AutomaticMoveThread extends GameThread implements Automati
 		return mBeanName;
 	}
 	
-	public BoardState.Move getNextMove() {
+	public OldBoardState.Move getNextMove() {
 		sLogger.trace("Entering");
 		sLogger.trace("Exiting");
 		return mNextMove;

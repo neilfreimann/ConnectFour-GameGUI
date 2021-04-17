@@ -1,4 +1,4 @@
-package com.home.neil.connectfour.boardstate.locks;
+package com.home.neil.connectfour.boardstate.old.locks;
 
 import java.lang.management.ManagementFactory;
 import java.util.HashMap;
@@ -14,8 +14,8 @@ import javax.management.ObjectName;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.home.neil.connectfour.boardstate.BoardState;
-import com.home.neil.connectfour.boardstate.expansiontask.ExpansionTask;
+import com.home.neil.connectfour.boardstate.old.OldBoardState;
+import com.home.neil.connectfour.boardstate.old.expansiontask.ExpansionTask;
 import com.home.neil.connectfour.managers.appmanager.ApplicationPrecompilerSettings;
 
 
@@ -26,7 +26,7 @@ public class BoardStateLocks implements BoardStateLocksMBean {
 	public static final String MBEAN_NAME = PACKAGE_NAME + ":type=" + BoardStateLocks.class.getSimpleName();
 	public static Logger sLogger = LogManager.getLogger(PACKAGE_NAME);
 
-	private HashMap<String, BoardState> mCurrentBoardStateLocks = null;
+	private HashMap<String, OldBoardState> mCurrentBoardStateLocks = null;
 	private HashMap<String, LinkedList<ExpansionTask>> mCurrentBoardStateLockReservations = null;		
 
 	private static BoardStateLocks sInstance = null;
@@ -36,7 +36,7 @@ public class BoardStateLocks implements BoardStateLocksMBean {
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
-		mCurrentBoardStateLocks = new HashMap<String, BoardState> ();
+		mCurrentBoardStateLocks = new HashMap<String, OldBoardState> ();
 		mCurrentBoardStateLockReservations = new HashMap<String, LinkedList<ExpansionTask>> ();
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
@@ -77,7 +77,7 @@ public class BoardStateLocks implements BoardStateLocksMBean {
 	}
 	
 	
-	public synchronized boolean reserveBoardState (BoardState pBoardStateToReserve, ExpansionTask lTask) {
+	public synchronized boolean reserveBoardState (OldBoardState pBoardStateToReserve, ExpansionTask lTask) {
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
@@ -90,7 +90,7 @@ public class BoardStateLocks implements BoardStateLocksMBean {
 			lParentMove = lParentMoveReciprocal;
 		}
 		
-		BoardState lParentMoveLock = mCurrentBoardStateLocks.get(lParentMove);
+		OldBoardState lParentMoveLock = mCurrentBoardStateLocks.get(lParentMove);
 		if (lParentMoveLock == null) {
 			mCurrentBoardStateLocks.put(lParentMove, pBoardStateToReserve);
 			lTask.setBoardStateLock(pBoardStateToReserve);
@@ -127,7 +127,7 @@ public class BoardStateLocks implements BoardStateLocksMBean {
 		}
 	}
 	
-	public synchronized void releaseBoardState (BoardState pBoardStateToRelease) {
+	public synchronized void releaseBoardState (OldBoardState pBoardStateToRelease) {
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
