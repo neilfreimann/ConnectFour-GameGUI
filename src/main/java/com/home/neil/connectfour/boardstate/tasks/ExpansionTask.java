@@ -211,6 +211,7 @@ public class ExpansionTask extends BasicAppTask {
 			
 			sLogger.debug("Rescoring BoardState: {{}}", lCurrentBoardStateMoveString);
 			lRescoreValue = rescoreNode(lCurrentBoardState, lExpandedBoardStates);
+			//TODO if the Move score has not changed.... do we really need to rescore beyond it?
 			lCurrentBoardState.setMoveScore(lRescoreValue);
 			//TODO 	lCurrentBoardState.writeMoveScoreToKnowledge(mLogContext);
 			sLogger.debug("BoardState is rescored: {{}}", lCurrentBoardStateMoveString);
