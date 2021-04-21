@@ -1,4 +1,4 @@
-package com.home.neil.connectfour.boardstate.old.junit;
+package old.com.home.neil.connectfour.boardstate.junit;
 
 import java.io.IOException;
 import java.io.PrintWriter;

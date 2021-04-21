@@ -14,43 +14,67 @@ public class PlayerSet extends ConnectFourBoardAttributeSet {
 	public static final String PACKAGE_NAME = CLASS_NAME.substring(0, CLASS_NAME.lastIndexOf("."));
 	public static final Logger sLogger = LogManager.getLogger(PACKAGE_NAME);
 	
-	private static PlayerSet sPlayerSet = null;
-	
+	private static PlayerSet sRealPlayerSet = null;
+	private static PlayerSet sAllPlayerSet = null;
+
+	public static final Player NULL_PLAYER =  new Player (0);
+
 	static {
-		sPlayerSet = new PlayerSet(Player.class);
+		sRealPlayerSet = new PlayerSet(Player.class);
+		sAllPlayerSet = new PlayerSet(Player.class);
 		for (int j = 1; j <= sConnectFourBoardConfig.getMaximumNumberOfPlayers(); j++) {
 			Player lPlayer = new Player (j);
 
-			sPlayerSet.addGameAttribute(lPlayer);
+			sRealPlayerSet.addGameAttribute(lPlayer);
+			sAllPlayerSet.addGameAttribute(lPlayer);
 			sLogger.info("Player Loaded: {{}} : {{}}", lPlayer.getAttributeName(), lPlayer.getAttributeBitSet().getBitSetString());
 		}
+		
+		sAllPlayerSet.addGameAttribute(NULL_PLAYER);
 	}
 	
-	public static final Player NULL_PLAYER =  new Player (0);
 	
 	private PlayerSet(Class <?> pClass) {
 		super(pClass, GameAttributeBitSet.getEncodingSize(sConnectFourBoardConfig.getMaximumNumberOfPlayers()));
 	}
 	
 	public static PlayerSet getInstance () {
-		return sPlayerSet;
+		return sRealPlayerSet;
 	}
 	
-	public static Player getPlayer (BitSet pBitSet) {
-		return (Player) sPlayerSet.getGameAttribute(new GameAttributeBitSet (pBitSet));
+	public static Player getRealPlayer (BitSet pBitSet) {
+		return (Player) sRealPlayerSet.getGameAttribute(new GameAttributeBitSet (pBitSet));
 	}
 	
-	public static Player getPlayer (String pPlayerName) {
-		return (Player) sPlayerSet.getGameAttribute(pPlayerName);
+	public static Player getRealPlayer (String pPlayerName) {
+		return (Player) sRealPlayerSet.getGameAttribute(pPlayerName);
 	}
 	
-	public static Player getPlayer (int pPlayer) {
-		return (Player) sPlayerSet.getGameAttribute(Player.constructAttributeName(pPlayer));
+	public static Player getRealPlayer (int pPlayer) {
+		return (Player) sRealPlayerSet.getGameAttribute(Player.constructAttributeName(pPlayer));
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static List <Player> getPlayers () {
-		return (List<Player>) sPlayerSet.getGameAttributes();
+	public static List <Player> getRealPlayers () {
+		return (List<Player>) sRealPlayerSet.getGameAttributes();
+	}
+	
+	
+	public static Player getAllPlayer (BitSet pBitSet) {
+		return (Player) sAllPlayerSet.getGameAttribute(new GameAttributeBitSet (pBitSet));
+	}
+	
+	public static Player getAllPlayer (String pPlayerName) {
+		return (Player) sAllPlayerSet.getGameAttribute(pPlayerName);
+	}
+	
+	public static Player getAllPlayer (int pPlayer) {
+		return (Player) sAllPlayerSet.getGameAttribute(Player.constructAttributeName(pPlayer));
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static List <Player> getAllPlayers () {
+		return (List<Player>) sAllPlayerSet.getGameAttributes();
 	}
 	
 	

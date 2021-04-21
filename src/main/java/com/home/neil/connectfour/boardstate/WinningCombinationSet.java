@@ -27,8 +27,8 @@ public class WinningCombinationSet  extends ConnectFourBoardAttributeSet {
 		
 		int lReferenceId = 0;
 		
-		for (Player lPlayer : PlayerSet.getPlayers()) {
-			Player lOpposingPlayer = (lPlayer == PlayerSet.getPlayer(1)) ? PlayerSet.getPlayer(2) : PlayerSet.getPlayer(1);
+		for (Player lPlayer : PlayerSet.getRealPlayers()) {
+			Player lOpposingPlayer = (lPlayer == PlayerSet.getRealPlayer(1)) ? PlayerSet.getRealPlayer(2) : PlayerSet.getRealPlayer(1);
 			
 			WinningCombinationSet lPlayerSet = new WinningCombinationSet (WinningCombination.class);
 			sPlayerWinningCombinationSets.put(lPlayer, lPlayerSet);

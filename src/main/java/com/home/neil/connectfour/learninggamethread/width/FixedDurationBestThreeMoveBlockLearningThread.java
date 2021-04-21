@@ -16,12 +16,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.ThreadContext;
 
-import com.home.neil.connectfour.boardstate.old.OldBoardState;
-import com.home.neil.connectfour.boardstate.old.expansiontask.ExpansionTask;
 import com.home.neil.connectfour.knowledgebase.KnowledgeBaseFilePool;
 import com.home.neil.connectfour.knowledgebase.exception.KnowledgeBaseException;
 import com.home.neil.connectfour.learninggamethread.StatefulFixedDurationLearningThread;
 import com.home.neil.connectfour.managers.FixedDurationLearningThreadManager;
+
+import old.com.home.neil.connectfour.boardstate.OldBoardState;
+import old.com.home.neil.connectfour.boardstate.expansiontask.ExpansionTask;
 
 
 public class FixedDurationBestThreeMoveBlockLearningThread extends StatefulFixedDurationLearningThread {

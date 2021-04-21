@@ -14,9 +14,10 @@ import com.home.neil.cachesegment.threads.operations.CompressableCacheSegmentOpe
 import com.home.neil.cachesegment.threads.operations.ICompressableCacheSegmentOperationsTask.FileDetails;
 import com.home.neil.cachesegment.threads.operations.ICompressableCacheSegmentOperationsTask.IndexDetails;
 import com.home.neil.connectfour.ConnectFourBoardConfig;
-import com.home.neil.connectfour.boardstate.old.OldBoardState;
 import com.home.neil.knowledgebase.KnowledgeBaseCompressableCacheSegmentConfig;
 import com.home.neil.knowledgebase.KnowledgeBaseException;
+
+import old.com.home.neil.connectfour.boardstate.OldBoardState;
 
 
 public class ConnectFourOperationsTaskFactory {

@@ -18,8 +18,8 @@ import org.apache.logging.log4j.Logger;
 import com.home.neil.appconfig.AppConfig;
 import com.home.neil.appmanager.ApplicationPrecompilerSettings;
 import com.home.neil.connectfour.ConnectFourBoardConfig;
-import com.home.neil.connectfour.boardstate.old.InvalidMoveException;
-import com.home.neil.connectfour.boardstate.old.OldBoardState;
+
+import old.com.home.neil.connectfour.boardstate.OldBoardState;
 
 public class BoardState {
 	public static final String CLASS_NAME = BoardState.class.getName();
@@ -75,17 +75,6 @@ public class BoardState {
 	private byte mMoveScore = 0; // 1 byte
 	// total 64 bytes
 
-//	private ArrayList <OccupancyPosition> mOccupancyPositions = null;
-//	private Move mMove = null;
-//	private GameState mGameState = null;
-
-//	private String mFileIndexString = null;
-//	private String mReciprocalFileIndexString = null;
-//	private String mBoardStateString = null;
-//	private String mReciprocalBoardStateString = null;
-
-//	private HashMap <Player, ArrayList <WinningCombination>> mWinningCombinations = null;
-
 	public List<OccupancyPosition> decodeOccupancyPositions() {
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace(ApplicationPrecompilerSettings.TRACE_ENTERING);
@@ -93,8 +82,8 @@ public class BoardState {
 
 		ArrayList<OccupancyPosition> lOccupancyPositions = new ArrayList<>();
 
-		for (int i = 0; i < sConnectFourBoardConfig.getNumberOfColumns(); i++) {
-			for (int j = 0; j < sConnectFourBoardConfig.getNumberOfRows(); j++) {
+		for (int j = 0; j < sConnectFourBoardConfig.getNumberOfRows(); j++) {
+			for (int i = 0; i < sConnectFourBoardConfig.getNumberOfColumns(); i++) {
 				Column lColumn = ColumnSet.getColumn(i);
 				Row lRow = RowSet.getRow(j);
 				Position lPosition = PositionSet.getPosition(lColumn, lRow);
@@ -105,7 +94,7 @@ public class BoardState {
 					lPlayerBitSet.set(l, mBoardStateBitSet.get(lPosition.getReferenceId() * PlayerSet.getInstance().getGameAttributeMaxBitSize() + l));
 				}
 
-				Player lPlayer = PlayerSet.getPlayer(lPlayerBitSet);
+				Player lPlayer = PlayerSet.getAllPlayer(lPlayerBitSet);
 				OccupancyPosition lOccupancyPosition = OccupancyPositionSet.getOccupancyPosition(lPlayer, lPosition);
 
 				lOccupancyPositions.add(lOccupancyPosition);
@@ -149,8 +138,8 @@ public class BoardState {
 
 		HashMap<BitSet, OccupancyPosition> lOccupancyPositions = new HashMap<>();
 
-		for (int i = 0; i < sConnectFourBoardConfig.getNumberOfColumns(); i++) {
-			for (int j = 0; j < sConnectFourBoardConfig.getNumberOfRows(); j++) {
+		for (int j = 0; j < sConnectFourBoardConfig.getNumberOfRows(); j++) {
+			for (int i = 0; i < sConnectFourBoardConfig.getNumberOfColumns(); i++) {
 				Column lColumn = ColumnSet.getColumn(i);
 				Row lRow = RowSet.getRow(j);
 				Position lPosition = PositionSet.getPosition(lColumn, lRow);
@@ -161,7 +150,7 @@ public class BoardState {
 					lPlayerBitSet.set(l, mBoardStateBitSet.get(lPosition.getReferenceId() * PlayerSet.getInstance().getGameAttributeMaxBitSize() + l));
 				}
 
-				Player lPlayer = PlayerSet.getPlayer(lPlayerBitSet);
+				Player lPlayer = PlayerSet.getAllPlayer(lPlayerBitSet);
 				
 				if (lMoveOccupancyPosition == null && lMoveColumn == lColumn && lPlayer == PlayerSet.NULL_PLAYER) {
 					lMoveOccupancyPosition = OccupancyPositionSet.getOccupancyPosition(lMovePlayer, lPosition);
@@ -299,9 +288,9 @@ public class BoardState {
 			sLogger.trace(ApplicationPrecompilerSettings.TRACE_ENTERING);
 		}
 
-		BitSet lMoveBitSet = pGameState.getAttributeBitSet().getBitSet();
-		for (int l = 0; l < MoveSet.getInstance().getGameAttributeMaxBitSize(); l++) {
-			mBoardStateBitSet.set(sGameStateBitSetIndex + l, lMoveBitSet.get(l));
+		BitSet lGameStateBitSet = pGameState.getAttributeBitSet().getBitSet();
+		for (int l = 0; l < GameStateSet.getInstance().getGameAttributeMaxBitSize(); l++) {
+			mBoardStateBitSet.set(sGameStateBitSetIndex + l, lGameStateBitSet.get(l));
 		}
 
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
@@ -310,7 +299,7 @@ public class BoardState {
 
 	}
 
-	public Map <BitSet, WinningCombination> decodeWinningCombinations(Player pPlayer) {
+	public Map <BitSet, WinningCombination> decodeWinningCombinationsAndGraft(Player pPlayer, BoardState pNewBoardState) {
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace(ApplicationPrecompilerSettings.TRACE_ENTERING);
 		}
@@ -323,6 +312,8 @@ public class BoardState {
 			boolean lWinningCombinationRuledOut = mBoardStateBitSet.get(sWinningCombinationBitSetIndex + lWinningCombination.getReferenceId());
 			if (!lWinningCombinationRuledOut) {
 				lWinningCombinations.put(lWinningCombination.getAttributeBitSet().getBitSet(), lWinningCombination);
+			} else {
+				pNewBoardState.mBoardStateBitSet.set (sWinningCombinationBitSetIndex + lWinningCombination.getReferenceId());
 			}
 		}
 		
@@ -337,6 +328,10 @@ public class BoardState {
 			sLogger.trace(ApplicationPrecompilerSettings.TRACE_ENTERING);
 		}
 
+		if (sLogger.isDebugEnabled()) {
+			sLogger.debug("Setting Win Combo BoardStateBitSet index {{}}", sWinningCombinationBitSetIndex + pWinningCombination.getReferenceId());
+		}
+		
 		mBoardStateBitSet.set(sWinningCombinationBitSetIndex + pWinningCombination.getReferenceId(), true);
 
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
@@ -348,6 +343,9 @@ public class BoardState {
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace(ApplicationPrecompilerSettings.TRACE_ENTERING);
 		}
+		
+		mBoardStateBitSet = new BitSet();
+		mPreviousBoardState = null;
 		
 
 		sLogger.debug("Creating Empty Board Occupancy Positions with No Moves");
@@ -366,7 +364,6 @@ public class BoardState {
 		encodeMove(MoveSet.NULLMOVE);
 		encodeGameState(GameStateSet.UNDECIDED);
 
-		mPreviousBoardState = null;
 		mMoveScore = 0;
 		
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
@@ -381,6 +378,7 @@ public class BoardState {
 			sLogger.trace(ApplicationPrecompilerSettings.TRACE_ENTERING);
 		}
 
+		mBoardStateBitSet = new BitSet();
 		mPreviousBoardState = pPreviousBoardState;
 		
 		sLogger.debug("Checking the Move");
@@ -392,7 +390,7 @@ public class BoardState {
 			throw new InvalidMoveException();
 		}
 		
-		if (pPreviousBoardState == null && pMove.getPlayer() != PlayerSet.getPlayer(1)) {
+		if (pPreviousBoardState == null && pMove.getPlayer() != PlayerSet.getAllPlayer(1)) {
 			sLogger.error("Invalid Move!  First Move must be Player 1");
 			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace(ApplicationPrecompilerSettings.TRACE_EXITING);
@@ -410,8 +408,8 @@ public class BoardState {
 		}
 
 		Player lLastPlayerToMove = lLastMove.getPlayer();
-		if ( (lLastPlayerToMove == PlayerSet.getPlayer(1) && pMove.getPlayer() == PlayerSet.getPlayer(1)) ||
-			 (lLastPlayerToMove == PlayerSet.getPlayer(2) && pMove.getPlayer() == PlayerSet.getPlayer(2)) ) {
+		if ( (lLastPlayerToMove == PlayerSet.getAllPlayer(1) && pMove.getPlayer() == PlayerSet.getAllPlayer(1)) ||
+			 (lLastPlayerToMove == PlayerSet.getAllPlayer(2) && pMove.getPlayer() == PlayerSet.getAllPlayer(2)) ) {
 			sLogger.error("Invalid Move!  Player {} is attempting to move twice", lLastPlayerToMove.getAttributeName());
 			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace(ApplicationPrecompilerSettings.TRACE_EXITING);
@@ -419,7 +417,27 @@ public class BoardState {
 			throw new InvalidMoveException();
 		}
 
+		GameState lLastGameState = mPreviousBoardState.decodeGameState();
+		if (lLastGameState == null) {
+			sLogger.error("Invalid Move!  Last Game State is Null");
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
+				sLogger.trace(ApplicationPrecompilerSettings.TRACE_EXITING);
+			}
+			throw new InvalidMoveException();
+		}
+		
+		
+		if (lLastGameState != GameStateSet.UNDECIDED) {
+			sLogger.error("Invalid Move!  Game is already Over {{}}", lLastGameState.getAttributeName());
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
+				sLogger.trace(ApplicationPrecompilerSettings.TRACE_EXITING);
+			}
+			throw new InvalidMoveException();
+		}
+		
+		
 		OccupancyPositionsWithMove lOccupancyPositionsWithMove = mPreviousBoardState.decodeOccupancyPositionsWithMove(pMove);
+		
 		
 		encodeOccupancyPositions(lOccupancyPositionsWithMove.getOccupancyPositions().values());
 		encodeMove(pMove);
@@ -455,9 +473,10 @@ public class BoardState {
 			sLogger.trace(ApplicationPrecompilerSettings.TRACE_ENTERING);
 		}
 
-		Map <BitSet, WinningCombination> lPlayerOneWinningCombinations = decodeWinningCombinations(PlayerSet.getPlayer(1));
-		Map <BitSet, WinningCombination> lPlayerTwoWinningCombinations = decodeWinningCombinations(PlayerSet.getPlayer(2));
+		Map <BitSet, WinningCombination> lPlayerOneWinningCombinations = mPreviousBoardState.decodeWinningCombinationsAndGraft(PlayerSet.getAllPlayer(1), this);
+		Map <BitSet, WinningCombination> lPlayerTwoWinningCombinations = mPreviousBoardState.decodeWinningCombinationsAndGraft(PlayerSet.getAllPlayer(2), this);
 
+		
 		Player lPlayerMoving = pMoveOccupancyPosition.getPlayer();
 
 		int lPlayerOneWinningMoves = 0;
@@ -484,10 +503,10 @@ public class BoardState {
 				}
 			}
 
-			if (lFoundWin && lPlayerMoving == PlayerSet.getPlayer(1)) {
+			if (lFoundWin && lPlayerMoving == PlayerSet.getAllPlayer(1)) {
 				lPlayerOneWinner = true;
 				break;
-			} else if (lFoundWin && lPlayerMoving == PlayerSet.getPlayer(2)) {
+			} else if (lFoundWin && lPlayerMoving == PlayerSet.getAllPlayer(2)) {
 				lPlayerOneLoser = true;
 				break;
 			}
@@ -497,7 +516,7 @@ public class BoardState {
 			List<WinningCombination> lWinningCombinationsToRuleOut = pMoveOccupancyPosition.getWinningCombinationsToRuleOut();
 			
 			for (WinningCombination lWinningCombinationToRuleOut : lWinningCombinationsToRuleOut) {
-				if (lPlayerMoving == PlayerSet.getPlayer(1)) {
+				if (lPlayerMoving == PlayerSet.getAllPlayer(1)) {
 					lPlayerTwoWinningCombinations.remove(lWinningCombinationToRuleOut.getAttributeBitSet().getBitSet());
 					ruleOutWinningCombination(lWinningCombinationToRuleOut);
 				} else {
@@ -589,6 +608,11 @@ public class BoardState {
 		return mMoveScore;
 	}
 
+	public void setMoveScore(byte pMoveScore) {
+		mMoveScore = pMoveScore;
+	}
+
+	
 	public BoardState getPreviousBoardState() {
 		return mPreviousBoardState;
 	}
@@ -645,10 +669,10 @@ public class BoardState {
 		
 		for (OccupancyPosition lOccupancyPosition : lOccupancyPositions) {
 			Player lPlayer = lOccupancyPosition.getPlayer();
-			if (lPlayer == PlayerSet.getPlayer(1)) {
+			if (lPlayer == PlayerSet.getAllPlayer(1)) {
 				lBoardStateStringBuffer.append("X");
 				lReverseRowStringBuffer.insert(0, "X");
-			} else if (lPlayer == PlayerSet.getPlayer(2)) {
+			} else if (lPlayer == PlayerSet.getAllPlayer(2)) {
 				lBoardStateStringBuffer.append("O");
 				lReverseRowStringBuffer.insert(0, "O");
 			} else {

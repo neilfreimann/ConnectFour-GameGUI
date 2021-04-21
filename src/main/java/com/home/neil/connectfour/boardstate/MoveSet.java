@@ -19,7 +19,7 @@ public class MoveSet extends ConnectFourBoardAttributeSet {
 	static {
 		sMoveSet = new MoveSet(Move.class);
 		
-		List <Player> lPlayers = PlayerSet.getPlayers();
+		List <Player> lPlayers = PlayerSet.getRealPlayers();
 		List <Column> lColumns = ColumnSet.getColumns();
 		
 		

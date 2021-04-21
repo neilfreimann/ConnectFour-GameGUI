@@ -45,20 +45,9 @@ public class BoardStateLogger {
 			String lBoardStateLog;
 	
 			StringBuilder lLineBuffer = new StringBuilder ();
+
+			StringBuilder lLogBuffer = new StringBuilder ();
 			
-			lLineBuffer.append ("\n");
-			
-			lLineBuffer.append ("----");
-			for (int i = 0; i < sConnectFourBoardConfig.getNumberOfColumns(); i++) {
-				lLineBuffer.append ("----");
-			}
-			lLineBuffer.append ("-\n");
-			
-			lLineBuffer.append ("|   ");
-			for (int i = 0; i < sConnectFourBoardConfig.getNumberOfColumns(); i++) {
-				lLineBuffer.append ("    ");
-			}
-			lLineBuffer.append ("|\n");
 			
 			List <OccupancyPosition> lOccupancyPositions = pBoardState.decodeOccupancyPositions();
 	
@@ -72,7 +61,7 @@ public class BoardStateLogger {
 				
 				switch (lPlayer.getPlayer()) {
 				case 0: 
-					lLineBuffer.append ("    ");
+					lLineBuffer.append ("E   ");
 					break;
 				case 1: 
 					lLineBuffer.append ("X   ");
@@ -84,24 +73,43 @@ public class BoardStateLogger {
 				
 				if (lPosition.getColumn() == ColumnSet.getColumn(sConnectFourBoardConfig.getNumberOfColumns()-1)) {
 					lLineBuffer.append ("|\n");
+					lLogBuffer.insert(0,  lLineBuffer.toString());
+					lLineBuffer = new StringBuilder();
 				}
 			}
+
+			
+			
+			
+			
+			lLineBuffer.append ("\n");
+			
+			lLineBuffer.append ("----");
+			for (int i = 0; i < sConnectFourBoardConfig.getNumberOfColumns(); i++) {
+				lLineBuffer.append ("----");
+			}
+			lLineBuffer.append ("-\n");
 			
 			lLineBuffer.append ("|   ");
 			for (int i = 0; i < sConnectFourBoardConfig.getNumberOfColumns(); i++) {
 				lLineBuffer.append ("    ");
 			}
 			lLineBuffer.append ("|\n");
-	
-			lLineBuffer.append ("----");
-			for (int i = 0; i < sConnectFourBoardConfig.getNumberOfColumns(); i++) {
-				lLineBuffer.append ("----");
-			}
-			lLineBuffer.append ("-\n");
-	
-			lLineBuffer.append ("\n");
+
 			
-			lBoardStateLog = "Current Board Layout:\n" + lLineBuffer.toString();
+			lLogBuffer.insert(0,  lLineBuffer.toString());
+			lLineBuffer = new StringBuilder();
+			
+			
+			lLogBuffer.append ("----");
+			for (int i = 0; i < sConnectFourBoardConfig.getNumberOfColumns(); i++) {
+				lLogBuffer.append ("----");
+			}
+			lLogBuffer.append ("-\n");
+	
+			lLogBuffer.append ("\n");
+			
+			lBoardStateLog = "Current Board Layout:\n" + lLogBuffer.toString();
 	
 			sLogger.debug(lBoardStateLog);
 		}

@@ -3,10 +3,11 @@ package com.home.neil.connectfour.gamethreads;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.home.neil.connectfour.boardstate.old.OldBoardState;
 import com.home.neil.connectfour.gui.Connect4GUI;
 import com.home.neil.connectfour.knowledgebase.KnowledgeBaseFilePool;
 import com.home.neil.connectfour.learninggamethread.givenmove.GivenMoveFixedDurationLearningThread;
+
+import old.com.home.neil.connectfour.boardstate.OldBoardState;
 
 
 public abstract class AutomaticMoveThread extends GameThread implements AutomaticMoveThreadMBean {

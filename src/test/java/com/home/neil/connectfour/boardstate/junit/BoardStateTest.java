@@ -1,5 +1,6 @@
 package com.home.neil.connectfour.boardstate.junit;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -15,6 +16,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.home.neil.connectfour.boardstate.BoardState;
+import com.home.neil.connectfour.boardstate.ColumnSet;
 import com.home.neil.connectfour.boardstate.Direction;
 import com.home.neil.connectfour.boardstate.DirectionSet;
 import com.home.neil.connectfour.boardstate.Move;
@@ -27,6 +29,8 @@ import com.home.neil.connectfour.boardstate.Position;
 import com.home.neil.connectfour.boardstate.PositionSet;
 import com.home.neil.connectfour.boardstate.WinningCombination;
 import com.home.neil.connectfour.boardstate.WinningCombinationSet;
+import com.home.neil.connectfour.boardstate.logger.BoardStateLogger;
+import com.home.neil.game.GameException;
 import com.home.neil.junit.sandbox.SandboxTest;
 
 class BoardStateTest extends SandboxTest {
@@ -78,7 +82,7 @@ class BoardStateTest extends SandboxTest {
 			assertNotNull(lPositionSearch);
 		}
 		
-		List <Player> lPlayers = PlayerSet.getPlayers();
+		List <Player> lPlayers = PlayerSet.getRealPlayers();
 		
 		assertNotNull(lPlayers);
 		
@@ -110,10 +114,131 @@ class BoardStateTest extends SandboxTest {
 		assertNotNull(lWinningCombinations);
 		
 		assertFalse(lWinningCombinations.isEmpty());
-		
+		try {
+		try {
+			BoardState lCleanBoardState = new BoardState (false);
+			byte lScore = lCleanBoardState.getMoveScore();
+			assertEquals(0, lScore);
+			
+			BoardStateLogger.logBoardState(lCleanBoardState);
+			
+			BoardState lPreviousBoardState = lCleanBoardState;
+			BoardState lNextBoardState = null;
+			for (int i = 0; i < 3; i++) {
+				lNextBoardState = new BoardState(lPreviousBoardState, MoveSet.getMove(PlayerSet.getRealPlayer(1),ColumnSet.getColumn(3)), false);
+				lScore = lNextBoardState.getMoveScore();
 
-		BoardState.init();
+				BoardStateLogger.logBoardState(lNextBoardState);
+				
+				lPreviousBoardState = lNextBoardState;
 
+				lNextBoardState = new BoardState(lPreviousBoardState, MoveSet.getMove(PlayerSet.getRealPlayer(2),ColumnSet.getColumn(3)), false);
+				lScore = lNextBoardState.getMoveScore();
+
+				BoardStateLogger.logBoardState(lNextBoardState);
+				
+				lPreviousBoardState = lNextBoardState;
+			}
+			
+			for (int i = 0; i < 3; i++) {
+				lNextBoardState = new BoardState(lPreviousBoardState, MoveSet.getMove(PlayerSet.getRealPlayer(1),ColumnSet.getColumn(4)), false);
+				lScore = lNextBoardState.getMoveScore();
+
+				BoardStateLogger.logBoardState(lNextBoardState);
+				
+				lPreviousBoardState = lNextBoardState;
+
+				lNextBoardState = new BoardState(lPreviousBoardState, MoveSet.getMove(PlayerSet.getRealPlayer(2),ColumnSet.getColumn(5)), false);
+				lScore = lNextBoardState.getMoveScore();
+
+				BoardStateLogger.logBoardState(lNextBoardState);
+				
+				lPreviousBoardState = lNextBoardState;
+
+				lNextBoardState = new BoardState(lPreviousBoardState, MoveSet.getMove(PlayerSet.getRealPlayer(1),ColumnSet.getColumn(6)), false);
+				lScore = lNextBoardState.getMoveScore();
+
+				BoardStateLogger.logBoardState(lNextBoardState);
+				
+				lPreviousBoardState = lNextBoardState;
+
+				lNextBoardState = new BoardState(lPreviousBoardState, MoveSet.getMove(PlayerSet.getRealPlayer(2),ColumnSet.getColumn(4)), false);
+				lScore = lNextBoardState.getMoveScore();
+
+				BoardStateLogger.logBoardState(lNextBoardState);
+				
+				lPreviousBoardState = lNextBoardState;
+
+				lNextBoardState = new BoardState(lPreviousBoardState, MoveSet.getMove(PlayerSet.getRealPlayer(1),ColumnSet.getColumn(5)), false);
+				lScore = lNextBoardState.getMoveScore();
+
+				BoardStateLogger.logBoardState(lNextBoardState);
+				
+				lPreviousBoardState = lNextBoardState;
+
+				lNextBoardState = new BoardState(lPreviousBoardState, MoveSet.getMove(PlayerSet.getRealPlayer(2),ColumnSet.getColumn(6)), false);
+				lScore = lNextBoardState.getMoveScore();
+
+				BoardStateLogger.logBoardState(lNextBoardState);
+				
+				lPreviousBoardState = lNextBoardState;
+
+			}
+			
+			for (int i = 0; i < 3; i++) {
+				lNextBoardState = new BoardState(lPreviousBoardState, MoveSet.getMove(PlayerSet.getRealPlayer(1),ColumnSet.getColumn(0)), false);
+				lScore = lNextBoardState.getMoveScore();
+
+				BoardStateLogger.logBoardState(lNextBoardState);
+				
+				lPreviousBoardState = lNextBoardState;
+
+				lNextBoardState = new BoardState(lPreviousBoardState, MoveSet.getMove(PlayerSet.getRealPlayer(2),ColumnSet.getColumn(1)), false);
+				lScore = lNextBoardState.getMoveScore();
+
+				BoardStateLogger.logBoardState(lNextBoardState);
+				
+				lPreviousBoardState = lNextBoardState;
+
+				lNextBoardState = new BoardState(lPreviousBoardState, MoveSet.getMove(PlayerSet.getRealPlayer(1),ColumnSet.getColumn(2)), false);
+				lScore = lNextBoardState.getMoveScore();
+
+				BoardStateLogger.logBoardState(lNextBoardState);
+				
+				lPreviousBoardState = lNextBoardState;
+
+				lNextBoardState = new BoardState(lPreviousBoardState, MoveSet.getMove(PlayerSet.getRealPlayer(2),ColumnSet.getColumn(0)), false);
+				lScore = lNextBoardState.getMoveScore();
+
+				BoardStateLogger.logBoardState(lNextBoardState);
+				
+				lPreviousBoardState = lNextBoardState;
+
+				lNextBoardState = new BoardState(lPreviousBoardState, MoveSet.getMove(PlayerSet.getRealPlayer(1),ColumnSet.getColumn(1)), false);
+				lScore = lNextBoardState.getMoveScore();
+
+				BoardStateLogger.logBoardState(lNextBoardState);
+				
+				lPreviousBoardState = lNextBoardState;
+
+				lNextBoardState = new BoardState(lPreviousBoardState, MoveSet.getMove(PlayerSet.getRealPlayer(2),ColumnSet.getColumn(2)), false);
+				lScore = lNextBoardState.getMoveScore();
+
+				BoardStateLogger.logBoardState(lNextBoardState);
+				
+				lPreviousBoardState = lNextBoardState;
+
+			}
+			
+			
+			
+			
+		} catch (Exception e) {
+			throw new GameException (e);
+		}
+		} catch (GameException e) {
+			assertFalse (true);
+		}
 	}
 	
 	

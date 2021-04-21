@@ -1,4 +1,4 @@
-package com.home.neil.connectfour.boardstate.old;
+package old.com.home.neil.connectfour.boardstate;
 
 import java.util.ArrayList;
 import java.util.Collection;

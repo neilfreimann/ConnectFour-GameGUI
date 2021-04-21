@@ -24,7 +24,7 @@ public class OccupancyPositionSet extends ConnectFourBoardAttributeSet {
 		
 		sPlayerOccupancyPositionSets = new HashMap <> ();
 
-		List<Player> lPlayers = PlayerSet.getPlayers();
+		List<Player> lPlayers = PlayerSet.getRealPlayers();
 		List<Position> lPositions = PositionSet.getPositions();
 
 		for (Position lPosition : lPositions) {

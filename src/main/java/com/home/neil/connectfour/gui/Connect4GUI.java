@@ -31,9 +31,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.home.neil.connectfour.boardstate.old.InvalidMoveException;
-import com.home.neil.connectfour.boardstate.old.OldBoardState;
-import com.home.neil.connectfour.boardstate.old.expansiontask.ExpansionTask;
+import com.home.neil.connectfour.boardstate.InvalidMoveException;
 import com.home.neil.connectfour.gamethreads.AutomaticMoveThread;
 import com.home.neil.connectfour.gamethreads.BestMoveAutomaticMoveThread;
 import com.home.neil.connectfour.knowledgebase.KnowledgeBaseFilePool;
@@ -41,6 +39,9 @@ import com.home.neil.connectfour.knowledgebase.exception.KnowledgeBaseException;
 import com.home.neil.connectfour.learninggamethread.givenmove.GivenMoveFixedDurationLearningThread;
 import com.home.neil.connectfour.managers.AutomaticMoveThreadManager;
 import com.home.neil.connectfour.managers.FixedDurationLearningThreadManager;
+
+import old.com.home.neil.connectfour.boardstate.OldBoardState;
+import old.com.home.neil.connectfour.boardstate.expansiontask.ExpansionTask;
 
 
 

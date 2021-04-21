@@ -15,10 +15,11 @@ import javax.swing.JTextField;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.home.neil.connectfour.boardstate.old.OldBoardState;
 import com.home.neil.connectfour.controller.Game;
 import com.home.neil.connectfour.controller.GameController;
 import com.home.neil.connectfour.controller.HumanPlayer;
+
+import old.com.home.neil.connectfour.boardstate.OldBoardState;
 
 
 

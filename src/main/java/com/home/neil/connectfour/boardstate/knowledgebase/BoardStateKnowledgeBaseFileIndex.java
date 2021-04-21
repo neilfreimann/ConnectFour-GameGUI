@@ -1,4 +1,4 @@
-package com.home.neil.connectfour.knowledgebase;
+package com.home.neil.connectfour.boardstate.knowledgebase;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -73,9 +73,6 @@ public class BoardStateKnowledgeBaseFileIndex {
 		String lMoveString = lMoveStrings[0];
 		String lReciprocalMoveString = lMoveStrings[1];
 
-		mPoolItemId = lMoveString;
-		mReciprocalPoolItemId = lReciprocalMoveString;
-		
 		int lActionCountPastState = lMoveString.length() % sKnowledgeBaseConfig.getActionCountPerStateCache();
 		int lStateCount = lMoveString.length() / sKnowledgeBaseConfig.getActionCountPerStateCache();
 		
@@ -126,6 +123,9 @@ public class BoardStateKnowledgeBaseFileIndex {
 			mReciprocalFileDetails = new FileDetails (lReciprocalStatePaths, lReciprocalFileName, lFileSize);
 			mReciprocalIndexDetails = new IndexDetails (lReciprocalFileIndex, lIndexSize);
 		}
+
+		mPoolItemId = mFileDetails.getFileName();
+		mReciprocalPoolItemId = mReciprocalFileDetails.getFileName();
 		
 		sLogger.debug("MoveString: {{}} File Directory: {{}} File Name: {{}} FileIndex: {{}}", 
 				lMoveString, mFileDetails.getStatePaths()[0], mFileDetails.getFileName(), mIndexDetails.getIndex());

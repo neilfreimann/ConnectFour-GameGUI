@@ -1,4 +1,4 @@
-package com.home.neil.connectfour.boardstate.old;
+package old.com.home.neil.connectfour.boardstate;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.home.neil.connectfour.boardstate.InvalidMoveException;
 import com.home.neil.connectfour.knowledgebase.KnowledgeBaseFileAccessReadEvaluatedTask;
 import com.home.neil.connectfour.knowledgebase.KnowledgeBaseFileAccessReadTask;
 import com.home.neil.connectfour.knowledgebase.KnowledgeBaseFileAccessWriteEvaluatedTask;

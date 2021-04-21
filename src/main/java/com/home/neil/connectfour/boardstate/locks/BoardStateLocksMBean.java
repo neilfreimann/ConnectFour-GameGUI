@@ -1,4 +1,4 @@
-package com.home.neil.connectfour.boardstate.old.locks;
+package com.home.neil.connectfour.boardstate.locks;
 
 
 public interface BoardStateLocksMBean {

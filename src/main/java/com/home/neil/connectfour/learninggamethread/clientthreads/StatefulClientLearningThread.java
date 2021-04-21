@@ -21,11 +21,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.home.neil.connectfour.appconfig.Connect4PropertiesConfiguration;
-import com.home.neil.connectfour.boardstate.old.InvalidMoveException;
-import com.home.neil.connectfour.boardstate.old.OldBoardState;
+import com.home.neil.connectfour.boardstate.InvalidMoveException;
 import com.home.neil.connectfour.knowledgebase.KnowledgeBaseFilePool;
 import com.home.neil.connectfour.knowledgebase.exception.KnowledgeBaseException;
 import com.home.neil.connectfour.performancemetrics.ThreadPerformanceMetricsMBean;
+
+import old.com.home.neil.connectfour.boardstate.OldBoardState;
 
 
 public abstract class StatefulClientLearningThread extends ClientLearningThread implements StatefulClientLearningThreadMBean {

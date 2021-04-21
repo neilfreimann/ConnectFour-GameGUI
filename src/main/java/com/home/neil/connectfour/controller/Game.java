@@ -3,7 +3,7 @@ package com.home.neil.connectfour.controller;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.home.neil.connectfour.boardstate.old.OldBoardState;
+import old.com.home.neil.connectfour.boardstate.OldBoardState;
 
 public abstract class Game {
 	public static final String CLASS_NAME = Game.class.getName();

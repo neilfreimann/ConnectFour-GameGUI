@@ -13,9 +13,10 @@ import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.home.neil.connectfour.boardstate.old.OldBoardState;
 import com.home.neil.connectfour.knowledgebase.KnowledgeBaseFilePool;
 import com.home.neil.connectfour.performancemetrics.ThreadPerformanceMetricsMBean;
+
+import old.com.home.neil.connectfour.boardstate.OldBoardState;
 
 public abstract class ClientLearningThread extends Thread implements ClientLearningThreadMBean {
 	public static final String CLASS_NAME = ClientLearningThread.class.getName();

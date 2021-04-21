@@ -1,4 +1,4 @@
-package com.home.neil.connectfour.boardstate.old.locks;
+package com.home.neil.connectfour.boardstate.locks;
 
 import java.lang.management.ManagementFactory;
 import java.util.HashMap;
@@ -14,19 +14,18 @@ import javax.management.ObjectName;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.home.neil.connectfour.boardstate.old.OldBoardState;
-import com.home.neil.connectfour.boardstate.old.expansiontask.ExpansionTask;
-import com.home.neil.connectfour.managers.appmanager.ApplicationPrecompilerSettings;
-
-
+import com.home.neil.appmanager.ApplicationPrecompilerSettings;
+import com.home.neil.connectfour.boardstate.BoardState;
+import com.home.neil.connectfour.boardstate.knowledgebase.BoardStateKnowledgeBaseFileIndex;
+import com.home.neil.connectfour.boardstate.tasks.ExpansionTask;
 
 public class BoardStateLocks implements BoardStateLocksMBean {
 	public static final String CLASS_NAME = BoardStateLocks.class.getName();
 	public static final String PACKAGE_NAME = CLASS_NAME.substring(0, CLASS_NAME.lastIndexOf("."));
 	public static final String MBEAN_NAME = PACKAGE_NAME + ":type=" + BoardStateLocks.class.getSimpleName();
-	public static Logger sLogger = LogManager.getLogger(PACKAGE_NAME);
+	public static final Logger sLogger = LogManager.getLogger(PACKAGE_NAME);
 
-	private HashMap<String, OldBoardState> mCurrentBoardStateLocks = null;
+	private HashMap<String, BoardState> mCurrentBoardStateLocks = null;
 	private HashMap<String, LinkedList<ExpansionTask>> mCurrentBoardStateLockReservations = null;		
 
 	private static BoardStateLocks sInstance = null;
@@ -34,19 +33,21 @@ public class BoardStateLocks implements BoardStateLocksMBean {
 	
 	private BoardStateLocks () {
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
-			sLogger.trace("Entering");
+			sLogger.trace(ApplicationPrecompilerSettings.TRACE_ENTERING);
 		}
-		mCurrentBoardStateLocks = new HashMap<String, OldBoardState> ();
-		mCurrentBoardStateLockReservations = new HashMap<String, LinkedList<ExpansionTask>> ();
+		
+		mCurrentBoardStateLocks = new HashMap<> ();
+		mCurrentBoardStateLockReservations = new HashMap<> ();
+
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
-			sLogger.trace("Exiting");
-		}
+			sLogger.trace(ApplicationPrecompilerSettings.TRACE_EXITING);
+		}		
 	}
 	
 	public static synchronized BoardStateLocks getInstance () {
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
-			sLogger.trace("Entering");
-		}
+			sLogger.trace(ApplicationPrecompilerSettings.TRACE_ENTERING);
+		}		
 		if (sInstance == null) {
 			sInstance = new BoardStateLocks ();
 			
@@ -71,26 +72,25 @@ public class BoardStateLocks implements BoardStateLocksMBean {
 			} 
 		}
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
-			sLogger.trace("Exiting");
-		}
+			sLogger.trace(ApplicationPrecompilerSettings.TRACE_EXITING);
+		}		
 		return sInstance;
 	}
 	
 	
-	public synchronized boolean reserveBoardState (OldBoardState pBoardStateToReserve, ExpansionTask lTask) {
+	public synchronized boolean reserveBoardState (BoardState pBoardState, ExpansionTask pTask) {
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
-			sLogger.trace("Entering");
+			sLogger.trace(ApplicationPrecompilerSettings.TRACE_ENTERING);
 		}
-
+		
 		//Reserve the BoardState
-		String lParentMove = pBoardStateToReserve.getFileIndexString();
-		String lParentMoveReciprocal = pBoardStateToReserve.getReciprocalFileIndexString();
+		String lParentMove = pBoardStateToReserve;
 		
 		if (lParentMove.compareTo(lParentMoveReciprocal) == -1) {
 			lParentMove = lParentMoveReciprocal;
 		}
 		
-		OldBoardState lParentMoveLock = mCurrentBoardStateLocks.get(lParentMove);
+		BoardState lParentMoveLock = mCurrentBoardStateLocks.get(lParentMove);
 		if (lParentMoveLock == null) {
 			mCurrentBoardStateLocks.put(lParentMove, pBoardStateToReserve);
 			lTask.setBoardStateLock(pBoardStateToReserve);
@@ -98,8 +98,8 @@ public class BoardStateLocks implements BoardStateLocksMBean {
 				sLogger.debug("State1: Lock Obtained: " + lParentMove + " for Thread: " + Thread.currentThread().getName());
 			}
 			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
-				sLogger.trace("Exiting");
-			}
+				sLogger.trace(ApplicationPrecompilerSettings.TRACE_EXITING);
+			}		
 			return true;
 		} else {
 			LinkedList<ExpansionTask> lWaitingThreads = mCurrentBoardStateLockReservations.get(lParentMove);
@@ -111,8 +111,8 @@ public class BoardStateLocks implements BoardStateLocksMBean {
 					sLogger.debug("State2: Lock Reserved: " + lParentMove + " for Thread: " + Thread.currentThread().getName());
 				}
 				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
-					sLogger.trace("Exiting");
-				}
+					sLogger.trace(ApplicationPrecompilerSettings.TRACE_EXITING);
+				}		
 				return false;
 			} else {
 				lWaitingThreads.add(lTask);
@@ -120,26 +120,20 @@ public class BoardStateLocks implements BoardStateLocksMBean {
 					sLogger.debug("State3: Lock Reserved: " + lParentMove + " for Thread: " + Thread.currentThread().getName());
 				}
 				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
-					sLogger.trace("Exiting");
-				}
+					sLogger.trace(ApplicationPrecompilerSettings.TRACE_EXITING);
+				}		
 				return false;
 			}
 		}
 	}
 	
-	public synchronized void releaseBoardState (OldBoardState pBoardStateToRelease) {
+	public synchronized void releaseBoardState (BoardState pBoardStateToRelease) {
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
-			sLogger.trace("Entering");
+			sLogger.trace(ApplicationPrecompilerSettings.TRACE_ENTERING);
 		}
-
+		
 		//Reserve the BoardState
 		String lParentMove = pBoardStateToRelease.getFileIndexString();
-		String lParentMoveReciprocal = pBoardStateToRelease.getReciprocalFileIndexString();
-		
-		if (lParentMove.compareTo(lParentMoveReciprocal) == -1) {
-			lParentMove = lParentMoveReciprocal;
-		}
-		
 		
 		LinkedList <ExpansionTask> lWaitingThreads = mCurrentBoardStateLockReservations.get(lParentMove);
 		if (lWaitingThreads == null) {
@@ -148,46 +142,34 @@ public class BoardStateLocks implements BoardStateLocksMBean {
 				sLogger.debug("State4: Lock Released: " + lParentMove);
 			}
 			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
-				sLogger.trace("Exiting");
-			}
+				sLogger.trace(ApplicationPrecompilerSettings.TRACE_EXITING);
+			}		
 			return;
 		} else if (lWaitingThreads.isEmpty()) {
 			mCurrentBoardStateLockReservations.remove(lParentMove);
 			mCurrentBoardStateLocks.remove(lParentMove);
-			if (sLogger.isDebugEnabled()) {
-				sLogger.debug("State5: Lock Released: " + lParentMove);
-			}
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
+				sLogger.trace(ApplicationPrecompilerSettings.TRACE_EXITING);
+			}		
 		} else {
 			ExpansionTask lWaitingTask = lWaitingThreads.pop();
 			lWaitingTask.setBoardStateLock(pBoardStateToRelease);
 			//lWaitingTask.interrupt();
-			if (sLogger.isDebugEnabled()) {
-				sLogger.debug("State6: Lock Released: " + lParentMove + " and Obtained to Thread: " + lWaitingTask.getName());
-			}
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
+				sLogger.trace(ApplicationPrecompilerSettings.TRACE_EXITING);
+			}		
 		}		
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
-			sLogger.trace("Exiting");
-		}
+			sLogger.trace(ApplicationPrecompilerSettings.TRACE_EXITING);
+		}		
 	}
 
 
 	public String getCurrentBoardStateLocksSize() {
-		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
-			sLogger.trace("Entering");
-		}
-		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
-			sLogger.trace("Exiting");
-		}
 		return String.valueOf(mCurrentBoardStateLocks.size());
 	}
 
 	public String getCurrentBoardStateLockReservationsSize() {
-		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
-			sLogger.trace("Entering");
-		}
-		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
-			sLogger.trace("Exiting");
-		}
 		return String.valueOf(mCurrentBoardStateLockReservations.size());
 	}
 

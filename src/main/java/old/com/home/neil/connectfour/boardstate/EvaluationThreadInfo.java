@@ -1,4 +1,4 @@
-package com.home.neil.connectfour.boardstate.old;
+package old.com.home.neil.connectfour.boardstate;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -6,19 +6,19 @@ import org.apache.logging.log4j.Logger;
 import com.home.neil.connectfour.managers.appmanager.ApplicationPrecompilerSettings;
 
 
-public class MoveScore {
+public class EvaluationThreadInfo {
 
 
-	public static final String CLASS_NAME = MoveScore.class.getName();
+	public static final String CLASS_NAME = EvaluationThreadInfo.class.getName();
 	public static final String PACKAGE_NAME = CLASS_NAME.substring(0,
 			CLASS_NAME.lastIndexOf("."));
 	public static Logger sLogger = LogManager.getLogger(PACKAGE_NAME);
 	
 	public OldBoardState mBoardState;
 	
-	private byte mMoveScore = 0;
+	private byte mEvalationThreadInfo = 0;
 
-	public MoveScore(OldBoardState pBoardState) {
+	public EvaluationThreadInfo(OldBoardState pBoardState) {
 		super();
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
@@ -29,22 +29,22 @@ public class MoveScore {
 		}
 	}
 
-	public byte getMoveScore() {
+	public byte getEvaluationThreadInfo() {
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}
-		return mMoveScore;
+		return mEvalationThreadInfo;
 	}
 
 
-	public void setMoveScore(byte pMoveScore) {
+	public void setEvaluationThreadInfo(byte pEvaluationThreadInfo) {
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
-		mMoveScore = pMoveScore;
+		mEvalationThreadInfo = pEvaluationThreadInfo;
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Exiting");
 		}

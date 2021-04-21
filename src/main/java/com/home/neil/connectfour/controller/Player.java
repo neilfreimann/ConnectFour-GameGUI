@@ -12,8 +12,9 @@ import javax.management.openmbean.OpenDataException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.home.neil.connectfour.boardstate.old.OldBoardState;
 import com.home.neil.connectfour.performancemetrics.ThreadPerformanceMetricsMBean;
+
+import old.com.home.neil.connectfour.boardstate.OldBoardState;
 
 
 

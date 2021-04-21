@@ -1,4 +1,4 @@
-package com.home.neil.connectfour.boardstate.old.expansiontask;
+package old.com.home.neil.connectfour.boardstate.expansiontask;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -14,14 +14,15 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.ThreadContext;
 
-import com.home.neil.connectfour.boardstate.old.InvalidMoveException;
-import com.home.neil.connectfour.boardstate.old.OldBoardState;
-import com.home.neil.connectfour.boardstate.old.OldBoardState.GameState;
-import com.home.neil.connectfour.boardstate.old.locks.BoardStateLocks;
+import com.home.neil.connectfour.boardstate.InvalidMoveException;
+import com.home.neil.connectfour.boardstate.locks.BoardStateLocks;
 import com.home.neil.connectfour.knowledgebase.KnowledgeBaseFilePool;
 import com.home.neil.connectfour.knowledgebase.exception.KnowledgeBaseException;
 import com.home.neil.connectfour.managers.appmanager.ApplicationPrecompilerSettings;
 import com.home.neil.connectfour.performancemetrics.ThreadPerformanceMetricsMBean;
+
+import old.com.home.neil.connectfour.boardstate.OldBoardState;
+import old.com.home.neil.connectfour.boardstate.OldBoardState.GameState;
 
 
 
