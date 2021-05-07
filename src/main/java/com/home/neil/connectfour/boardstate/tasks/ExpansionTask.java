@@ -3,8 +3,6 @@ package com.home.neil.connectfour.boardstate.tasks;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -14,6 +12,8 @@ import org.apache.logging.log4j.Logger;
 
 import com.home.neil.appconfig.AppConfig;
 import com.home.neil.appmanager.ApplicationPrecompilerSettings;
+import com.home.neil.cachesegment.threads.operations.CompressableCacheSegmentOperationsReadTask;
+import com.home.neil.cachesegment.threads.operations.CompressableCacheSegmentOperationsWriteTask;
 import com.home.neil.connectfour.ConnectFourBoardConfig;
 import com.home.neil.connectfour.boardstate.BoardState;
 import com.home.neil.connectfour.boardstate.Column;
@@ -24,12 +24,16 @@ import com.home.neil.connectfour.boardstate.InvalidMoveException;
 import com.home.neil.connectfour.boardstate.Move;
 import com.home.neil.connectfour.boardstate.MoveSet;
 import com.home.neil.connectfour.boardstate.PlayerSet;
-import com.home.neil.connectfour.boardstate.locks.BoardStateLocks;
+import com.home.neil.connectfour.boardstate.knowledgebase.fileindex.FileIndexException;
+import com.home.neil.connectfour.boardstate.knowledgebase.fileindex.score.BoardStateKnowledgeBaseFileIndex;
+import com.home.neil.connectfour.boardstate.knowledgebase.locks.AddressLockHolderTask;
+import com.home.neil.connectfour.boardstate.knowledgebase.locks.AddressLocks;
+import com.home.neil.connectfour.boardstate.logger.BoardStateLogger;
 import com.home.neil.knowledgebase.KnowledgeBaseCompressableCacheSegmentConfig;
-import com.home.neil.task.BasicAppTask;
+import com.home.neil.pool.Pool;
 import com.home.neil.task.TaskException;
 
-public class ExpansionTask extends BasicAppTask {
+public class ExpansionTask extends AddressLockHolderTask {
 
 	public static final String CLASS_NAME = ExpansionTask.class.getName();
 	public static final String PACKAGE_NAME = CLASS_NAME.substring(0, CLASS_NAME.lastIndexOf("."));
@@ -52,19 +56,24 @@ public class ExpansionTask extends BasicAppTask {
 		}
 
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
-			sLogger.trace(ApplicationPrecompilerSettings.TRACE_ENTERING);
+			sLogger.trace(ApplicationPrecompilerSettings.TRACE_EXITING);
 		}
 	}
 
-	private BoardState mBoardStateToExpand = null;
-	private ArrayList<BoardState> mExpandedBoardStates = null;
+	private BoardState mFirstBoardStateToExpand = null;
+	private ArrayList<BoardState> mFinalExpandedBoardStates = null;
+	private int mLevelsToExpand = 2;
 
-	private BoardState mBoardStateLock = null;
-	private Object mLock = new Object();
+	public ExpansionTask(Pool pPool, BoardState pBoardStateToExpand, boolean pRecordContext, boolean pRecordTaskStatistics, int pLevelsToExpand) {
+		super(pPool, pRecordContext, pRecordTaskStatistics);
+		mFirstBoardStateToExpand = pBoardStateToExpand;
+		mLevelsToExpand = pLevelsToExpand;
+	}
 
-	protected ExpansionTask(BoardState pBoardStateToExpand, String pLogContext, boolean pRecordTaskStatistics) {
-		super(pLogContext, pRecordTaskStatistics);
-		mBoardStateToExpand = pBoardStateToExpand;
+	public ExpansionTask(Pool pPool, boolean pRecordContext, boolean pRecordTaskStatistics, int pLevelsToExpand) throws TaskException {
+		super(pPool, pRecordContext, pRecordTaskStatistics);
+		mFirstBoardStateToExpand = new BoardState();
+		mLevelsToExpand = pLevelsToExpand;
 	}
 
 	@Override
@@ -73,12 +82,26 @@ public class ExpansionTask extends BasicAppTask {
 			sLogger.trace(ApplicationPrecompilerSettings.TRACE_ENTERING);
 		}
 
+		mFinalExpandedBoardStates = new ArrayList<BoardState>();
+
 		try {
-			expandAndRescoreNode();
+			ArrayList<BoardState> lBoardStatesToEvaluate = new ArrayList<>();
+			lBoardStatesToEvaluate.add(mFirstBoardStateToExpand);
+
+			for (int i = 0; i < mLevelsToExpand && !lBoardStatesToEvaluate.isEmpty(); i++) {
+				ArrayList<BoardState> lNextBoardStates = new ArrayList<>();
+				for (BoardState lBoardStateToEvaluate : lBoardStatesToEvaluate) {
+					lNextBoardStates.addAll(expandAndRescoreNode(lBoardStateToEvaluate));
+				}
+				lBoardStatesToEvaluate = lNextBoardStates;
+			}
+
+			mFinalExpandedBoardStates = lBoardStatesToEvaluate;
+
 		} catch (Exception e) {
 			mTaskSuccessful = false;
 			mTaskFinished = false;
-			throw new ExpansionTaskException(e);
+			throw e;
 		}
 
 		mTaskSuccessful = true;
@@ -89,159 +112,157 @@ public class ExpansionTask extends BasicAppTask {
 		}
 	}
 
-	public void setReservedBoardState(BoardState pBoardState) {
-		mBoardStateLock = pBoardState;
-		synchronized (mLock) {
-			mLock.notifyAll();
-		}
-	}
-
-	protected boolean reserveBoardState(BoardState pBoardStateToLock) {
+	@SuppressWarnings("squid:S3776")
+	private ArrayList<BoardState> expandAndRescoreNode(BoardState lBoardStateToExpand) throws TaskException {
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace(ApplicationPrecompilerSettings.TRACE_ENTERING);
 		}
 
-		BoardStateLocks lBoardStateLocks = BoardStateLocks.getInstance();
+		ArrayList<BoardState> lExpandedBoardStatesToReturn = new ArrayList<>();
 
-		sLogger.debug("Reserving BoardState {}");
+		BoardState lCurrentBoardState = lBoardStateToExpand;
+		BoardState lParentBoardState = lBoardStateToExpand.getPreviousBoardState();
+
+		BoardStateKnowledgeBaseFileIndex lParentBoardStateKnowledgeBaseFileIndex = null;
+		BoardStateKnowledgeBaseFileIndex lCurrentBoardStateKnowledgeBaseFileIndex = null;
 
 		try {
-			mBoardStateLock = lBoardStateLocks.reserveBoardState(pBoardStateToLock, this);
-		} catch (Exception e1) {
-			sLogger.error("Could not reserve the BoardState {}");
-			return false;
-		}
-
-		sLogger.debug("Waiting BoardState {}");
-		synchronized (mLock) {
-			while (mBoardStateLock == null) {
-				try {
-					mLock.wait();
-				} catch (InterruptedException e) {
-					Thread.currentThread().interrupt();
-					sLogger.error("Thread interrupted", e);
-				}
+			lCurrentBoardStateKnowledgeBaseFileIndex = new BoardStateKnowledgeBaseFileIndex(lCurrentBoardState);
+			if (lParentBoardState != null) {
+				lParentBoardStateKnowledgeBaseFileIndex = new BoardStateKnowledgeBaseFileIndex(lParentBoardState);
 			}
-		}
-		sLogger.debug("Acquired BoardState {}");
-
-		if (mBoardStateLock == null) {
-			sLogger.error("COULD NOT GET THE BOARDSTATE RESERVED!");
+		} catch (FileIndexException e) {
 			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace(ApplicationPrecompilerSettings.TRACE_EXITING);
 			}
-			return false;
+			throw new TaskException(e);
 		}
-
-		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
-			sLogger.trace(ApplicationPrecompilerSettings.TRACE_EXITING);
-		}
-		return true;
-	}
-
-	protected void releaseBoardState(BoardState pBoardStateToUnlock) {
-		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
-			sLogger.trace(ApplicationPrecompilerSettings.TRACE_ENTERING);
-		}
-
-		BoardStateLocks lBoardStateLocks = BoardStateLocks.getInstance();
-
-		lBoardStateLocks.releaseBoardState(pBoardStateToUnlock);
-
-		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
-			sLogger.trace(ApplicationPrecompilerSettings.TRACE_EXITING);
-		}
-	}
-
-
-	private void expandAndRescoreNode() {
-		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
-			sLogger.trace(ApplicationPrecompilerSettings.TRACE_ENTERING);
-		}
-
-		BoardState lCurrentBoardState = mBoardStateToExpand;
-		BoardState lParentBoardState = mBoardStateToExpand.getPreviousBoardState();
-
 		byte lRescoreValue = 0;
-		
+
 		String lCurrentBoardStateMoveString = "";
-		if (sLogger.isDebugEnabled()) {
-			lCurrentBoardStateMoveString = lCurrentBoardState.constructMoveStrings()[0];
-		}
-		
+		lCurrentBoardStateMoveString = lCurrentBoardState.constructMoveStrings(true)[0];
+
 		sLogger.debug("Reserving the Current BoardState: {{}}", lCurrentBoardStateMoveString);
-		boolean lStateReserved = reserveBoardState(lCurrentBoardState);
+		boolean lStateReserved = reserveAddress(lCurrentBoardStateKnowledgeBaseFileIndex);
 		if (!lStateReserved) {
 			sLogger.error("COULD NOT GET THE BOARDSTATE RESERVED!");
 			mTaskSuccessful = false;
 			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace(ApplicationPrecompilerSettings.TRACE_EXITING);
 			}
-			return;
+			throw new TaskException("Unable to reserve the boardstate");
 		}
 		sLogger.debug("Current BoardState is reserved: {{}}", lCurrentBoardStateMoveString);
-		
+
 		sLogger.debug("Expanding SubBoard States: {{}}", lCurrentBoardStateMoveString);
-		mExpandedBoardStates = expandSubBoardStates(lCurrentBoardState);
+		lExpandedBoardStatesToReturn = expandSubBoardStates(lCurrentBoardState);
 		sLogger.debug("Current BoardState SubBoard States Expanded: {{}}", lCurrentBoardStateMoveString);
 
-		sLogger.debug("Releasing the Current BoardState: {{}}",lCurrentBoardStateMoveString);
-		releaseBoardState(lCurrentBoardState);
+		if (lParentBoardState == null) {
+//			sLogger.debug("Not Rescoring BoardState: {{}}", lCurrentBoardStateMoveString);
+//			lRescoreValue = rescoreNode(lCurrentBoardState, lExpandedBoardStatesToReturn);
+//
+//			if (lCurrentBoardState.getMoveScore() != lRescoreValue) {
+//				lCurrentBoardState.setMoveScore(lRescoreValue);
+//				writeMoveScoreToKnowledge(lCurrentBoardStateKnowledgeBaseFileIndex);
+//				sLogger.info("BoardState is rescored: {{}} to {{}}", lCurrentBoardStateMoveString, lRescoreValue);
+//			} else {
+//				sLogger.info("BoardState is   scored: {{}} to {{}}", lCurrentBoardStateMoveString, lRescoreValue);
+//			}
+		}
+
+		sLogger.debug("Releasing the Current BoardState: {{}}", lCurrentBoardStateMoveString);
+		releaseAddress(lCurrentBoardStateKnowledgeBaseFileIndex);
 		sLogger.debug("Current BoardState is Released: {{}}", lCurrentBoardStateMoveString);
-		
-		ArrayList <BoardState> lExpandedBoardStates = mExpandedBoardStates;
+
+		ArrayList<BoardState> lExpandedBoardStates = lExpandedBoardStatesToReturn;
 
 		while (lParentBoardState != null && !lExpandedBoardStates.isEmpty()) {
+			lCurrentBoardStateMoveString = lCurrentBoardState.constructMoveStrings(true)[0];
 			String lParentBoardStateMoveString = "";
-			if (sLogger.isDebugEnabled()) {
-				lParentBoardStateMoveString = lParentBoardState.constructMoveStrings()[0];
-			}
-			
+			lParentBoardStateMoveString = lParentBoardState.constructMoveStrings(true)[0];
+
 			sLogger.debug("Reserving the Parent BoardState for Current BoardState Rescore: {{}}", lParentBoardStateMoveString);
-			boolean lRescoreStateReserved = reserveBoardState(lParentBoardState);
+			boolean lRescoreStateReserved = reserveAddress(lParentBoardStateKnowledgeBaseFileIndex);
 			if (!lRescoreStateReserved) {
 				sLogger.error("COULD NOT GET THE PARENT BOARDSTATE RESERVED!");
 				mTaskSuccessful = false;
 				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace(ApplicationPrecompilerSettings.TRACE_EXITING);
 				}
-				return;
+				throw new TaskException("Unable to reserve the boardstate");
 			}
 			sLogger.debug("Parent BoardState is reserved: {{}}", lParentBoardStateMoveString);
-			
+
 			sLogger.debug("Rescoring BoardState: {{}}", lCurrentBoardStateMoveString);
 			lRescoreValue = rescoreNode(lCurrentBoardState, lExpandedBoardStates);
-			//TODO if the Move score has not changed.... do we really need to rescore beyond it?
+
+			if (lCurrentBoardState.getMoveScore() == lRescoreValue) {
+				sLogger.debug("BoardState is   scored: {{}} to {{}}", lCurrentBoardStateMoveString, lRescoreValue);
+				// Rescore value is the same, No need to rescore beyond this
+				sLogger.debug("Releasing the Parent BoardState: {{}}", lParentBoardStateMoveString);
+				releaseAddress(lParentBoardStateKnowledgeBaseFileIndex);
+				sLogger.debug("Parent BoardState is Released: {{}}", lParentBoardStateMoveString);
+
+				lCurrentBoardState = lParentBoardState;
+				lCurrentBoardStateKnowledgeBaseFileIndex = lParentBoardStateKnowledgeBaseFileIndex;
+//				lParentBoardState = lCurrentBoardState.getPreviousBoardState();
+//				if (lParentBoardState != null) {
+//					try {
+//						lParentBoardStateKnowledgeBaseFileIndex = new BoardStateKnowledgeBaseFileIndex(lParentBoardState);
+//					} catch (FileIndexException e) {
+//						if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
+//							sLogger.trace(ApplicationPrecompilerSettings.TRACE_EXITING);
+//						}
+//						throw new TaskException(e);
+//					}
+//				}
+				break;
+			}
+
 			lCurrentBoardState.setMoveScore(lRescoreValue);
-			//TODO 	lCurrentBoardState.writeMoveScoreToKnowledge(mLogContext);
-			sLogger.debug("BoardState is rescored: {{}}", lCurrentBoardStateMoveString);
+			writeMoveScoreToKnowledge(lCurrentBoardStateKnowledgeBaseFileIndex);
+			sLogger.debug("BoardState is rescored: {{}} to {{}}", lCurrentBoardStateMoveString, lRescoreValue);
 
 			sLogger.debug("Expanding SubBoard States: {{}}", lParentBoardStateMoveString);
 			lExpandedBoardStates = expandSubBoardStates(lParentBoardState);
 			sLogger.debug("Current BoardState SubBoard States Expanded: {{}}", lParentBoardStateMoveString);
-		
-			
-			if (lParentBoardState.getPreviousBoardState() != null) {
-				sLogger.debug("Rescoring Root BoardState: {{}}", lParentBoardStateMoveString);
-				lRescoreValue = rescoreNode(lParentBoardState, lExpandedBoardStates);
-				lParentBoardState.setMoveScore(lRescoreValue);
-				//TODO 	lParentBoardState.writeMoveScoreToKnowledge(mLogContext);
-				sLogger.debug("Root BoardState is rescored: {{}}", lParentBoardStateMoveString);
-			}				
+
+//			if (lParentBoardState.getPreviousBoardState() == null) {
+//				sLogger.debug("Rescoring Root BoardState: {{}}", lParentBoardStateMoveString);
+//				lRescoreValue = rescoreNode(lParentBoardState, lExpandedBoardStates);
+//				lParentBoardState.setMoveScore(lRescoreValue);
+//				writeMoveScoreToKnowledge(lParentBoardStateKnowledgeBaseFileIndex);
+//				sLogger.debug("Root BoardState is rescored: {{}}", lParentBoardStateMoveString);
+//			}
 
 			sLogger.debug("Releasing the Parent BoardState: {{}}", lParentBoardStateMoveString);
-			releaseBoardState(lParentBoardState);
+			releaseAddress(lParentBoardStateKnowledgeBaseFileIndex);
 			sLogger.debug("Parent BoardState is Released: {{}}", lParentBoardStateMoveString);
 
 			lCurrentBoardState = lParentBoardState;
+			lCurrentBoardStateKnowledgeBaseFileIndex = lParentBoardStateKnowledgeBaseFileIndex;
 			lParentBoardState = lCurrentBoardState.getPreviousBoardState();
+			if (lParentBoardState != null) {
+				try {
+					lParentBoardStateKnowledgeBaseFileIndex = new BoardStateKnowledgeBaseFileIndex(lParentBoardState);
+				} catch (FileIndexException e) {
+					if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
+						sLogger.trace(ApplicationPrecompilerSettings.TRACE_EXITING);
+					}
+					throw new TaskException(e);
+				}
+			}
+
 		}
-		
+
 		mTaskSuccessful = true;
+		mTaskFinished = true;
 
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace(ApplicationPrecompilerSettings.TRACE_EXITING);
 		}
+		return lExpandedBoardStatesToReturn;
 	}
 
 	private byte rescoreNode(BoardState pBoardState, ArrayList<BoardState> pSubBoardStates) {
@@ -257,31 +278,20 @@ public class ExpansionTask extends BasicAppTask {
 			sLogger.debug("Move: {{}}", lMove.getAttributeName());
 		}
 
-		if (lMove.getPlayer() == PlayerSet.getRealPlayer(2)) { // current move is opponent move, reorder sub
-			// moves by highest score
-			Collections.sort(pSubBoardStates, new Comparator<BoardState>() {
-				public int compare(BoardState p1, BoardState p2) {
-					byte lP1MoveScore = p1.getMoveScore();
-					byte lP2MoveScore = p2.getMoveScore();
-					return (lP2MoveScore > lP1MoveScore) ? 1 : -1;
-				}
-			});
-		} else { // current move is a self move, reorder sub moves by lowest
-					// score
-			Collections.sort(pSubBoardStates, new Comparator<BoardState>() {
-				public int compare(BoardState p1, BoardState p2) {
-					byte lP1MoveScore = p1.getMoveScore();
-					byte lP2MoveScore = p2.getMoveScore();
-					return (lP2MoveScore < lP1MoveScore) ? 1 : -1;
-				}
-			});
-		}
+//		if (lMove.getPlayer() == PlayerSet.getRealPlayer(2) || lMove.getPlayer() == PlayerSet.NULL_PLAYER) { // current move is opponent move, reorder sub
+//			// moves by highest score
+//			pSubBoardStates
+//					.sort((BoardState p1, BoardState p2) -> (p2.getMoveScore() == p1.getMoveScore() ? 0 : (p2.getMoveScore() > p1.getMoveScore() ? 1 : -1)));
+//		} else { // current move is a self move, reorder sub moves by lowest
+//					// score
+//			pSubBoardStates
+//					.sort((BoardState p1, BoardState p2) -> (p2.getMoveScore() == p1.getMoveScore() ? 0 : (p2.getMoveScore() < p1.getMoveScore() ? 1 : -1)));
+//		}
 
 		byte lScore = pSubBoardStates.get(0).getMoveScore();
 
-		if (sLogger.isDebugEnabled()) {
-			sLogger.debug("CurrentNode: Move: {{}} Score: {{}}", lMove.getColumn(), pSubBoardStates.get(0).getMoveScore());
-		}
+		sLogger.debug("CurrentNode: Move: {{}} Score: {{}}", lMove.getColumn(), pSubBoardStates.get(0).getMoveScore());
+
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace(ApplicationPrecompilerSettings.TRACE_EXITING);
 		}
@@ -289,7 +299,8 @@ public class ExpansionTask extends BasicAppTask {
 		return lScore;
 	}
 
-	private ArrayList<BoardState> expandSubBoardStates(BoardState pNodeToExpand) {
+	@SuppressWarnings("squid:S3776")
+	private ArrayList<BoardState> expandSubBoardStates(BoardState pNodeToExpand) throws TaskException {
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace("Entering");
 		}
@@ -309,10 +320,25 @@ public class ExpansionTask extends BasicAppTask {
 		Move lMove = pNodeToExpand.decodeMove();
 
 		// Current Move was an opponent move
-		if (lMove.getPlayer() == PlayerSet.getAllPlayer(2)) {
+		if (lMove.getPlayer() == PlayerSet.getAllPlayer(2) || lMove.getPlayer() == PlayerSet.NULL_PLAYER) {
 			for (Column lColumn : ColumnSet.getColumns()) {
 				try {
-					BoardState lNewBoardState = new BoardState(pNodeToExpand, MoveSet.getMove(PlayerSet.getAllPlayer(1), lColumn), true);
+					BoardState lNewBoardState = new BoardState(pNodeToExpand, MoveSet.getMove(PlayerSet.getAllPlayer(1), lColumn));
+
+					BoardStateKnowledgeBaseFileIndex lNewBoardStateKnowledgeBaseFileIndex = null;
+					try {
+						lNewBoardStateKnowledgeBaseFileIndex = new BoardStateKnowledgeBaseFileIndex(lNewBoardState);
+					} catch (FileIndexException e) {
+						if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
+							sLogger.trace(ApplicationPrecompilerSettings.TRACE_EXITING);
+						}
+						throw new TaskException(e);
+					}
+
+					readMoveScoreFromKnowledgeBase(lNewBoardStateKnowledgeBaseFileIndex);
+
+					BoardStateLogger.logBoardState(lNewBoardState);
+
 					lSubBoardState.add(lNewBoardState);
 				} catch (InvalidMoveException eE) {
 					if (sLogger.isDebugEnabled()) {
@@ -320,6 +346,9 @@ public class ExpansionTask extends BasicAppTask {
 					}
 				}
 			}
+			
+			lSubBoardState.sort((BoardState p1, BoardState p2) -> (p2.getMoveScore() == p1.getMoveScore() ? 0 : (p2.getMoveScore() > p1.getMoveScore() ? 1 : -1)));
+			
 			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace(ApplicationPrecompilerSettings.TRACE_EXITING);
 			}
@@ -327,7 +356,22 @@ public class ExpansionTask extends BasicAppTask {
 		} else if (lMove.getPlayer() == PlayerSet.getAllPlayer(1)) {
 			for (Column lColumn : ColumnSet.getColumns()) {
 				try {
-					BoardState lNewBoardState = new BoardState(pNodeToExpand, MoveSet.getMove(PlayerSet.getAllPlayer(2), lColumn), true);
+					BoardState lNewBoardState = new BoardState(pNodeToExpand, MoveSet.getMove(PlayerSet.getAllPlayer(2), lColumn));
+
+					BoardStateKnowledgeBaseFileIndex lNewBoardStateKnowledgeBaseFileIndex = null;
+					try {
+						lNewBoardStateKnowledgeBaseFileIndex = new BoardStateKnowledgeBaseFileIndex(lNewBoardState);
+					} catch (FileIndexException e) {
+						if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
+							sLogger.trace(ApplicationPrecompilerSettings.TRACE_EXITING);
+						}
+						throw new TaskException(e);
+					}
+
+					readMoveScoreFromKnowledgeBase(lNewBoardStateKnowledgeBaseFileIndex);
+
+					BoardStateLogger.logBoardState(lNewBoardState);
+
 					lSubBoardState.add(lNewBoardState);
 				} catch (InvalidMoveException eE) {
 					if (sLogger.isDebugEnabled()) {
@@ -335,6 +379,8 @@ public class ExpansionTask extends BasicAppTask {
 					}
 				}
 			}
+			lSubBoardState.sort((BoardState p1, BoardState p2) -> (p2.getMoveScore() == p1.getMoveScore() ? 0 : (p2.getMoveScore() < p1.getMoveScore() ? 1 : -1)));
+			
 			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace(ApplicationPrecompilerSettings.TRACE_EXITING);
 			}
@@ -351,15 +397,140 @@ public class ExpansionTask extends BasicAppTask {
 	}
 
 	public BoardState getBoardStateToExpand() {
-		return mBoardStateToExpand;
+		return mFirstBoardStateToExpand;
 	}
 
 	public List<BoardState> getExpandedBoardStates() {
-		return mExpandedBoardStates;
+		return mFinalExpandedBoardStates;
 	}
 
-	public void setBoardStateLock(BoardState pBoardStateLock) {
-		mBoardStateLock = pBoardStateLock;
+	private static final byte SURROGATE_ZERO = 120;
+	private static final byte NULL_VALUE = 0;
+
+	public void readMoveScoreFromKnowledgeBase(BoardStateKnowledgeBaseFileIndex pBoardStateKnowledgeBaseFileIndexToUnlock) throws TaskException {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
+			sLogger.trace(ApplicationPrecompilerSettings.TRACE_ENTERING);
+		}
+
+		sLogger.debug("Creating and starting Knowledge Base File Access Thread for reading");
+		CompressableCacheSegmentOperationsReadTask lCompressableCacheSegmentOperationsReadTask = new CompressableCacheSegmentOperationsReadTask(mPool,
+				pBoardStateKnowledgeBaseFileIndexToUnlock.getPoolItemId(), pBoardStateKnowledgeBaseFileIndexToUnlock.getFileDetails(),
+				pBoardStateKnowledgeBaseFileIndexToUnlock.getIndexDetails());
+		lCompressableCacheSegmentOperationsReadTask.runTask();
+
+		if (!lCompressableCacheSegmentOperationsReadTask.isTaskSuccessful() || !lCompressableCacheSegmentOperationsReadTask.isTaskFinished()) {
+			sLogger.error("Knowledge Base Error occurred!");
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
+				sLogger.trace(ApplicationPrecompilerSettings.TRACE_EXITING);
+			}
+			throw new TaskException("Knowledge Base Error occurred!");
+		}
+
+		byte[] lScoreSegment = lCompressableCacheSegmentOperationsReadTask.getIndexDetails().getIndexSegment();
+		if (lScoreSegment == null || lScoreSegment.length == 0) {
+			sLogger.error("Knowledge Base Error occurred! Score Segment is null or empty!");
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
+				sLogger.trace(ApplicationPrecompilerSettings.TRACE_EXITING);
+			}
+			throw new TaskException("Knowledge Base Error occurred! Score Segment is null or empty!!");
+		}
+
+		byte lScore = lScoreSegment[0];
+
+		if (lScore != NULL_VALUE) {
+			if (lScore == SURROGATE_ZERO) {
+				lScore = 0;
+			}
+			sLogger.debug("Score is found, setting to BoardState");
+			pBoardStateKnowledgeBaseFileIndexToUnlock.getBoardState().setMoveScore(lScore);
+		} else {
+			sLogger.debug("Score is not found, writing from Current Board State");
+			sLogger.debug("Creating and starting Knowledge Base File Access Thread for writing");
+
+			pBoardStateKnowledgeBaseFileIndexToUnlock.setScoreToWriteFromBoardState(SURROGATE_ZERO);
+
+			CompressableCacheSegmentOperationsWriteTask lCompressableCacheSegmentOperationsWriteTask = new CompressableCacheSegmentOperationsWriteTask(mPool,
+					pBoardStateKnowledgeBaseFileIndexToUnlock.getPoolItemId(), pBoardStateKnowledgeBaseFileIndexToUnlock.getFileDetails(),
+					pBoardStateKnowledgeBaseFileIndexToUnlock.getIndexDetails());
+			lCompressableCacheSegmentOperationsWriteTask.runTask();
+			if (!lCompressableCacheSegmentOperationsWriteTask.isTaskSuccessful() || !lCompressableCacheSegmentOperationsWriteTask.isTaskFinished()) {
+				sLogger.error("Knowledge Base Error occurred!");
+				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
+					sLogger.trace(ApplicationPrecompilerSettings.TRACE_EXITING);
+				}
+				throw new TaskException("Knowledge Base Error occurred!");
+			}
+
+			if (!pBoardStateKnowledgeBaseFileIndexToUnlock.getAddress().equals(pBoardStateKnowledgeBaseFileIndexToUnlock.getReciprocalAddress())) {
+				lCompressableCacheSegmentOperationsWriteTask = new CompressableCacheSegmentOperationsWriteTask(mPool,
+						pBoardStateKnowledgeBaseFileIndexToUnlock.getReciprocalPoolItemId(),
+						pBoardStateKnowledgeBaseFileIndexToUnlock.getReciprocalFileDetails(),
+						pBoardStateKnowledgeBaseFileIndexToUnlock.getReciprocalIndexDetails());
+				lCompressableCacheSegmentOperationsWriteTask.runTask();
+				if (!lCompressableCacheSegmentOperationsWriteTask.isTaskSuccessful() || !lCompressableCacheSegmentOperationsWriteTask.isTaskFinished()) {
+					sLogger.error("Knowledge Base Error occurred!");
+					if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
+						sLogger.trace(ApplicationPrecompilerSettings.TRACE_EXITING);
+					}
+					throw new TaskException("Knowledge Base Error occurred!");
+				}
+			}
+
+		}
+
+		sLogger.debug("Move: {{}} Move Score {{}}", pBoardStateKnowledgeBaseFileIndexToUnlock.getAddress(),
+				pBoardStateKnowledgeBaseFileIndexToUnlock.getBoardState().getMoveScore());
+		sLogger.debug("Move: {{}} Move Score {{}}", pBoardStateKnowledgeBaseFileIndexToUnlock.getReciprocalAddress(),
+				pBoardStateKnowledgeBaseFileIndexToUnlock.getBoardState().getMoveScore());
+
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
+			sLogger.trace(ApplicationPrecompilerSettings.TRACE_EXITING);
+		}
+	}
+
+	public void writeMoveScoreToKnowledge(BoardStateKnowledgeBaseFileIndex pBoardStateKnowledgeBaseFileIndexToUnlock) throws TaskException {
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
+			sLogger.trace(ApplicationPrecompilerSettings.TRACE_ENTERING);
+		}
+
+		sLogger.debug("Creating and starting Knowledge Base File Access Thread for writing");
+
+		pBoardStateKnowledgeBaseFileIndexToUnlock.setScoreToWriteFromBoardState(SURROGATE_ZERO);
+
+		CompressableCacheSegmentOperationsWriteTask lCompressableCacheSegmentOperationsWriteTask = new CompressableCacheSegmentOperationsWriteTask(mPool,
+				pBoardStateKnowledgeBaseFileIndexToUnlock.getPoolItemId(), pBoardStateKnowledgeBaseFileIndexToUnlock.getFileDetails(),
+				pBoardStateKnowledgeBaseFileIndexToUnlock.getIndexDetails());
+		lCompressableCacheSegmentOperationsWriteTask.runTask();
+		if (!lCompressableCacheSegmentOperationsWriteTask.isTaskSuccessful() || !lCompressableCacheSegmentOperationsWriteTask.isTaskFinished()) {
+			sLogger.error("Knowledge Base Error occurred!");
+			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
+				sLogger.trace(ApplicationPrecompilerSettings.TRACE_EXITING);
+			}
+			throw new TaskException("Knowledge Base Error occurred!");
+		}
+
+		if (!pBoardStateKnowledgeBaseFileIndexToUnlock.getAddress().equals(pBoardStateKnowledgeBaseFileIndexToUnlock.getReciprocalAddress())) {
+			lCompressableCacheSegmentOperationsWriteTask = new CompressableCacheSegmentOperationsWriteTask(mPool,
+					pBoardStateKnowledgeBaseFileIndexToUnlock.getReciprocalPoolItemId(), pBoardStateKnowledgeBaseFileIndexToUnlock.getReciprocalFileDetails(),
+					pBoardStateKnowledgeBaseFileIndexToUnlock.getReciprocalIndexDetails());
+			lCompressableCacheSegmentOperationsWriteTask.runTask();
+			if (!lCompressableCacheSegmentOperationsWriteTask.isTaskSuccessful() || !lCompressableCacheSegmentOperationsWriteTask.isTaskFinished()) {
+				sLogger.error("Knowledge Base Error occurred!");
+				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
+					sLogger.trace(ApplicationPrecompilerSettings.TRACE_EXITING);
+				}
+				throw new TaskException("Knowledge Base Error occurred!");
+			}
+		}
+
+		sLogger.debug("Move: {{}} Move Score {{}}", pBoardStateKnowledgeBaseFileIndexToUnlock.getAddress(),
+				pBoardStateKnowledgeBaseFileIndexToUnlock.getBoardState().getMoveScore());
+		sLogger.debug("Move: {{}} Move Score {{}}", pBoardStateKnowledgeBaseFileIndexToUnlock.getReciprocalAddress(),
+				pBoardStateKnowledgeBaseFileIndexToUnlock.getBoardState().getMoveScore());
+
+		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
+			sLogger.trace(ApplicationPrecompilerSettings.TRACE_EXITING);
+		}
 	}
 
 }

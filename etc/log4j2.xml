@@ -175,16 +175,58 @@
     </Appenders>
     <Loggers>
      	<logger name="com.home.neil.appconfig" level="debug">
-        	<AppenderRef ref="AppConfig"/>
+        	<AppenderRef ref="Console"/>
+    	</logger>
+    	
+	   	<logger name="com.home.neil.appmanager" level="warn">
+        	<AppenderRef ref="Console"/>
     	</logger>
 
-	   	<logger name="com.home.neil.pool" level="debug">
-        	<AppenderRef ref="Console"/> 
+	   	<logger name="com.home.neil.task" level="warn">
+        	<AppenderRef ref="Console"/>
+    	</logger>
+
+	   	<logger name="com.home.neil.thread" level="warn">
+        	<AppenderRef ref="Console"/>
+    	</logger>
+
+	   	<logger name="com.home.neil.pool" level="info">
+        	<AppenderRef ref="Console"/>
         	<AppenderRef ref="Pool"/>
     	</logger>
 
+	   	<logger name="com.home.neil.cachesegment" level="error">
+        	<AppenderRef ref="Console"/>
+    	</logger>
+
+	   	<logger name="com.home.neil.cachesegment.threads.initialization" level="error">
+        	<AppenderRef ref="Console"/>
+    	</logger>
+
+	   	<logger name="com.home.neil.lastaccessindex" level="error">
+        	<AppenderRef ref="Console"/>
+    	</logger>
+
+	   	<logger name="com.home.neil.connectfour" level="info">
+        	<AppenderRef ref="Console"/> 
+    	</logger>
+
+	   	<logger name="com.home.neil.connectfour.boardstate.logger" level="error">
+        	<AppenderRef ref="Console"/> 
+    	</logger>
+
+	   	<logger name="com.home.neil.connectfour.boardstate.knowledgebase.fileindex.metadata" level="error">
+        	<AppenderRef ref="Console"/> 
+    	</logger>
+
+	   	<logger name="com.home.neil.connectfour.boardstate.knowledgebase.fileindex.score" level="error">
+        	<AppenderRef ref="Console"/> 
+    	</logger>
+
+		<!-- 
+		
 		<logger name="com.home.neil" level="debug">
-		    <AppenderRef ref="Console"/> 
+		    <AppenderRef ref="Console"/>  
         	<AppenderRef ref="All"/>
         	<AppenderRef ref="ThreadLogContextRouting"/> 
         	<AppenderRef ref="AllThreadLogContextRouting"/> 
@@ -193,7 +235,7 @@
         	<AppenderRef ref="PoolItemLifecycleContextRouting"/> 
         	<AppenderRef ref="AllPoolItemLifecycleContextRouting"/> 
     	</logger>
-    	
+    	-->
 		<!-- 
 		<logger name="com.home.neil" level="debug">
         	<AppenderRef ref="ContextRouting"/> 

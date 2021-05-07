@@ -116,7 +116,7 @@ class BoardStateTest extends SandboxTest {
 		assertFalse(lWinningCombinations.isEmpty());
 		try {
 		try {
-			BoardState lCleanBoardState = new BoardState (false);
+			BoardState lCleanBoardState = new BoardState ();
 			byte lScore = lCleanBoardState.getMoveScore();
 			assertEquals(0, lScore);
 			
@@ -125,15 +125,17 @@ class BoardStateTest extends SandboxTest {
 			BoardState lPreviousBoardState = lCleanBoardState;
 			BoardState lNextBoardState = null;
 			for (int i = 0; i < 3; i++) {
-				lNextBoardState = new BoardState(lPreviousBoardState, MoveSet.getMove(PlayerSet.getRealPlayer(1),ColumnSet.getColumn(3)), false);
+				lNextBoardState = new BoardState(lPreviousBoardState, MoveSet.getMove(PlayerSet.getRealPlayer(1),ColumnSet.getColumn(3)));
 				lScore = lNextBoardState.getMoveScore();
+				sLogger.error("Score {{}}", lScore);
 
 				BoardStateLogger.logBoardState(lNextBoardState);
 				
 				lPreviousBoardState = lNextBoardState;
 
-				lNextBoardState = new BoardState(lPreviousBoardState, MoveSet.getMove(PlayerSet.getRealPlayer(2),ColumnSet.getColumn(3)), false);
+				lNextBoardState = new BoardState(lPreviousBoardState, MoveSet.getMove(PlayerSet.getRealPlayer(2),ColumnSet.getColumn(3)));
 				lScore = lNextBoardState.getMoveScore();
+				sLogger.error("Score {{}}", lScore);
 
 				BoardStateLogger.logBoardState(lNextBoardState);
 				
@@ -141,43 +143,49 @@ class BoardStateTest extends SandboxTest {
 			}
 			
 			for (int i = 0; i < 3; i++) {
-				lNextBoardState = new BoardState(lPreviousBoardState, MoveSet.getMove(PlayerSet.getRealPlayer(1),ColumnSet.getColumn(4)), false);
+				lNextBoardState = new BoardState(lPreviousBoardState, MoveSet.getMove(PlayerSet.getRealPlayer(1),ColumnSet.getColumn(4)));
 				lScore = lNextBoardState.getMoveScore();
+				sLogger.error("Score {{}}", lScore);
 
 				BoardStateLogger.logBoardState(lNextBoardState);
 				
 				lPreviousBoardState = lNextBoardState;
 
-				lNextBoardState = new BoardState(lPreviousBoardState, MoveSet.getMove(PlayerSet.getRealPlayer(2),ColumnSet.getColumn(5)), false);
+				lNextBoardState = new BoardState(lPreviousBoardState, MoveSet.getMove(PlayerSet.getRealPlayer(2),ColumnSet.getColumn(5)));
 				lScore = lNextBoardState.getMoveScore();
+				sLogger.error("Score {{}}", lScore);
 
 				BoardStateLogger.logBoardState(lNextBoardState);
 				
 				lPreviousBoardState = lNextBoardState;
 
-				lNextBoardState = new BoardState(lPreviousBoardState, MoveSet.getMove(PlayerSet.getRealPlayer(1),ColumnSet.getColumn(6)), false);
+				lNextBoardState = new BoardState(lPreviousBoardState, MoveSet.getMove(PlayerSet.getRealPlayer(1),ColumnSet.getColumn(6)));
 				lScore = lNextBoardState.getMoveScore();
+				sLogger.error("Score {{}}", lScore);
 
 				BoardStateLogger.logBoardState(lNextBoardState);
 				
 				lPreviousBoardState = lNextBoardState;
 
-				lNextBoardState = new BoardState(lPreviousBoardState, MoveSet.getMove(PlayerSet.getRealPlayer(2),ColumnSet.getColumn(4)), false);
+				lNextBoardState = new BoardState(lPreviousBoardState, MoveSet.getMove(PlayerSet.getRealPlayer(2),ColumnSet.getColumn(4)));
 				lScore = lNextBoardState.getMoveScore();
+				sLogger.error("Score {{}}", lScore);
 
 				BoardStateLogger.logBoardState(lNextBoardState);
 				
 				lPreviousBoardState = lNextBoardState;
 
-				lNextBoardState = new BoardState(lPreviousBoardState, MoveSet.getMove(PlayerSet.getRealPlayer(1),ColumnSet.getColumn(5)), false);
+				lNextBoardState = new BoardState(lPreviousBoardState, MoveSet.getMove(PlayerSet.getRealPlayer(1),ColumnSet.getColumn(5)));
 				lScore = lNextBoardState.getMoveScore();
+				sLogger.error("Score {{}}", lScore);
 
 				BoardStateLogger.logBoardState(lNextBoardState);
 				
 				lPreviousBoardState = lNextBoardState;
 
-				lNextBoardState = new BoardState(lPreviousBoardState, MoveSet.getMove(PlayerSet.getRealPlayer(2),ColumnSet.getColumn(6)), false);
+				lNextBoardState = new BoardState(lPreviousBoardState, MoveSet.getMove(PlayerSet.getRealPlayer(2),ColumnSet.getColumn(6)));
 				lScore = lNextBoardState.getMoveScore();
+				sLogger.error("Score {{}}", lScore);
 
 				BoardStateLogger.logBoardState(lNextBoardState);
 				
@@ -186,43 +194,49 @@ class BoardStateTest extends SandboxTest {
 			}
 			
 			for (int i = 0; i < 3; i++) {
-				lNextBoardState = new BoardState(lPreviousBoardState, MoveSet.getMove(PlayerSet.getRealPlayer(1),ColumnSet.getColumn(0)), false);
+				lNextBoardState = new BoardState(lPreviousBoardState, MoveSet.getMove(PlayerSet.getRealPlayer(1),ColumnSet.getColumn(0)));
 				lScore = lNextBoardState.getMoveScore();
+				sLogger.error("Score {{}}", lScore);
 
 				BoardStateLogger.logBoardState(lNextBoardState);
 				
 				lPreviousBoardState = lNextBoardState;
 
-				lNextBoardState = new BoardState(lPreviousBoardState, MoveSet.getMove(PlayerSet.getRealPlayer(2),ColumnSet.getColumn(1)), false);
+				lNextBoardState = new BoardState(lPreviousBoardState, MoveSet.getMove(PlayerSet.getRealPlayer(2),ColumnSet.getColumn(1)));
 				lScore = lNextBoardState.getMoveScore();
+				sLogger.error("Score {{}}", lScore);
 
 				BoardStateLogger.logBoardState(lNextBoardState);
 				
 				lPreviousBoardState = lNextBoardState;
 
-				lNextBoardState = new BoardState(lPreviousBoardState, MoveSet.getMove(PlayerSet.getRealPlayer(1),ColumnSet.getColumn(2)), false);
+				lNextBoardState = new BoardState(lPreviousBoardState, MoveSet.getMove(PlayerSet.getRealPlayer(1),ColumnSet.getColumn(2)));
 				lScore = lNextBoardState.getMoveScore();
+				sLogger.error("Score {{}}", lScore);
 
 				BoardStateLogger.logBoardState(lNextBoardState);
 				
 				lPreviousBoardState = lNextBoardState;
 
-				lNextBoardState = new BoardState(lPreviousBoardState, MoveSet.getMove(PlayerSet.getRealPlayer(2),ColumnSet.getColumn(0)), false);
+				lNextBoardState = new BoardState(lPreviousBoardState, MoveSet.getMove(PlayerSet.getRealPlayer(2),ColumnSet.getColumn(0)));
 				lScore = lNextBoardState.getMoveScore();
+				sLogger.error("Score {{}}", lScore);
+				
+				BoardStateLogger.logBoardState(lNextBoardState);
+				
+				lPreviousBoardState = lNextBoardState;
+
+				lNextBoardState = new BoardState(lPreviousBoardState, MoveSet.getMove(PlayerSet.getRealPlayer(1),ColumnSet.getColumn(1)));
+				lScore = lNextBoardState.getMoveScore();
+				sLogger.error("Score {{}}", lScore);
 
 				BoardStateLogger.logBoardState(lNextBoardState);
 				
 				lPreviousBoardState = lNextBoardState;
 
-				lNextBoardState = new BoardState(lPreviousBoardState, MoveSet.getMove(PlayerSet.getRealPlayer(1),ColumnSet.getColumn(1)), false);
+				lNextBoardState = new BoardState(lPreviousBoardState, MoveSet.getMove(PlayerSet.getRealPlayer(2),ColumnSet.getColumn(2)));
 				lScore = lNextBoardState.getMoveScore();
-
-				BoardStateLogger.logBoardState(lNextBoardState);
-				
-				lPreviousBoardState = lNextBoardState;
-
-				lNextBoardState = new BoardState(lPreviousBoardState, MoveSet.getMove(PlayerSet.getRealPlayer(2),ColumnSet.getColumn(2)), false);
-				lScore = lNextBoardState.getMoveScore();
+				sLogger.error("Score {{}}", lScore);
 
 				BoardStateLogger.logBoardState(lNextBoardState);
 				
