@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
@@ -19,17 +20,22 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.home.neil.appconfig.AppConfig;
-import com.home.neil.connectfour.boardstate.BoardState;
-import com.home.neil.connectfour.boardstate.GameStateSet;
-import com.home.neil.connectfour.boardstate.tasks.BoardStateMetaDataTask;
-import com.home.neil.connectfour.boardstate.tasks.ExpansionTask;
-import com.home.neil.connectfour.boardstate.tasks.BoardStateMetaDataTask.METADATAOPERATION;
+import com.home.neil.connectfour.board.GameStateSet;
+import com.home.neil.connectfour.boardstate.BoardStateBase;
+import com.home.neil.connectfour.boardstate.BoardStateMaximumPerformance;
+import com.home.neil.connectfour.boardstate.knowledgebase.fileindex.FileIndexException;
+import com.home.neil.connectfour.boardstate.tasks.ExpansionPerformanceTask;
+import com.home.neil.connectfour.boardstate.tasks.performance.BoardStateMetaDataPerformanceTask;
+import com.home.neil.connectfour.learning.threads.stateful.breadcrumbs.BreadCrumbExpansionSet;
 import com.home.neil.junit.sandbox.SandboxTest;
 import com.home.neil.pool.IPoolConfig;
 import com.home.neil.pool.Pool;
 import com.home.neil.pool.PoolException;
 import com.home.neil.task.TaskException;
+import com.home.neil.workentity.WorkEntityException;
 
 class ExpansionTaskTest extends SandboxTest {
 	public static final String CLASS_NAME = ExpansionTaskTest.class.getName();
@@ -126,8 +132,97 @@ class ExpansionTaskTest extends SandboxTest {
 		sLogger.info("####################################   End Retire Pool" + pCurrentMethodName + " ####################################");
 	}
 
+//	@Test
+//	void testExpansionTask() {
+//		String lCurrentMethodName = new Object() {
+//		}.getClass().getEnclosingMethod().getName();
+//
+//		IPoolConfig lPoolConfig = component_readConfig(lCurrentMethodName);
+//
+//		Pool lPool = component_instantiatePool(lCurrentMethodName, lPoolConfig);
+//
+//		component_initPool(lCurrentMethodName, lPool);
+//
+//		Awaitility.await().atMost(10, TimeUnit.SECONDS).until(() -> lPool.checkRetiringThreadsAllRunning());
+//
+//
+//		try {
+//			expandBoardState(lPool, null, 1, 1, 2);
+//			
+//			//expandBoardState(lPool, null, 1, 5, 9);
+//
+//			//expandBoardState(lPool, null, 1, 9, 13);
+//
+//			//expandBoardState(lPool, null, 1, 1, 21);
+//
+//			//expandBoardState(lPool, null, 1, 1, 21);
+//
+//		} catch (TaskException e) {
+//			e.printStackTrace();
+//			assertTrue(false);
+//		}
+//
+//		component_retirePool(lCurrentMethodName, lPool);
+//
+//		Awaitility.await().atMost(10, TimeUnit.SECONDS).until(() -> lPool.checkRetiringThreadsAllStopped());
+//
+//	}
+//
+//	public void expandBoardState(Pool lPool, BoardState lBoardStateToExpand, int pLevel, int pStartCheckingLevel, int pMaxLevel) throws TaskException {
+//		ExpansionTask lExpansionTask = null;
+//
+//		if (lBoardStateToExpand == null) {
+//			lBoardStateToExpand = new BoardState ();
+//		}
+//
+//		if (pLevel > pMaxLevel) {
+//			//sLogger.info("Reached Maximum Expansion Level: {{}} for Move: {{}}", pLevel, lBoardStateToExpand.constructMoveStrings(true)[0]);
+//			return;
+//		}
+//		
+//		if (lBoardStateToExpand.decodeGameState() == GameStateSet.UNDECIDED) {
+//			BoardStateMetaDataTask lReadMetaDataTask = null;
+//			if (pLevel >= pStartCheckingLevel) {
+//				lReadMetaDataTask = new BoardStateMetaDataTask(lPool, lBoardStateToExpand, METADATAOPERATION.READ, 0);
+//				try {
+//					lReadMetaDataTask.runTask();
+//				} catch (WorkEntityException e) {
+//						return;
+//				}
+//			}
+//
+//			if (lReadMetaDataTask == null || !lReadMetaDataTask.isValue()) {
+//				//sLogger.info("Move Not Evaluated: {{}}", lBoardStateToExpand.constructMoveStrings(true)[0]);
+//				lExpansionTask = new ExpansionTask(lPool, lBoardStateToExpand, false, true, 2);
+//				try {
+//					lExpansionTask.runTask();
+//				} catch (WorkEntityException e) {
+//					return;
+//				}
+//
+//				List<BoardState> lExpandedBoardStates = lExpansionTask.getExpandedBoardStates();
+//
+//				for (BoardState lBoardState : lExpandedBoardStates) {
+//					expandBoardState(lPool, lBoardState, pLevel + 1, pStartCheckingLevel, pMaxLevel);
+//				} 
+//				
+//				if (lReadMetaDataTask != null) {
+//					BoardStateMetaDataTask lWriteMetaDataTask = new BoardStateMetaDataTask(lReadMetaDataTask, METADATAOPERATION.SET);
+//					try {
+//						lWriteMetaDataTask.runTask();
+//					} catch (WorkEntityException e) {
+//						return;
+//					}
+//				}
+//			} else {
+//				sLogger.info("Move Already Evaluated: {{}}", lBoardStateToExpand.constructMoveStrings(true)[0]);
+//			}
+//		}
+//	}		
+	
+	
 	@Test
-	void testExpansionTask() {
+	void testExpansionPerformanceTask() {
 		String lCurrentMethodName = new Object() {
 		}.getClass().getEnclosingMethod().getName();
 
@@ -141,17 +236,49 @@ class ExpansionTaskTest extends SandboxTest {
 
 
 		try {
-			expandBoardState(lPool, null, 1, 1, 4);
+			BoardStateBase lRootBoardState = new BoardStateMaximumPerformance();
 			
-			expandBoardState(lPool, null, 1, 5, 9);
+			List <BreadCrumbExpansionSet> lBreadCrumbExpansionSets = new ArrayList <> ();
+			BreadCrumbExpansionSet lBreadCrumbExpansionSet = new BreadCrumbExpansionSet (1,1,4,2);
+			lBreadCrumbExpansionSets.add(lBreadCrumbExpansionSet);
 
-			//expandBoardState(lPool, null, 1, 9, 13);
+			lBreadCrumbExpansionSet = new BreadCrumbExpansionSet (2,5,9,2);
+			lBreadCrumbExpansionSets.add(lBreadCrumbExpansionSet);
+			
+			lBreadCrumbExpansionSet = new BreadCrumbExpansionSet (3,10,13,2);
+			lBreadCrumbExpansionSets.add(lBreadCrumbExpansionSet);
+			
+			lBreadCrumbExpansionSet = new BreadCrumbExpansionSet (4,14,18,2);
+			lBreadCrumbExpansionSets.add(lBreadCrumbExpansionSet);
+			
+			lBreadCrumbExpansionSet = new BreadCrumbExpansionSet (5,19,21,2);
+			lBreadCrumbExpansionSets.add(lBreadCrumbExpansionSet);
+			
+			GsonBuilder lBuilder = new GsonBuilder();
+			lBuilder.setPrettyPrinting();
+			
+			Gson lGson = lBuilder.create();
+			String lBreadCrumbJson = lGson.toJson (lBreadCrumbExpansionSets);
+			
+			sLogger.info("BreadCrumbs: \n\n {}", lBreadCrumbJson);
+			
+			
+			
+			
+			
+			expandBoardStateMaximumPerformance(lPool, lRootBoardState, 1, 1, 4);
+			
+			
+			
+			//expandBoardStateMaximumPerformance(lPool, null, 1, 5, 9);
 
-			//expandBoardState(lPool, null, 1, 1, 21);
+			//expandBoardStateMaximumPerformance(lPool, null, 1, 9, 13);
 
-			//expandBoardState(lPool, null, 1, 1, 21);
+			//expandBoardStateMaximumPerformance(lPool, null, 1, 1, 21);
 
-		} catch (TaskException e) {
+			//expandBoardStateMaximumPerformance(lPool, null, 1, 1, 21);
+
+		} catch (TaskException | FileIndexException e) {
 			e.printStackTrace();
 			assertTrue(false);
 		}
@@ -162,11 +289,11 @@ class ExpansionTaskTest extends SandboxTest {
 
 	}
 
-	public void expandBoardState(Pool lPool, BoardState lBoardStateToExpand, int pLevel, int pStartCheckingLevel, int pMaxLevel) throws TaskException {
-		ExpansionTask lExpansionTask = null;
+	public void expandBoardStateMaximumPerformance(Pool lPool, BoardStateBase lBoardStateToExpand, int pLevel, int pStartCheckingLevel, int pMaxLevel) throws TaskException, FileIndexException {
+		ExpansionPerformanceTask lExpansionTask = null;
 
 		if (lBoardStateToExpand == null) {
-			lBoardStateToExpand = new BoardState ();
+			lBoardStateToExpand = new BoardStateMaximumPerformance ();
 		}
 
 		if (pLevel > pMaxLevel) {
@@ -174,30 +301,42 @@ class ExpansionTaskTest extends SandboxTest {
 			return;
 		}
 		
-		if (lBoardStateToExpand.decodeGameState() == GameStateSet.UNDECIDED) {
-			BoardStateMetaDataTask lReadMetaDataTask = null;
+		if (lBoardStateToExpand.getCurrentGameState() == GameStateSet.UNDECIDED) {
+			BoardStateMetaDataPerformanceTask lReadMetaDataTask = null;
 			if (pLevel >= pStartCheckingLevel) {
-				lReadMetaDataTask = new BoardStateMetaDataTask(lPool, lBoardStateToExpand, METADATAOPERATION.READ, 0);
-				lReadMetaDataTask.runTask();
+				lReadMetaDataTask = new BoardStateMetaDataPerformanceTask(lPool, lBoardStateToExpand, BoardStateMetaDataPerformanceTask.METADATAOPERATION.READ, 0);
+				try {
+					lReadMetaDataTask.runTask();
+				} catch (WorkEntityException e) {
+						return;
+				}
 			}
 
 			if (lReadMetaDataTask == null || !lReadMetaDataTask.isValue()) {
 				//sLogger.info("Move Not Evaluated: {{}}", lBoardStateToExpand.constructMoveStrings(true)[0]);
-				lExpansionTask = new ExpansionTask(lPool, lBoardStateToExpand, false, true, 2);
-				lExpansionTask.runTask();
+				lExpansionTask = new ExpansionPerformanceTask(lPool, lBoardStateToExpand, false, true, 2);
+				try {
+					lExpansionTask.runTask();
+				} catch (WorkEntityException e) {
+					return;
+				}
 
-				List<BoardState> lExpandedBoardStates = lExpansionTask.getExpandedBoardStates();
+				List<BoardStateBase> lExpandedBoardStates = lExpansionTask.getExpandedBoardStates();
 
-				for (BoardState lBoardState : lExpandedBoardStates) {
-					expandBoardState(lPool, lBoardState, pLevel + 1, pStartCheckingLevel, pMaxLevel);
+				for (BoardStateBase lBoardState : lExpandedBoardStates) {
+					expandBoardStateMaximumPerformance(lPool, lBoardState, pLevel + 1, pStartCheckingLevel, pMaxLevel);
 				} 
 				
 				if (lReadMetaDataTask != null) {
-					BoardStateMetaDataTask lWriteMetaDataTask = new BoardStateMetaDataTask(lReadMetaDataTask, METADATAOPERATION.SET);
-					lWriteMetaDataTask.runTask();
+					BoardStateMetaDataPerformanceTask lWriteMetaDataTask = new BoardStateMetaDataPerformanceTask(lReadMetaDataTask, BoardStateMetaDataPerformanceTask.METADATAOPERATION.SET);
+					try {
+						lWriteMetaDataTask.runTask();
+					} catch (WorkEntityException e) {
+						return;
+					}
 				}
 			} else {
-				sLogger.info("Move Already Evaluated: {{}}", lBoardStateToExpand.constructMoveStrings(true)[0]);
+				sLogger.info("Move Already Evaluated: {{}}", lBoardStateToExpand.getCurrentMoveStrings()[0]);
 			}
 		}
 	}		

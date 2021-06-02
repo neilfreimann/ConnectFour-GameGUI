@@ -16,8 +16,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.home.neil.appmanager.ApplicationPrecompilerSettings;
 import com.home.neil.connectfour.boardstate.knowledgebase.fileindex.IFileIndex;
-import com.home.neil.connectfour.boardstate.tasks.ExpansionTask;
-import com.home.neil.task.BasicAppTask;
+import com.home.neil.connectfour.boardstate.tasks.ExpansionPerformanceTask;
 
 public class AddressLocks implements AddressLocksMBean {
 	public static final String CLASS_NAME = AddressLocks.class.getName();
@@ -87,9 +86,9 @@ public class AddressLocks implements AddressLocksMBean {
 		//Reserve the ScoreAddress
 		String lScoreAddress = pFileIndex.getAddress();
 		//TODO  get rid of this
-		if (pTask instanceof ExpansionTask) {
-			ExpansionTask lTask = (ExpansionTask) pTask;
-			mCurrentAddressLock = lTask.getBoardStateToExpand().constructMoveStrings(true)[0];
+		if (pTask instanceof ExpansionPerformanceTask) {
+			ExpansionPerformanceTask lTask = (ExpansionPerformanceTask) pTask;
+			mCurrentAddressLock = lTask.getBoardStateToExpand().getCurrentMoveStrings()[0];
 		}
 		//TODO here
 		String lReciprocalScoreAddress = pFileIndex.getReciprocalAddress();
@@ -107,7 +106,7 @@ public class AddressLocks implements AddressLocksMBean {
 			mCurrentAddressLocks.put(lScoreAddressToUse, pTask);
 			pTask.setReservedAddress();
 
-			sLogger.debug("State1: Lock Obtained: {{}} for Task {{}} for Thread {{}}", lScoreAddressToUse, pTask.getTaskName(), pTask.getTaskThreadName());
+			sLogger.debug("State1: Lock Obtained: {{}} for Task {{}} for Thread {{}}", lScoreAddressToUse, pTask.getWorkEntityName(), pTask.getTaskThread().getName());
 			
 			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace(ApplicationPrecompilerSettings.TRACE_EXITING);
@@ -120,7 +119,7 @@ public class AddressLocks implements AddressLocksMBean {
 				lWaitingTasks.add(pTask);
 				mCurrentScoreAddressLockReservations.put(lScoreAddressToUse, lWaitingTasks);
 
-				sLogger.debug("State2: Lock Reserved: {{}} for Task {{}} for Thread {{}}", lScoreAddressToUse, pTask.getTaskName(), pTask.getTaskThreadName());
+				sLogger.debug("State2: Lock Reserved: {{}} for Task {{}} for Thread {{}}", lScoreAddressToUse, pTask.getWorkEntityName(), pTask.getTaskThread().getName());
 				
 				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace(ApplicationPrecompilerSettings.TRACE_EXITING);
@@ -128,7 +127,7 @@ public class AddressLocks implements AddressLocksMBean {
 				return false;
 			} else {
 				lWaitingTasks.add(pTask);
-				sLogger.debug("State3: Lock Reserved: {{}} for Task {{}} for Thread {{}}", lScoreAddressToUse, pTask.getTaskName(), pTask.getTaskThreadName());
+				sLogger.debug("State3: Lock Reserved: {{}} for Task {{}} for Thread {{}}", lScoreAddressToUse, pTask.getWorkEntityName(), pTask.getTaskThread().getName());
 				if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 					sLogger.trace(ApplicationPrecompilerSettings.TRACE_EXITING);
 				}		
@@ -157,7 +156,7 @@ public class AddressLocks implements AddressLocksMBean {
 		AddressLockHolderTask lAddressLockHolderTask = mCurrentAddressLocks.remove(lScoreAddressToUse);
 		LinkedList <AddressLockHolderTask> lWaitingThreads = mCurrentScoreAddressLockReservations.get(lScoreAddressToUse);
 		if (lWaitingThreads == null || lWaitingThreads.isEmpty()) {
-			sLogger.debug("State4: Lock Released: {{}} for Task {{}} for Thread {{}}", lScoreAddressToUse, lAddressLockHolderTask.getTaskName(), lAddressLockHolderTask.getTaskThreadName());
+			sLogger.debug("State4: Lock Released: {{}} for Task {{}} for Thread {{}}", lScoreAddressToUse, lAddressLockHolderTask.getWorkEntityName(), lAddressLockHolderTask.getTaskThread().getName());
 			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace(ApplicationPrecompilerSettings.TRACE_EXITING);
 			}		
@@ -166,7 +165,7 @@ public class AddressLocks implements AddressLocksMBean {
 			AddressLockHolderTask lWaitingAddressLockHolderTask = lWaitingThreads.pop();
 			mCurrentAddressLocks.put(lScoreAddressToUse, lWaitingAddressLockHolderTask);
 			lWaitingAddressLockHolderTask.setReservedAddress();
-			sLogger.debug("State5: Lock Reassigned: {{}} for Task {{}} for Thread {{}}", lScoreAddressToUse, lWaitingAddressLockHolderTask.getTaskName(), lWaitingAddressLockHolderTask.getTaskThreadName());
+			sLogger.debug("State5: Lock Reassigned: {{}} for Task {{}} for Thread {{}}", lScoreAddressToUse, lWaitingAddressLockHolderTask.getWorkEntityName(), lWaitingAddressLockHolderTask.getTaskThread().getName());
 			if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 				sLogger.trace(ApplicationPrecompilerSettings.TRACE_EXITING);
 			}		

@@ -5,13 +5,13 @@ import org.apache.logging.log4j.Logger;
 
 import com.home.neil.appmanager.ApplicationPrecompilerSettings;
 import com.home.neil.connectfour.boardstate.knowledgebase.fileindex.IFileIndex;
-import com.home.neil.connectfour.boardstate.tasks.ExpansionTask;
 import com.home.neil.pool.Pool;
 import com.home.neil.task.BasicAppTask;
+import com.home.neil.task.BasicAppTaskCacheConfig;
 
 public abstract  class AddressLockHolderTask extends BasicAppTask implements IAddressLockHolder {
 
-	public static final String CLASS_NAME = ExpansionTask.class.getName();
+	public static final String CLASS_NAME = AddressLockHolderTask.class.getName();
 	public static final String PACKAGE_NAME = CLASS_NAME.substring(0, CLASS_NAME.lastIndexOf("."));
 	public static final Logger sLogger = LogManager.getLogger(PACKAGE_NAME);
 
@@ -20,8 +20,8 @@ public abstract  class AddressLockHolderTask extends BasicAppTask implements IAd
 	private boolean mAddressLock = false;
 	private Object mLock = new Object();
 
-	protected AddressLockHolderTask(Pool pPool, boolean pRecordContext, boolean pRecordTaskStatistics) {
-		super(pRecordContext, pRecordTaskStatistics);
+	protected AddressLockHolderTask(Pool pPool, BasicAppTaskCacheConfig pConfig) {
+		super(pConfig);
 		mPool = pPool;
 	}
 

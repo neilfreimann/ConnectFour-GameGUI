@@ -29,6 +29,9 @@ public abstract class SandboxTest {
 				if (!lFile.isDirectory() && lFile.getName().endsWith("dat")) {
 					sLogger.info("Clearing file: {}", lFile.getName());
 					lFile.delete();
+				} else if (!lFile.isDirectory() && lFile.getName().endsWith("json")) {
+					sLogger.info("Clearing file: {}", lFile.getName());
+					lFile.delete();
 				} else if (!lFile.isDirectory() && lFile.getName().endsWith("cache")) {
 					sLogger.info("Clearing file: {}", lFile.getName());
 					lFile.delete();

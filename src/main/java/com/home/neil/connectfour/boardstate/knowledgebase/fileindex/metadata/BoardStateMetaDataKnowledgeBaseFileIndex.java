@@ -13,9 +13,9 @@ import com.home.neil.appmanager.ApplicationPrecompilerSettings;
 import com.home.neil.cachesegment.threads.operations.ICompressableCacheSegmentOperationsTask.FileDetails;
 import com.home.neil.cachesegment.threads.operations.ICompressableCacheSegmentOperationsTask.IndexDetails;
 import com.home.neil.connectfour.ConnectFourBoardConfig;
-import com.home.neil.connectfour.boardstate.BoardState;
-import com.home.neil.connectfour.boardstate.GameState;
-import com.home.neil.connectfour.boardstate.GameStateSet;
+import com.home.neil.connectfour.board.GameState;
+import com.home.neil.connectfour.board.GameStateSet;
+import com.home.neil.connectfour.boardstate.IBoardState;
 import com.home.neil.connectfour.boardstate.knowledgebase.fileindex.FileIndexException;
 import com.home.neil.connectfour.boardstate.knowledgebase.fileindex.IFileIndex;
 import com.home.neil.knowledgebase.KnowledgeBaseCompressableCacheSegmentConfig;
@@ -63,7 +63,7 @@ public class BoardStateMetaDataKnowledgeBaseFileIndex implements IFileIndex {
 		}
 	}
 
-	private BoardState mBoardState = null;
+	private IBoardState mBoardState = null;
 	
 	private IndexDetails mIndexDetails = null;
 	private FileDetails mFileDetails = null;
@@ -75,14 +75,14 @@ public class BoardStateMetaDataKnowledgeBaseFileIndex implements IFileIndex {
 	private String mReciprocalPoolItemId = null;
 	private String mReciprocalAddress = null;
 		
-	public BoardStateMetaDataKnowledgeBaseFileIndex (BoardState pBoardState) throws FileIndexException {
+	public BoardStateMetaDataKnowledgeBaseFileIndex (IBoardState pBoardState) throws FileIndexException {
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace(ApplicationPrecompilerSettings.TRACE_ENTERING);
 		}
 		
 		mBoardState = pBoardState;
 		
-		GameState lGameState = mBoardState.decodeGameState();
+		GameState lGameState = mBoardState.getCurrentGameState();
 		
 		if (lGameState != GameStateSet.UNDECIDED) {
 			sLogger.error("Board State Game State must be undecided to hold metadata.");
@@ -93,7 +93,7 @@ public class BoardStateMetaDataKnowledgeBaseFileIndex implements IFileIndex {
 		}
 		
 
-		String [] lMoveStrings = mBoardState.constructMoveStrings(true);
+		String [] lMoveStrings = mBoardState.getCurrentMoveStrings();
 
 		String lMoveString = lMoveStrings[0] + "0";
 		String lReciprocalMoveString = lMoveStrings[1] + "0";
@@ -135,11 +135,11 @@ public class BoardStateMetaDataKnowledgeBaseFileIndex implements IFileIndex {
 			mReciprocalFileDetails = new FileDetails (lReciprocalStatePaths, lReciprocalFileName, sFileSize);
 			mReciprocalIndexDetails = new IndexDetails (lReciprocalFileIndex, sIndexSize);
 		} else {
-			BoardState lBoardState = pBoardState; 
+			IBoardState lBoardState = pBoardState; 
 			for (int i = 0; i < lActionCountPastState; i++) {
 				lBoardState = lBoardState.getPreviousBoardState();
 			}
-			String [] lStateBoardStateStrings = lBoardState.constructBoardStateStrings(true);
+			String [] lStateBoardStateStrings = lBoardState.getCurrentBoardStateStrings();
 			String [] lStatePaths = new String [] {"L" + lStateCount};
 			String lFileName = "XMove" + lStateBoardStateStrings [0];
 			int lFileIndex = Integer.parseInt(lActionsPastState, sRadix);
@@ -201,7 +201,7 @@ public class BoardStateMetaDataKnowledgeBaseFileIndex implements IFileIndex {
 		}
 	}
 
-	public BoardState getBoardState() {
+	public IBoardState getBoardState() {
 		return mBoardState;
 	}
 
@@ -235,5 +235,7 @@ public class BoardStateMetaDataKnowledgeBaseFileIndex implements IFileIndex {
 	
 	public String getAddress() {
 		return mAddress;
-	}	
+	}
+
+
 }

@@ -13,7 +13,7 @@ import com.home.neil.appmanager.ApplicationPrecompilerSettings;
 import com.home.neil.cachesegment.threads.operations.ICompressableCacheSegmentOperationsTask.FileDetails;
 import com.home.neil.cachesegment.threads.operations.ICompressableCacheSegmentOperationsTask.IndexDetails;
 import com.home.neil.connectfour.ConnectFourBoardConfig;
-import com.home.neil.connectfour.boardstate.BoardState;
+import com.home.neil.connectfour.boardstate.IBoardState;
 import com.home.neil.connectfour.boardstate.knowledgebase.fileindex.FileIndexException;
 import com.home.neil.connectfour.boardstate.knowledgebase.fileindex.IFileIndex;
 import com.home.neil.knowledgebase.KnowledgeBaseCompressableCacheSegmentConfig;
@@ -61,7 +61,7 @@ public class BoardStateKnowledgeBaseFileIndex implements IFileIndex {
 		}
 	}
 
-	private BoardState mBoardState = null;
+	private IBoardState mBoardStateBase = null;
 	
 	private IndexDetails mIndexDetails = null;
 	private FileDetails mFileDetails = null;
@@ -72,15 +72,15 @@ public class BoardStateKnowledgeBaseFileIndex implements IFileIndex {
 	private FileDetails mReciprocalFileDetails = null;
 	private String mReciprocalPoolItemId = null;
 	private String mReciprocalAddress = null;
-		
-	public BoardStateKnowledgeBaseFileIndex (BoardState pBoardState) throws FileIndexException {
+	
+	public BoardStateKnowledgeBaseFileIndex (IBoardState pBoardState) throws FileIndexException {
 		if (ApplicationPrecompilerSettings.TRACE_LOGACTIVE) {
 			sLogger.trace(ApplicationPrecompilerSettings.TRACE_ENTERING);
 		}
 		
-		mBoardState = pBoardState;
+		mBoardStateBase = pBoardState;
 		
-		String [] lMoveStrings = mBoardState.constructMoveStrings(true);
+		String [] lMoveStrings = mBoardStateBase.getCurrentMoveStrings();
 
 		String lMoveString = lMoveStrings[0];
 		String lReciprocalMoveString = lMoveStrings[1];
@@ -128,11 +128,11 @@ public class BoardStateKnowledgeBaseFileIndex implements IFileIndex {
 			mReciprocalFileDetails = new FileDetails (lReciprocalStatePaths, lReciprocalFileName, sFileSize);
 			mReciprocalIndexDetails = new IndexDetails (lReciprocalFileIndex, sIndexSize);
 		} else {
-			BoardState lBoardState = pBoardState; 
+			IBoardState lBoardState = pBoardState; 
 			for (int i = 0; i < lActionCountPastState; i++) {
 				lBoardState = lBoardState.getPreviousBoardState();
 			}
-			String [] lStateBoardStateStrings = lBoardState.constructBoardStateStrings(true);
+			String [] lStateBoardStateStrings = lBoardState.getCurrentBoardStateStrings();
 			
 			String [] lStatePaths = new String [] {"L" + lStateCount};
 			String lFileName = "XMove" + lStateBoardStateStrings [0];
@@ -181,9 +181,9 @@ public class BoardStateKnowledgeBaseFileIndex implements IFileIndex {
 			sLogger.trace(ApplicationPrecompilerSettings.TRACE_EXITING);
 		}
 	}
-
-	public BoardState getBoardState() {
-		return mBoardState;
+	
+	public IBoardState getBoardState() {
+		return mBoardStateBase;
 	}
 
 	public IndexDetails getIndexDetails() {
@@ -219,8 +219,8 @@ public class BoardStateKnowledgeBaseFileIndex implements IFileIndex {
 	}	
 
 	public void setScoreToWriteFromBoardState (byte pSURROGATEZERO) {
-		mIndexDetails.setIndexSegment(new byte[] { (mBoardState.getMoveScore() == 0) ? pSURROGATEZERO : mBoardState.getMoveScore() });
-		mReciprocalIndexDetails.setIndexSegment(new byte[] { (mBoardState.getMoveScore() == 0) ? pSURROGATEZERO : mBoardState.getMoveScore() });
+		mIndexDetails.setIndexSegment(new byte[] { (mBoardStateBase.getMoveScore() == 0) ? pSURROGATEZERO : mBoardStateBase.getMoveScore() });
+		mReciprocalIndexDetails.setIndexSegment(new byte[] { (mBoardStateBase.getMoveScore() == 0) ? pSURROGATEZERO : mBoardStateBase.getMoveScore() });
 	}
-	
+
 }

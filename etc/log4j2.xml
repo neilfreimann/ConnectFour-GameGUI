@@ -168,7 +168,8 @@
   		<Null name="BlackHole" />
    		
 		<Console name="Console" target="SYSTEM_OUT">
-           <PatternLayout pattern="[%d{ISO8601}] %p [%t] [%X{ClientSessionID}] %m           (%F:%L) (%C.%M)%n"/>
+<!--   <PatternLayout pattern="[%d{ISO8601}] %p [%t] [%X{ClientSessionID}] %m           (%F:%L) (%C.%M)%n"/> -->
+		   <PatternLayout pattern="%p [%t] [%X{ClientSessionID}] %m           (%F:%L) (%C.%M)%n"/> 
    		</Console>
 
 
@@ -207,11 +208,11 @@
         	<AppenderRef ref="Console"/>
     	</logger>
 
-	   	<logger name="com.home.neil.connectfour" level="info">
+	   	<logger name="com.home.neil.connectfour" level="info" >
         	<AppenderRef ref="Console"/> 
     	</logger>
 
-	   	<logger name="com.home.neil.connectfour.boardstate.logger" level="error">
+	   	<logger name="com.home.neil.connectfour.boardstate.logger" level="info"  additivity="false">
         	<AppenderRef ref="Console"/> 
     	</logger>
 

@@ -2,10 +2,10 @@ package com.home.neil.connectfour.boardstate.knowledgebase.fileindex;
 
 import com.home.neil.cachesegment.threads.operations.ICompressableCacheSegmentOperationsTask.FileDetails;
 import com.home.neil.cachesegment.threads.operations.ICompressableCacheSegmentOperationsTask.IndexDetails;
-import com.home.neil.connectfour.boardstate.BoardState;
+import com.home.neil.connectfour.boardstate.IBoardState;
 
 public interface IFileIndex {
-	public BoardState getBoardState();
+	public IBoardState getBoardState();
 
 	public IndexDetails getIndexDetails();
 
